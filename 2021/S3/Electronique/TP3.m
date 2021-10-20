@@ -22,10 +22,14 @@ Phi = angle(H)*180/pi;
 figure(1)
 semilogx(w, G);
 set(gcf, 'Name', 'Gain')
+set(get(gca, 'XLabel'), 'String', 'Pulsation (rad/s)');
+set(get(gca, 'YLabel'), 'String', 'dB');
 
 figure(2)
 semilogx(w, Phi);
 set(gcf, 'Name', 'Phase')
+set(get(gca, 'XLabel'), 'String', 'Pulsation (rad/s)');
+set(get(gca, 'YLabel'), 'String', '°');
 
 
 
