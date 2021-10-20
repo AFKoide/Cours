@@ -26,3 +26,7 @@ set(gcf, 'Name', 'Gain')
 figure(2)
 semilogx(w, Phi);
 set(gcf, 'Name', 'Phase')
+
+
+
+%%%%%- Exercice 3 -%%%%%
