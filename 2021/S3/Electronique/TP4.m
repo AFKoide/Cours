@@ -80,9 +80,9 @@ plot(t, s1);
 % figure(2);
 % s2= subs(s2, t);
 % set(gcf, 'Name', 's2(t)')
-% plot(t, s2);
+% plot(t, s2, 'r', e2, t, 'b');
 
 % figure(2);
 % s3= subs(s3, t);
 % set(gcf, 'Name', 's3(t)')
-% plot(t, s3);
+% plot(t, s3, 'r', e3, t, 'b');
