@@ -3,6 +3,8 @@ clc
 clear all
 close all
 
+%%%- Exercice 1 -%%%
+
 % Constante
 R1= 10;
 R2= 8;
@@ -37,3 +39,50 @@ figure(2);
 it= subs(It, t);
 set(gcf, 'Name', 'i(t)')
 plot(t, it);
+
+
+%%%- Exercice 2 -%%%
+% Constante
+R= 1e3;
+C= 1e-6;
+
+
+% Calcul
+syms t p;
+syms R C;
+
+H= (1+power(R*C*p, 2))/(1+4*R*C*p+power(R*C*p, 2));
+
+e1= cos(2*pi*20*t)*heaviside(t);
+E1= laplace(e1, t, p);
+S1= E1*H;
+s1= laplace(S1, p, t);
+
+% e2= cos(2*pi*170*t)*heaviside(t);
+% E2= laplace(e2, t, p);
+% S2= E2*H;
+% s2= laplace(S2, p, t);
+
+% e3= cos(2*pi*10e4*t)*heaviside(t);
+% E3= laplace(e3, t, p);
+% S3= E3*H;
+% s3= laplace(S3, p, t);
+
+
+% Affichage
+t= linspace(0,0.5,1000);
+
+figure(1);
+set(gcf, 'Name', 's1(t)')
+s1= subs(s1, t);
+plot(t, s1);
+
+% figure(2);
+% s2= subs(s2, t);
+% set(gcf, 'Name', 's2(t)')
+% plot(t, s2);
+
+% figure(2);
+% s3= subs(s3, t);
+% set(gcf, 'Name', 's3(t)')
+% plot(t, s3);
