@@ -49,7 +49,6 @@ C= 1e-6;
 
 % Calcul
 syms t p;
-syms R C;
 
 H= (1+power(R*C*p, 2))/(1+4*R*C*p+power(R*C*p, 2));
 
@@ -70,19 +69,21 @@ s1= laplace(S1, p, t);
 
 
 % Affichage
-t= linspace(0,0.5,1000);
+t1= linspace(0,5/20,500);
+t2= linspace(0,5/170,500);
+t3= linspace(0,5/10e4,500);
 
 figure(1);
 set(gcf, 'Name', 's1(t)')
-s1= subs(s1, t);
-plot(t, s1);
+s1= subs(s1, t1);
+plot(t1, s1, 'r', e1, t1, 'b');
 
 % figure(2);
-% s2= subs(s2, t);
+% s2= subs(s2, t2);
 % set(gcf, 'Name', 's2(t)')
-% plot(t, s2, 'r', e2, t, 'b');
+% plot(t2, s2, 'r', e2, t2, 'b');
 
 % figure(2);
-% s3= subs(s3, t);
+% s3= subs(s3, t3);
 % set(gcf, 'Name', 's3(t)')
-% plot(t, s3, 'r', e3, t, 'b');
+% plot(t3, s3, 'r', e3, t3, 'b');
