@@ -14,8 +14,8 @@ syms t p;
 
 % syms R1 R2 E C;
 
-Sp= (E/p)-((R1*E)/(R1+R2))*(1/(p+(1+(R1+R2)*C)));
-Ip= (E/(R1+R2))*1/(p+(1/((R1+R2)*C)));
+Sp= (E/p)-((R1*E)/(R1+R2))*(1/(p+1/(R1*C+R2*C)));
+Ip= (E/(R1+R2))*(1/(p+1/(R1*C+R2*C)));
 
 St= ilaplace(Sp, p, t);
 It= ilaplace(Ip, p, t);
