@@ -30,8 +30,10 @@ disp(St);
 t= linspace(0,0.5e-3,1000);
 
 figure(1);
+set(gcf, 'Name', 's(t)')
 st= subs(St, t);
 plot(t, st);
 figure(2);
 it= subs(It, t);
+set(gcf, 'Name', 'i(t)')
 plot(t, it);
