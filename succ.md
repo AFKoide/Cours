@@ -66,6 +66,14 @@ Si vous ou vos compagnons êtes en train de combattez la créature, ce test éch
 
 <br>
 
+### Lien télépathique. 
+
+(Necessite d'être une succube haute)
+
+Peut communiqué télépathiquement avec une créature charmée. Ignore la restriction de portée ainsi que le besoin d'être sur le même plan d'existence.
+
+<br>
+
 ## Progression
 
 
