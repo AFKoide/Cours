@@ -22,7 +22,7 @@
 
 <u>Vision dans le noir</u> : 60 pieds (18m), pas de couleur dans le noir complet.
 
-<u>Vitesse</u> : 30 pieds (9m) au sol ; 15 pieds (4.5m) en vol. Si équipé d'armure médium/lourde, ou que la forme prise n'ést pas équipée d'ailes, vol impossible. 
+<u>Vitesse</u> : 30 pieds (9m) au sol ; 15 pieds (4.5m) en vol. Si équipé d'armure médium/lourde, ou que la forme prise n'est pas équipée d'ailes, vol impossible. 
 
 <u>Démon</u> : Vulnérable à l'**Argent**. 
 
