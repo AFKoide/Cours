@@ -2,10 +2,11 @@
 - [Source 2](https://www.dandwiki.com/wiki/Succubus_(5e_Race))
 
 - [Règles Succube](#règles-succube)
-  - [Races](#races)
-    - [Compétences Raciales](#compétences-raciales)
-    - [Progression](#progression)
-    - [Charme](#charme)
+  - [Compétences Raciales](#compétences-raciales)
+    - [Polymorphe](#polymorphe)
+    - [Présence Enivrante](#présence-enivrante)
+    - [Lien télépathique.](#lien-télépathique)
+  - [Progression](#progression)
 
 # Règles Succube
 
