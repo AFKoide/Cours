@@ -1,7 +1,7 @@
 - [Source 1](https://www.gmbinder.com/share/-LAZqAhdvj3OmJyALmva)
 - [Source 2](https://www.dandwiki.com/wiki/Succubus_(5e_Race))
 
-====
+---
 
 - [Règles Succube](#règles-succube)
   - [Compétences Raciales](#compétences-raciales)
