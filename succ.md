@@ -58,6 +58,8 @@ Alterne entre entre une petite, moyenne et vrai forme. Perdre ses ailes fera per
 
 ### Présence Enivrante
 
+(Necessite d'être une succube haute)
+
 Si vous passez 1 minute à parler à quelqu'un qui peut comprendre ce que vous dites, vous pouvez faire un test de *Persuasion* (*Charisme*) opposé à un test de *Perspicacité* (*Sagesse*) de la créature. Si vous réussissez, la cible est magiquement **Charmée**, et elle le restera pour la minute qui suit tant qu'elle reste à moins de 60 pieds (18.3m) de vous.
 
 Si vous ou vos compagnons êtes en train de combattez la créature, ce test échouera automatiquement. 
