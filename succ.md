@@ -49,9 +49,9 @@ Au prix d'une action, vous pouvez vous métamorphoser en une créature ou repren
 
 Vous décidez de votre apparence : votre taille, votre poids, des traits de votre visage, du son de votre voix, de votre coloration, de la longueur de vos cheveux, de votre sexe et de toute autres caractéristiques distinctives. Vous pouvez vous faire passer pour un membre d'une autre race. Vos statistiques ne changent cependant pas. 
 
-Sous cette forme, vous ne pouvez volé que si vous êtes doté d'ailes, de plus, vos équipements ne changent pas pour correspondre à votre nouvelle forme. Vous ne pouvez pas non plus vous faire passer pour une créature d'une taille différente de la vôtre.
+Sous cette forme, vous ne pouvez voler que si vous êtes doté d'ailes, de plus, vos équipements ne changent pas pour correspondre à votre nouvelle forme. Vous ne pouvez pas non plus vous faire passer pour une créature d'une taille différente de la vôtre.
 
-Le déguisement est généralement imperceptible. Si vous éveillez les soupçons, ou si une créature méfiante soupçonne que quelque chose ne va pas, vous avez l'avantage sur tous les tests de *Tromperie* (*Charisme*) que vous effectuez pour éviter que votre vraie nature soit détectée.
+Le déguisement est généralement imperceptible. Si vous éveillez les soupçons, ou si une créature méfiante soupçonne quelque chose, vous avez l'avantage sur tous les tests de *Tromperie* (*Charisme*) que vous effectuez pour éviter que votre vraie nature soit détectée.
 
 <!--
 Alterne entre entre une petite, moyenne et vrai forme. Perdre ses ailes fera perdre la capacité de voler. Les attributs restent les mêmes entre chaque forme. Les équipements ne peuvent pas changer. Si une des formes n'est pas équipée d'ailes, 
