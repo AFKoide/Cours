@@ -11,6 +11,8 @@
 
 #include "stm32l1xx.h"
 
+#include "stm32l1xx.h"
+
 int main() {
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
@@ -30,7 +32,7 @@ int main() {
     // Ecrit les paramètres de led B dans GPIOB
 
 
-	GPIO_InitTypeDef Boutton;
+    GPIO_InitTypeDef Boutton;
 
 	GPIO_StructInit( & Boutton);
 	Boutton.GPIO_Mode = GPIO_Mode_IN;
@@ -49,10 +51,30 @@ int main() {
 		GPIO_ResetBits(GPIOB, GPIO_Pin_7);
     }
 
-    while(2)
-    {
+    while(2) {
     	GPIO_SetBits(GPIOB, GPIO_Pin_8);
     }
     
+    return 0;
+}
+
+
+int main2() {
+    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB,ENABLE);
+    //Active le périphérique GPIOB
+
+    GPIO_InitTypeDef leds_PB; //Structure pour leds
+    GPIO_StructInit(&leds_PB); //Init la structure
+    leds_PB.GPIO_Mode = GPIO_Mode_OUT; //Défini le mode
+    leds_PB.GPIO_Pin = GPIO_Pin_8; //Choisi le pin 8
+    GPIO_Init(GPIOB,&leds_PB); //Compile le programme
+
+    while(1) {
+        GPIO_SetBits(GPIOB,GPIO_Pin_8); //Allume le pin
+        for(int k=0; k<100000;k++){} //Attente
+        GPIO_ResetBits(GPIOB,GPIO_Pin_8); //Eteind le pin
+        for(int k=0; k<100000;k++){} //Attente
+    }
+
     return 0;
 }
