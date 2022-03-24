@@ -31,7 +31,7 @@ int main()
         {'Y',"_.__" }, {'Z',"__.." }
     };
 
-    char test[] = "C U R T I S";
+    char test[] = "CURTIS";
 
     while(1) {
         for(int i = 0; test[i] != 0; i++) {
