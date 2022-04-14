@@ -68,16 +68,7 @@ void Convertisseur(char* morse)
     }
 }
 
-void Init_GPIO() {
-    /* Activer GPIOB sur AHB */
-    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB,ENABLE);
-    /* Configurer PB7 */
-    GPIO_InitTypeDef gpio_b;
-    GPIO_StructInit(&gpio_b);
-    gpio_b.GPIO_Mode = GPIO_Mode_OUT;
-    gpio_b.GPIO_Pin = GPIO_Pin_7;
-    GPIO_Init(GPIOB,&gpio_b);
-}
+
 
 void TIM5_Config()
 {
