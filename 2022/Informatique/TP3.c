@@ -57,14 +57,3 @@ uint16_t ADC1_Get(uint8_t ch)
 
     return  ADC_GetConversionValue(ADC1);
 }
-
-// Dans les bibliothèques ;
-uint16_t ADC1_Get(uint8_t ch)
-{
-    ADC_RegularChannelConfig(ADC1, ch, 1, ADC_SampleTime_4Cycles);
-    ADC_SoftwareStartConv(ADC1);
-    while(ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET)
-        ;
-
-    return  ADC_GetConversionValue(ADC1);
-}
