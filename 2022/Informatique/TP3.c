@@ -14,8 +14,12 @@ int main(void)
         adcVal = ADC1_Get(ADC_Channel_5);
         adcVal = ADC1_Get(ADC_Channel_5);
         adcVal = ADC1_Get(ADC_Channel_5);
-
-        // ici adcVal vaut la valeur lue sur PA54
+        // On branche un potar relié à 5V et la terre. En utilisant "Step Over", on peut relever la tension à cette borne.
+        // ici adcVal vaut la valeur lue sur PA54.
+        // Quand la résistance est égale à 0, on lit dans la variable 4096.
+        // Quand la valeur de la résistance est max, on lit 0.
+        // La valeur est logique car on utilise un ADC 12 bits. La valeur max est donc 4096, ou 0b111111111111.
+        // Les soudures de la carte ne sont pas parfaites, il est donc normal que l'on ne trouve pas une valeur précise. De plus, on peut observer des variations selon la distance de nos mains à l'appareil.
     }
 }
 
