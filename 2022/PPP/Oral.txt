@@ -1,25 +1,30 @@
 1)	Présentation + Compétences + Passion
 Je veux devenir informaticien en système embarqué.
 Au lycée, j'étais très intéressé par les nouvelles technologies et l'électronique. J'ai par exemple monté mon premier ordinateur seul. et j'ai converti mon ordinateur portable en serveur de stockage à distance.
-J'ai choisi un DUT GEII pour sa polyvalence : j'y ai découvert les systèmes embarqués et les différentes disciplines qui gravitent autours.
-Ce DUT ainsi que les différents projets auquel j'ai participé m'ont également permis d'acquérir et d'améliorer plusieurs compétences nécessaire, tel que l'autonomie à travers le projet transversale que nous avions choisi, la maîtrise de l'anglais, l'esprit logique et la veille de compétence.
+J'ai choisi un DUT GEII pour sa polyvalence : j'y ai découvert les systèmes embarqués et les différentes disciplines qui gravitent autours, et j'ai choisi un stage qui était en lien avec ces domaines.
+Ce DUT ainsi que les différents projets auquel j'ai participé m'ont permis d'acquérir et d'améliorer certaines des compétences nécessaire, tel que l'autonomie et un esprit logique à travers le projet transversale que nous avions choisi et non imposé par les enseignants, la maîtrise de l'anglais grâce à plusieurs voyages à l'étranger (seul), et la veille de compétence.
 
 2)	Métier : Compétences demandées
-Travailler dans les systèmes embarqués nécessite et passion, et compétences.
-En plus des compétences que j'ai acquis, il faut maintenant que je les maîtrise et surtout que j'acquière deux autres compétences essentiels pour un informaticien : un esprit critique, important pour comprendre ses erreurs et les résoudre, et la rédaction/présentation, indispensable pour expliquer et montrer comment et pourquoi (entre autre) à des personnes qui n'auront pas le même bagage que moi.
+Travailler dans les systèmes embarqués nécessite beaucoup de passion et des compétences précises.
+En plus des compétences que j'ai acquis à travers ma scolarité, il faut maintenant que je les maîtrise et surtout que j'acquière deux autres compétences essentiels pour un informaticien : un esprit critique, important pour comprendre ses erreurs et les résoudre, et la rédaction/présentation, indispensable pour expliquer et montrer comment et pourquoi (entre autre) à des personnes qui n'auront pas le même bagage que moi.
 
-Un informaticien en systèmes embarqués doit être capable de s'adapter à son milieu de travail et les missions qui lui sont donnés. Il n'a pas de tâches précises à réaliser. Ainsi, le professionnel que j'avais interviewé est actuellement chargé du développement de logiciel, et un autre interlocuteur que j'avais interviewé quelques années plutôt devait quand à lui entretenir un parc de machines industrielles.
+Faire ce métier nécessite un grand nombres de compétences, mais certaines sont bien plus importantes que d'autres.
+Par exemple, l'esprit critique est primordial pour comprendre ses erreurs et trouver comment les résoudre ; la rédaction/présentation, indispensable pour expliquer comment et pourquoi (entre autre) à des personnes qui n'auront pas le même bagage que moi ou encore la veille technologique, qui est primordiale pour être toujours au courant des dernières innovations et méthodes
+
+
+Un informaticien en systèmes embarqués doit être capable de s'adapter à son milieu de travail et les missions qui lui sont donnés. Même si il est formé pour un travail précis, il pourra être amené , mais plutôt à un  des . Ainsi, le professionnel que j'avais interviewé est actuellement chargé du développement de logiciel, et un autre interlocuteur que j'avais interviewé quelques années plutôt devait quand à lui entretenir un parc de machines industrielles.
 
 
 3)	Parcours Pédagogique
 Il existe plusieurs voies pour devenir informaticien en systèmes embarqués.
-La plus directe est l'école d'ingénieur, tel que [ecole d'ingé]. A la suite d'une école préparatoire, on rejoint l'école et à la fin du cursus, on est le plus souvent embauché dans l'entreprise où l'on a fait le stage de fin de 4° année.
+La plus directe est l'école d'ingénieur. On peut en rejoindre une à la suite d'une école d'ingénieur ou plus rarement une fois un DUT acquis.
 Une licence en EEA suivi d'un master en Robotique permet d'avoir le même niveau d'étude, le titre d'ingénieur en moins. 
-Sinon, une simple licence professionnelle suffit pour devenir informaticien en systèmes embarqués.
-Si aucune de ces voix me 
+Sinon, une simple licence professionnelle suffit pour devenir informaticien en systèmes embarqués, mais le niveau d'étude ne m'interesse pas.
+
+Enfin, il existe l'armée. A la suite de 3 ans d'étude à l'académie militaire, on doit signe un contrat de 6 ans minimum pour une des trois armée. Le plus souvent, les tâches à réaliser sont dans le domaine de l'aéronautique.
 
 
 4)	Plan B
-Dans l'éventualité où je ne parvienne pas à mes objectifs, je prévois de m'inscrire à une formation professionnelle dans le domaine de la cybersécurité au CNAM.
-Les raisons sont que cette formation concerne deux autres secteurs qui m'intéressent, la cybersécurité et les réseaux, permet de se spécialiser plus tard dans le domaine des réseaux, la seconde discipline que me passionne le plus après les systèmes embarqués.
-Les attentes et compétences demandées sont pratiquement les mêmes.
+Dans l'éventualité où je ne parvienne pas à mes objectifs, je prévois de m'inscrire à une formation professionnelle dans le domaine de la cybersécurité au CNAM. 
+Ce qui m'a motivé à choisir cette formation est qu'elle est dans la cybersécurité, une autre discipline de l'informatique qui m'interesse. Par la suite, cette formation offre deux qualifications sous la forme de poursuite d'étude, l'une dans le domaine des réseaux, et l'autre dans la cybersécurité, mais à un niveau plus poussé.
+De plus, les attentes et compétences demandées sont pratiquement les mêmes que celle pour les systèmes embarqués.
