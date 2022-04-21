@@ -1,4 +1,5 @@
 clc
+clear all
 close all
 
 u = symunit;
