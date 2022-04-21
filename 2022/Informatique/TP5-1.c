@@ -11,11 +11,10 @@ int main(void)
     GPIO_InitTypeDef gpio_b;
     GPIO_StructInit(&gpio_b);
     gpio_b.GPIO_Mode = GPIO_Mode_OUT;
-    gpio_b.GPIO_Pin = GPIO_Pin_7;
+    gpio_b.GPIO_Pin = GPIO_Pin_7|GPIO_Pin_6;
     GPIO_Init(GPIOB,&gpio_b);
     /* allumer la LED*/
     GPIO_SetBits(GPIOB,GPIO_Pin_7);
-
     // configuration de l'interruption
     IRQ_EXTI0_Config();
 
@@ -25,13 +24,14 @@ int main(void)
 }
 
 // callback pour l'interruption externe EXTI0_IRQ
-void EXTI0_IRQHandler(void)
+void EXTI0_IRQHandler(void) // Le code a executer quand il y a interruption
 {
-    if(EXTI_GetITStatus(EXTI_Line0) != RESET)
+    if(EXTI_GetITStatus(EXTI_Line0) != RESET) // Permet de faire une seule fois l'interruption au lieu de la répéter
     {
-        /* Clear the EXTI line 0 pending bit */
+        /* Clear the EXTI line 0 pending bit (enlève le flag) */
         EXTI_ClearITPendingBit(EXTI_Line0);
-        GPIO_ToggleBits(GPIOB,GPIO_Pin_7);
+        GPIO_ToggleBits(GPIOB,GPIO_Pin_7); // Inverse état du pin 7
+        GPIO_ToggleBits(GPIOB,GPIO_Pin_6); // Inverse état du pin 6
     }
 }
 
@@ -62,7 +62,11 @@ void IRQ_EXTI0_Config()
     EXTI_StructInit(&EXTI0_params);
     EXTI0_params.EXTI_Line = EXTI_Line0;
     EXTI0_params.EXTI_LineCmd = ENABLE;
-    EXTI0_params.EXTI_Trigger = EXTI_Trigger_Rising;
+    EXTI0_params.EXTI_Trigger = EXTI_Trigger_Rising_Falling;
+// Front Descendant : EXTI_Trigger_Falling
+// Front Montant : EXTI_Trigger_Rising
+// Front : EXTI_Trigger_Rising_Falling
+
     EXTI_Init(&EXTI0_params);
 
     /* Activer l'interruption dans le NVIC */
