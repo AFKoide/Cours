@@ -5,7 +5,7 @@ void TIM4_PWM_Set(uint16_t pulseWidth);
 
 int main(void)
 {
-    TIM4_PWM_Config();
+    TIM4_PWM_Config(); // Met le PWM sur le Timer 4
 
     float duty = 0;
     float step;
@@ -21,7 +21,7 @@ int main(void)
             step = 1.01;
         }
 
-        TIM4_PWM_Set(duty); // % de la période de clignotemment de la LED.
+        TIM4_PWM_Set(duty); // % de la période de clignotement de la LED.
         // PWM génère des impulsions en fonction de la valeur rentrée.
         int k;
         for(k=0; k<3000; k++) { // Attente.
