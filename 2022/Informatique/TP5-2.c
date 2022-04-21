@@ -40,8 +40,8 @@ void TIM2_IRQ_Config()
     /* Configurer TIM2 a 500 ms */
     TIM_TimeBaseInitTypeDef timer_2;
     TIM_TimeBaseStructInit(&timer_2);
-    timer_2.TIM_Prescaler = 0;
-    timer_2.TIM_Period = 364-1;
+    timer_2.TIM_Prescaler = 0; // Prescalaire et Période ont au final le même résultat
+    timer_2.TIM_Period = 364-1; // Cependant, on utilise prescalaire pour compter du temps et période pour mesurer le temps.
     TIM_TimeBaseInit(TIM2,&timer_2);
     TIM_SetCounter(TIM2,0);
     TIM_Cmd(TIM2, ENABLE);
