@@ -12,15 +12,15 @@ void TIM5_Config();
 int main(void)
 {
     TIM4_PWM_Config(); // Met le PWM sur le Timer 4
+    TIM5_Config(); // Configure le compteur-horloge
 
     float duty = 0;
     float step;
 
-    float PB6, PB7, PB8;
-    float t = 0;
+    float PB6, PB7, PB8, t = 0;
 
-    TIM_SetCounter(TIM5,0); // Initialisation
-    TIM_Cmd(TIM5 , ENABLE); // Activation du Compteur
+    TIM_SetCounter(TIM5,0); // Initialise
+    TIM_Cmd(TIM5 , ENABLE); // Démarre le compteur-horloge
 
     while(1)
     {/*
@@ -34,21 +34,18 @@ int main(void)
             step = 1.01;
         }
 */
-        t = 1000.0*TIM_GetCounter(TIM5)/16000; // Récupération du temps
-// TIM5 est configuré pour compter les ms. Quand le CPU compte 16000, 1ms passe.  
+        t = 1.0*TIM_GetCounter(TIM5)/1000; 
+// TIM5 est configuré pour compter les ms. 1000ms = 1s
 
-        PB6 = 32000*pow(sin(t*2*pi/30),2);
+        PB6 = 32000.0*powf(sinf(t*2*pi/30),2);
         TIM_SetCompare1(TIM4,PB6);              // Vert
-        PB7 = 32000*pow(cos(t*2*pi/22),2);
+        PB7 = 32000.0*powf(cosf(t*2*pi/22),2);
         TIM_SetCompare2(TIM4,PB7);              // Bleu
-        PB8 = 32000*pow(sin(t*2*pi/12),2);
+        PB8 = 32000.0*powf(sinf(t*2*pi/12),2);
         TIM_SetCompare3(TIM4,PB8);              // Rouge
 
         // TIM4_PWM_Set(duty); // % de la période de clignotement de la LED.
         // PWM génère des impulsions en fonction de la valeur rentrée.
-        int k;
-        for(k=0; k<3000; k++) { // Attente.
-        }
     }
 }
 
@@ -115,12 +112,12 @@ void TIM4_PWM_Set(uint16_t pulseWidth)
     TIM_SetCompare2(TIM4,pulseWidth);
 }
 
-void TIM5_Config()
+void TIM5_Config() // On utilise le compteur pour mesurer le temps tel une horloge
 {
     /* Activer TIM5 sur APB1 */
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5,ENABLE);
     /* Configurer TIM5 : prescalaire à 1 ms, periode au maximum */
-    // Fréquence du CPU 16 MHz 
+    // Fréquence du CPU 16 MHz
     TIM_TimeBaseInitTypeDef DelayTimer; // Crée la structure de configuration
     TIM_TimeBaseStructInit(&DelayTimer); // Initialise la structure
     DelayTimer.TIM_Prescaler = 16000-1; // Défini le prescalaire
