@@ -41,7 +41,11 @@ void TIM2_IRQ_Config()
     TIM_TimeBaseInitTypeDef timer_2;
     TIM_TimeBaseStructInit(&timer_2);
     timer_2.TIM_Prescaler = 0; // Prescalaire et Période ont au final le même résultat
-    timer_2.TIM_Period = 364-1; // Cependant, on utilise prescalaire pour compter du temps et période pour mesurer le temps.
+    timer_2.TIM_Period = 364-1; // Cependant, on utilise Prescalaire pour compter le temps et Période pour mesurer le temps.
+// Fhorloge = 44 000 Hz ; CPU = 16*10^6
+// Thorloge = Modificateur/16x10^6 <=> 1/44000 = TIM_Period/16x10^6 <=> TIM_Period = 16x10^6/44000 = 363.6 (on arrondira au supérieur)
+
+// On retrouve 2kHz, la moitié de la fréquence prévue, à cause du fonctionnement de l'horloge
     TIM_TimeBaseInit(TIM2,&timer_2);
     TIM_SetCounter(TIM2,0);
     TIM_Cmd(TIM2, ENABLE);

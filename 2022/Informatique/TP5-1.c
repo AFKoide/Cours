@@ -24,9 +24,9 @@ int main(void)
 }
 
 // callback pour l'interruption externe EXTI0_IRQ
-void EXTI0_IRQHandler(void) // Le code a executer quand il y a interruption
+void EXTI0_IRQHandler(void) // Le code a executer quand il y a interruption.
 {
-    if(EXTI_GetITStatus(EXTI_Line0) != RESET) // Permet de faire une seule fois l'interruption au lieu de la répéter
+    if(EXTI_GetITStatus(EXTI_Line0) != RESET) // Permet de faire une seule fois l'interruption au lieu de la répéter.
     {
         /* Clear the EXTI line 0 pending bit (enlève le flag) */
         EXTI_ClearITPendingBit(EXTI_Line0);
