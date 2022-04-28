@@ -1,0 +1,12 @@
+3.4)
+On utilise un condensateur pour centrer le signal généré sur 0V.
+Le casque a uen tension de repos à 0V, or, le micro-contrôleur ne peut pas générer des tensions négatives.
+On fait donc travailler le micro-controleur sur une tension moyenne à 1.5V : on ajoute à la composante alternative une composante continue (le 2047). Ainsi, si on veut une tension à -1.5V, la carte génère 0V, et inversement, pour 1.5V, on mesure 3V.
+Le role du condensateur est de supprimer cette composante continue.
+
+Cependant, une fois que l'on branche un casque, le son n'est pas un DO, mais une note plus aigue. Cela s'explique par le casque qui a besoin d'une tension supérieure à celle en sortie du condensateur. 
+Cette appel de tension provoque une perturbation du signal généré par la carte et qui crée des fréquences parasites.
+
+En mettant un suiveur entre le condensateur et le casque, l'AOP joue le role d'une alimentation qui va fournir un signal de meilleur qualité au casque, permettant d'entendre le DO.
+
+3.5)

@@ -1,14 +1,19 @@
 #include "stm32l1xx.h"
 
 #include <math.h>
-#define pi 3.141592
-#include <stdlib.h>
+
+void DAC1_Config();
+void DAC1_Set(uint16_t value);
 
 void TIM2_IRQ_Config();
 
+float* T;
+int n=0;
+
 int main(void)
 {
-        TIM2_IRQ_Config();
+    TIM2_IRQ_Config();
+    DAC1_Config();
 
     // # LED sur PB7
     /* Activer GPIOB sur AHB */
@@ -20,7 +25,17 @@ int main(void)
     gpio_b.GPIO_Pin = GPIO_Pin_7;
     GPIO_Init(GPIOB,&gpio_b);
 
-    while(1) { }
+    T = malloc(100*sizeof(float));
+    for(int k=0;k<100;k++)
+    {
+    T[k] = 511 * sin(2*3.14159*k/100) + 2047;
+
+    }
+
+
+    while(1) {
+
+    }
 }
 
 // callback pour l'interruption periodique associee a TIM2
@@ -29,6 +44,8 @@ void TIM2_IRQHandler() {
     {
         TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
         GPIO_ToggleBits(GPIOB, GPIO_Pin_7);
+        DAC1_Set(T[n%100]);
+        n++;
     }
 }
 
@@ -42,12 +59,8 @@ void TIM2_IRQ_Config()
     /* Configurer TIM2 a 500 ms */
     TIM_TimeBaseInitTypeDef timer_2;
     TIM_TimeBaseStructInit(&timer_2);
-    timer_2.TIM_Prescaler = 0; // Prescalaire et Période ont au final le même résultat
-    timer_2.TIM_Period = 364-1; // Cependant, on utilise Prescalaire pour compter le temps et Période pour mesurer le temps.
-// Fhorloge = 44 000 Hz ; CPU = 16*10^6
-// Thorloge = Modificateur/16x10^6 <=> 1/44000 = TIM_Period/16x10^6 <=> TIM_Period = 16x10^6/44000 = 363.6 (on arrondira au supérieur)
-
-// On retrouve 2kHz, la moitié de la fréquence prévue, à cause du fonctionnement de l'horloge
+    timer_2.TIM_Prescaler = 0;
+    timer_2.TIM_Period = 363;
     TIM_TimeBaseInit(TIM2,&timer_2);
     TIM_SetCounter(TIM2,0);
     TIM_Cmd(TIM2, ENABLE);
@@ -62,4 +75,35 @@ void TIM2_IRQ_Config()
     nvic.NVIC_IRQChannelSubPriority = 1;
     nvic.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&nvic);
+}
+
+
+// ### DAC1 (DAC Channel 1) sur PA4
+// Configuration
+void DAC1_Config()
+{
+    /*Activer GPIOA sur AHB */
+    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+    /* Configurer PA4 en mode analogique*/
+    GPIO_InitTypeDef gpio_a;
+    GPIO_StructInit(&gpio_a);
+    gpio_a.GPIO_Mode  = GPIO_Mode_AN;
+    gpio_a.GPIO_Pin = GPIO_Pin_4;
+    GPIO_Init(GPIOA, &gpio_a);
+
+    /*Activer DAC sur APB1 */
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_DAC, ENABLE);
+    /* Configurer DAC1 avec parametres par defaut */
+    DAC_InitTypeDef dac_1;
+    DAC_StructInit(&dac_1);
+    DAC_Init(DAC_Channel_1, &dac_1);
+    /* Activer DAC1 */
+    DAC_Cmd(DAC_Channel_1, ENABLE);
+}
+
+void DAC1_Set(uint16_t value)
+{
+    DAC_SetChannel1Data( DAC_Align_12b_R, value );
+    DAC_SoftwareTriggerCmd( DAC_Channel_1, ENABLE );
+
 }
