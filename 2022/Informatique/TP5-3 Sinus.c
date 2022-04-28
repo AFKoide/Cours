@@ -7,11 +7,13 @@
 void DAC1_Config ();
 void DAC1_Set(uint16_t value);
 
+
+
 void main()
 {
-    Convertisseur = (float *) malloc( 101 * sizeof(float) ); 
-    Tension = (float *) malloc( 101 * sizeof(float) );
-// Alloue pour une chaine type float 101 caractères de la taille d'un float.
+    Convertisseur = (float *) malloc( 100 * sizeof(float) );
+    Tension = (float *) malloc( 100 * sizeof(float) );
+// Alloue pour une chaine type float 100 caractères de la taille d'un float.
 // 101 car on a une chaine de 100 caractères plus \0.
 
     for (int k=0 ; k<100 ; k++)

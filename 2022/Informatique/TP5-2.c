@@ -1,5 +1,9 @@
 #include "stm32l1xx.h"
 
+#include <math.h>
+#define pi 3.141592
+#include <stdlib.h>
+
 void TIM2_IRQ_Config();
 
 int main(void)
@@ -17,7 +21,13 @@ int main(void)
     GPIO_Init(GPIOB,&gpio_b);
 
     while(1) {
+        float T[99];
+        for(int k = 0; k<=99 ; k++)
+        T[k] = 511*sinf(k*2*pi/100)+2047;
 
+        Tmax = 
+        Tmin = 
+        Tavr = 
     }
 }
 
