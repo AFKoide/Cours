@@ -8,14 +8,61 @@ void DAC1_Set_Quickly(uint16_t value);
 void ADC1_Init(uint8_t ch);
 uint16_t Get_Adc_Quickly();
 
+/**
+ *  PasseBas
+ *    Entrees :
+ *     - input est la derniere valeur recuperee sur le ADC
+ *     - freq_norm : frequence de coupure exprimee en pourcentage de la bande passante totale.
+ *    Sorties :
+ *     - prevOutput est l'amplitude precedente. Doit pointer sur une variable globale qui vaut 0 initialement, ensuite elle evolue sans besoin d'intervenir dessus
+ *    Retour :
+ *    - nouvelle amplitude, apres filtrage
+ */
+uint16_t PasseBas(uint16_t input,uint16_t freqNorm, uint16_t* prevOutput)
+{
+    uint16_t output = *prevOutput + freqNorm*(input - *prevOutput)/200;
+    *prevOutput = output;
+    return output;
+}
 
+uint16_t pb;
 
+/***   initialise_Compresseur : - prepare  la  memoire  pour un  compresseur
+ * pour un DAC 12 bit*
+ *                              - precalcule  la  fonction  de  compression*
+ * Entrees : - m :   coefficient  de  compression , doit  etre  situe  entre
+ *           0.001  et  0.005*
+
+ * Sorties :
+ * Retour : tableau  contenant  la  fonction  de  transfert d’un  compresseur
+ */
+uint16_t* initialise_Compresseur(float m) {
+	uint16_t  nbPts = 2<<12;
+	uint16_t*    stock = malloc(nbPts*sizeof(uint16_t));
+	for(int k=0;k< nbPts; k++) {
+		stock[k] = 4095  /(1+ exp(-m*(k -2047)));
+	}
+	return stock;
+}
+/*   compresseur : applique  la  fonction  de  compression  au  signal  fourni  enentree*
+ * Entrees : - input : nouvelle  valeur  fournie  par le DAC*
+ * 			 - stock : fonction  de  compression  precalculee  par initialise_Compresseur*
+ * Sorties :
+ *   Retour : valeur  de ’input ’ filtree  par la  fonction  de  compression
+ */
+uint16_t  compresseur(uint16_t  input ,uint16_t* stock){
+	input = input & 0xFFF;
+// s’assurer  que l’entree  est  bien  sur 12 bit
+	return stock[input];
+}
+
+uint16_t* comp;
 
 /**
  *  Programme principal (hors interruptions)
  */
 int main(void)
-{
+{pb = 0;
     DAC1_Config();
     ADC1_Init(ADC_Channel_5);
 
@@ -29,7 +76,7 @@ int main(void)
     gpio_b.GPIO_Pin = GPIO_Pin_7;
     GPIO_Init(GPIOB,&gpio_b);
 
-
+     comp = initialise_Compresseur(0.0015);
 
     TIM2_IRQ_Config(); // lancer l'interruption maintenant que tout le reste est pret
 
@@ -57,7 +104,33 @@ void TIM2_IRQHandler() {
         //GPIO_ToggleBits(GPIOB,GPIO_Pin_7);
         GPIOB->ODR ^= GPIO_Pin_7;
         uint16_t adc = Get_Adc_Quickly();
-        DAC1_Set_Quickly(adc);
+/*  uint16_t Get_Adc_Quickly() {
+    	ADC1->CR2 |= (uint32_t)ADC_CR2_SWSTART;
+    	while((ADC1->SR & ADC_FLAG_EOC) == 0) ;
+    	return (uint16_t) ADC1->DR;
+	} */
+// #define     __IO    volatile             /*!< Defines 'read / write' permissions              */
+// #define ADC1                ((ADC_TypeDef *) ADC1_BASE)
+// __IO uint32_t CR2;          /*!< ADC control register 2,                      Address offset: 0x08 */
+// __IO uint32_t SR;           /*!< ADC status register,                         Address offset: 0x00 */
+// __IO uint32_t DR;           /*!< ADC regular data register,                   Address offset: 0x58 */
+// #define  ADC_CR2_SWSTART                     ((uint32_t)0x40000000)        /*!< Start Conversion of regular channels */
+// #define ADC_FLAG_EOC                               ((uint16_t)0x0002)
+
+
+
+        //DAC1_Set_Quickly(PasseBas(adc,10,&pb)); // Diminuer adc revient à diminuer le volume en sortie
+/*  void DAC1_Set_Quickly(uint16_t value)
+	{
+    	static __IO uint32_t tmp = (uint32_t)DAC_BASE + (uint32_t)0x00000008 + DAC_Align_12b_R;
+    	*(__IO uint32_t *) tmp = value;
+	} */
+// #define     __IO    volatile             /*!< Defines 'read / write' permissions              */
+// #define DAC_BASE              (APB1PERIPH_BASE + 0x7400)
+// #define DAC_Align_12b_R                    ((uint32_t)0x00000000)
+
+
+        DAC1_Set_Quickly( compresseur(adc,comp));
         GPIOB->ODR ^= GPIO_Pin_7;
         TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
     }
