@@ -7,6 +7,7 @@ Le role du condensateur est de supprimer cette composante continue.
 Cependant, une fois que l'on branche un casque, le son n'est pas un DO, mais une note plus aigue. Cela s'explique par le casque qui a besoin d'une tension supérieure à celle en sortie du condensateur. 
 Cette appel de tension provoque une perturbation du signal généré par la carte et qui crée des fréquences parasites.
 
+3.5)
 En mettant un suiveur entre le condensateur et le casque, l'AOP joue le role d'une alimentation qui va fournir un signal de meilleur qualité au casque, permettant d'entendre le DO.
 
-3.5)
+4)

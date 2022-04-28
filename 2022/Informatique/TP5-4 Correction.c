@@ -1,6 +1,7 @@
 #include "stm32l1xx.h"
 
 #include <math.h>
+#include <stdlib.h>
 
 void DAC1_Config();
 void DAC1_Set(uint16_t value);
@@ -14,6 +15,12 @@ unsigned int note_periode[8] = {611,544,484,458,408,363,323,306};
 float* T;
 int n = 0;
 int interrupteur = 0;
+
+void buildSawTooth() {
+    for(int k=0; k<100;k++) {
+        T[k] = 2047-511 + (k*1022/100);
+    }
+}
 
 int main(void) {
 	TIM2_IRQ_Config();
@@ -31,10 +38,11 @@ int main(void) {
 	GPIO_Init(GPIOB, &gpio_b);
 
 	T = malloc(100 * sizeof(float));
-	for (int k = 0; k < 100; k++) {
+/*	for (int k = 0; k < 100; k++) {
 		T[k] = 511 * sin(2 * 3.14159 * k / 100) + 2047;
 
-	}
+	} */
+	buildSawTooth();
 	GPIOA_PA0_Config();
 
 	int prev_switch_status = 0;
