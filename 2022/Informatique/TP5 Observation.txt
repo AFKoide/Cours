@@ -11,3 +11,5 @@ Cette appel de tension provoque une perturbation du signal généré par la cart
 En mettant un suiveur entre le condensateur et le casque, l'AOP joue le role d'une alimentation qui va fournir un signal de meilleur qualité au casque, permettant d'entendre le DO.
 
 4)
+Les signaux en pente montante et descendante ont aucune différence audible. Cependant, ces signaux créent un son suffisament fort pour ne pas avoir à mettre le casque pour l'entendre.
+

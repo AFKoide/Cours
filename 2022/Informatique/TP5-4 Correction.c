@@ -21,6 +21,20 @@ void buildSawTooth() {
         T[k] = 2047-511 + (k*1022/100);
     }
 }
+void buildTriangle() {
+	int k;
+        for(int k=0; k<100/2;k++) {
+            T[k] = 2047-511 + (k*1022*2/100);
+        }
+        for(; k<100;k++) {
+            T[k] = 2047 + 511 -((k-100/2)*1022*2/100);
+        }
+}
+void buildSinus() {
+	for (int k = 0; k < 100; k++) {
+		T[k] = 511 * sin(2 * 3.14159 * k / 100) + 2047;
+	}
+}
 
 int main(void) {
 	TIM2_IRQ_Config();
@@ -38,11 +52,11 @@ int main(void) {
 	GPIO_Init(GPIOB, &gpio_b);
 
 	T = malloc(100 * sizeof(float));
-/*	for (int k = 0; k < 100; k++) {
-		T[k] = 511 * sin(2 * 3.14159 * k / 100) + 2047;
 
-	} */
-	buildSawTooth();
+	//buildSinus();
+	//buildSawTooth();
+	//buildTriangle();
+
 	GPIOA_PA0_Config();
 
 	int prev_switch_status = 0;
