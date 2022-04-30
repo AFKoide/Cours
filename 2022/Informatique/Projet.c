@@ -62,7 +62,9 @@ uint16_t* comp;
  *  Programme principal (hors interruptions)
  */
 int main(void)
-{pb = 0;
+{
+    pb = 0;
+
     DAC1_Config();
     ADC1_Init(ADC_Channel_5);
 
@@ -104,27 +106,12 @@ void TIM2_IRQHandler() {
         //GPIO_ToggleBits(GPIOB,GPIO_Pin_7);
         GPIOB->ODR ^= GPIO_Pin_7;
         uint16_t adc = Get_Adc_Quickly();
-/*  uint16_t Get_Adc_Quickly() {
-    	ADC1->CR2 |= (uint32_t)ADC_CR2_SWSTART;
-    	while((ADC1->SR & ADC_FLAG_EOC) == 0) ;
-    	return (uint16_t) ADC1->DR;
-	} */
-// #define     __IO    volatile             /*!< Defines 'read / write' permissions              */
-// #define ADC1                ((ADC_TypeDef *) ADC1_BASE)
-// __IO uint32_t CR2;          /*!< ADC control register 2,                      Address offset: 0x08 */
-// __IO uint32_t SR;           /*!< ADC status register,                         Address offset: 0x00 */
-// __IO uint32_t DR;           /*!< ADC regular data register,                   Address offset: 0x58 */
-// #define  ADC_CR2_SWSTART                     ((uint32_t)0x40000000)        /*!< Start Conversion of regular channels */
-// #define ADC_FLAG_EOC                               ((uint16_t)0x0002)
 
 
 
-        //DAC1_Set_Quickly(PasseBas(adc,10,&pb)); // Diminuer adc revient à diminuer le volume en sortie
-/*  void DAC1_Set_Quickly(uint16_t value)
-	{
-    	static __IO uint32_t tmp = (uint32_t)DAC_BASE + (uint32_t)0x00000008 + DAC_Align_12b_R;
-    	*(__IO uint32_t *) tmp = value;
-	} */
+
+        DAC1_Set_Quickly(PasseBas(adc,10,&pb)); // Diminuer adc revient à diminuer le volume en sortie
+/*  
 // #define     __IO    volatile             /*!< Defines 'read / write' permissions              */
 // #define DAC_BASE              (APB1PERIPH_BASE + 0x7400)
 // #define DAC_Align_12b_R                    ((uint32_t)0x00000000)
