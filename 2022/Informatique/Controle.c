@@ -43,6 +43,11 @@ void GPIO_Biblio()
     GPIO_ResetBits(GPIO{A|B}, GPIO_Pin_{Numéro});
 }
 
+/*
+Prescalaire = Compte x.
+A x, +1.
+
+*/
 void TIM5_Config()
 {
     /* Activer TIM5 sur APB1 */
@@ -55,8 +60,8 @@ void TIM5_Config()
     DelayTimer.TIM_Period = 0xFFFFFFFFU; // Taille du compteur (pleine)
     TIM_TimeBaseInit(TIM5,&DelayTimer); // Configure le timer
 
-    /* Tprescalaire = Prescalaire/16x10^6 (fréquence de l'horloge du microcontroleur) */
-
+/* Tprescalaire = Prescalaire/16x10^6 (fréquence de l'horloge du microcontroleur) */
+// Prescalaire = ((16000−1)+1)*1/(16e6)
 }
 // Fonction Delai en millisecondes
 void TIM5_delay_ms(int delay)
@@ -67,37 +72,10 @@ void TIM5_delay_ms(int delay)
     TIM_Cmd(TIM5, DISABLE); // Désactive le compteur
 }
 
-// ### ADC1 sur PA5
-// Configuration
-void ADC1_Config()
-{   /* Activer GPIOA sur AHB */
-    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
-    /* Parametrer PA5 en mode analogique */
-    GPIO_InitTypeDef gpio_a;
-    gpio_a.GPIO_Pin = GPIO_Pin_5;
-    gpio_a.GPIO_Mode = GPIO_Mode_AN;
-    gpio_a.GPIO_PuPd = GPIO_PuPd_NOPULL;
-    GPIO_Init(GPIOA, &gpio_a);
-
-    /* Activer ADC1 sur APB2 */
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
-    ADC_InitTypeDef adc_1;
-    ADC_StructInit(&adc_1);
-    adc_1.ADC_NbrOfConversion = 1; // simple acquisition
-    adc_1.ADC_Resolution = ADC_Resolution_12b; // ADC1 en 12 bit
-    ADC_Init(ADC1, &adc_1); // Init
-    ADC_Cmd(ADC1, ENABLE); // Activation
-}
-// Acquisition d'une valeur
-// PA5 : ch = ADC_Channel_5
-uint16_t ADC1_Get(uint8_t ch)
-{
-    ADC_RegularChannelConfig(ADC1, ch, 1, ADC_SampleTime_4Cycles);
-    ADC_SoftwareStartConv(ADC1);
-    while(ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET) {}
-    return  ADC_GetConversionValue(ADC1);
-}
-
+/* Sortie Analogique
+Génère un signal carré pendant x% de la période.
+Système lent voit tension continue = x% de Vmax.
+*/
 void TIM4_PWM_Config()
 {
     /*Activer TIM4 sur APB1 */
@@ -152,7 +130,6 @@ void TIM4_PWM_Config()
     GPIO_PinAFConfig(GPIOB, GPIO_PinSource7, GPIO_AF_TIM4); // Bleu
     GPIO_PinAFConfig(GPIOB, GPIO_PinSource8, GPIO_AF_TIM4); // Rouge
 }
-
 // callback pour l'interruption externe EXTI0_IRQ
 void EXTI0_IRQHandler(void) // Le code a executer quand il y a interruption.
 {
@@ -164,7 +141,11 @@ void EXTI0_IRQHandler(void) // Le code a executer quand il y a interruption.
         GPIO_ToggleBits(GPIOB,GPIO_Pin_6); // Inverse état du pin 6
     }
 }
+
 // ### EXTI0 sur PA0
+/* Interruption
+Interruption externe
+*/
 // Configuration
 void IRQ_EXTI0_Config()
 {
@@ -204,4 +185,105 @@ void IRQ_EXTI0_Config()
     nvic.NVIC_IRQChannel = EXTI0_IRQn;
     nvic.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&nvic);
+}
+
+// Interruption Périodique
+// Attend un délai pour interruption
+void TIM2_IRQ_Config()
+{
+    /*Activer TIM2 sur APB1 */
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2,ENABLE);
+    /* Configurer TIM2 a 500 ms */
+    TIM_TimeBaseInitTypeDef timer_2;
+    TIM_TimeBaseStructInit(&timer_2);
+    timer_2.TIM_Prescaler = 0;
+    timer_2.TIM_Period = note_prescalaire[i%8];
+
+// On retrouve 2kHz, la moitié de la fréquence prévue, à cause du fonctionnement de l'horloge
+    TIM_TimeBaseInit(TIM2,&timer_2);
+    TIM_SetCounter(TIM2,0);
+    TIM_Cmd(TIM2, ENABLE);
+
+    /* Associer une interruption a TIM2 */
+    TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
+
+    NVIC_InitTypeDef nvic;
+    /* Configuration de l'interruption */
+    nvic.NVIC_IRQChannel = TIM2_IRQn;
+    nvic.NVIC_IRQChannelPreemptionPriority = 0;
+    nvic.NVIC_IRQChannelSubPriority = 1;
+    nvic.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&nvic);
+}
+// callback pour l'interruption periodique associee a TIM2
+void TIM2_IRQHandler()
+{
+    if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) {
+        DAC1_Set(Tension[n%100]);
+        n++;
+    }
+}
+
+
+// ### ADC1 sur PA5
+// Analogic to Decimal Converter
+// Configuration
+void ADC1_Config()
+{   /* Activer GPIOA sur AHB */
+    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+    /* Parametrer PA5 en mode analogique */
+    GPIO_InitTypeDef gpio_a;
+    gpio_a.GPIO_Pin = GPIO_Pin_5;
+    gpio_a.GPIO_Mode = GPIO_Mode_AN;
+    gpio_a.GPIO_PuPd = GPIO_PuPd_NOPULL;
+    GPIO_Init(GPIOA, &gpio_a);
+
+    /* Activer ADC1 sur APB2 */
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+    ADC_InitTypeDef adc_1;
+    ADC_StructInit(&adc_1);
+    adc_1.ADC_NbrOfConversion = 1; // simple acquisition
+    adc_1.ADC_Resolution = ADC_Resolution_12b; // ADC1 en 12 bit
+// 2^12 = 4096 donc la valeur max du convertisseur est 4096-1. La valeur min est 0.
+// Pour 3V = 4095. T = Vmax*Valeur/(2^12-1).
+    ADC_Init(ADC1, &adc_1); // Init
+    ADC_Cmd(ADC1, ENABLE); // Activation
+}
+// Acquisition d'une valeur
+// PA5 : ch = ADC_Channel_5
+uint16_t ADC1_Get(uint8_t ch)
+{
+    ADC_RegularChannelConfig(ADC1, ch, 1, ADC_SampleTime_4Cycles);
+    ADC_SoftwareStartConv(ADC1);
+    while(ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET) {}
+    return  ADC_GetConversionValue(ADC1);
+}
+// ### DAC1 (DAC Channel 1) sur PA4
+// Digital to Analog Converter
+// Configuration
+void DAC1_Config()
+{
+    /*Activer GPIOA sur AHB */
+    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+    /* Configurer PA4 en mode analogique*/
+    GPIO_InitTypeDef gpio_a;
+    GPIO_StructInit(&gpio_a);
+    gpio_a.GPIO_Mode  = GPIO_Mode_AN;
+    gpio_a.GPIO_Pin = GPIO_Pin_4;
+    GPIO_Init(GPIOA, &gpio_a);
+
+    /*Activer DAC sur APB1 */
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_DAC, ENABLE);
+    /* Configurer DAC1 avec parametres par defaut */
+    DAC_InitTypeDef dac_1;
+    DAC_StructInit(&dac_1);
+    DAC_Init(DAC_Channel_1, &dac_1);
+    /* Activer DAC1 */
+    DAC_Cmd(DAC_Channel_1, ENABLE);
+}
+
+void DAC1_Set(uint16_t value)
+{
+    DAC_SetChannel1Data( DAC_Align_12b_R, value );
+    DAC_SoftwareTriggerCmd( DAC_Channel_1, ENABLE );
 }
