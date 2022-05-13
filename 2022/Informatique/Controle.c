@@ -1,6 +1,3 @@
-#include "stm32l1xx.h"
-// Biblio du microcontrôleur
-
 void GPIO_METAL(void)
 {
 // Faut connaitre les adresses de la memory map.
@@ -97,24 +94,6 @@ void TIM4_PWM_Config()
     timer_4_oc_1.TIM_OutputState = TIM_OutputState_Enable;
     TIM_OC1Init(TIM4,&timer_4_oc_1);
 
-    /* Configurer le comparateur de sortie OC2 de TIM4 */
-    /* pour faire du PWM */
-    TIM_OCInitTypeDef timer_4_oc_2;
-    TIM_OCStructInit(&timer_4_oc_2);
-    timer_4_oc_2.TIM_OCMode = TIM_OCMode_PWM1;
-    timer_4_oc_2.TIM_Pulse = 1000;
-    timer_4_oc_2.TIM_OutputState = TIM_OutputState_Enable;
-    TIM_OC2Init(TIM4,&timer_4_oc_2);
-
-    /* Configurer le comparateur de sortie OC3 de TIM4 */
-    /* pour faire du PWM */
-    TIM_OCInitTypeDef timer_4_oc_3;
-    TIM_OCStructInit(&timer_4_oc_3);
-    timer_4_oc_3.TIM_OCMode = TIM_OCMode_PWM1;
-    timer_4_oc_3.TIM_Pulse = 1000;
-    timer_4_oc_3.TIM_OutputState = TIM_OutputState_Enable;
-    TIM_OC3Init(TIM4,&timer_4_oc_3);
-
     /*Activer GPIOB sur AHB */
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB,ENABLE);
     /* Configurer PB7 comme "Alternative Function" pour preparer son utilisation en PWM */
@@ -127,8 +106,6 @@ void TIM4_PWM_Config()
 
     /* relier PB7 a TIM4/OC2 */
     GPIO_PinAFConfig(GPIOB, GPIO_PinSource6, GPIO_AF_TIM4); // Vert
-    GPIO_PinAFConfig(GPIOB, GPIO_PinSource7, GPIO_AF_TIM4); // Bleu
-    GPIO_PinAFConfig(GPIOB, GPIO_PinSource8, GPIO_AF_TIM4); // Rouge
 }
 // callback pour l'interruption externe EXTI0_IRQ
 void EXTI0_IRQHandler(void) // Le code a executer quand il y a interruption.
@@ -137,8 +114,6 @@ void EXTI0_IRQHandler(void) // Le code a executer quand il y a interruption.
     {
         /* Clear the EXTI line 0 pending bit (enlève le flag) */
         EXTI_ClearITPendingBit(EXTI_Line0);
-        GPIO_ToggleBits(GPIOB,GPIO_Pin_7); // Inverse état du pin 7
-        GPIO_ToggleBits(GPIOB,GPIO_Pin_6); // Inverse état du pin 6
     }
 }
 
@@ -164,18 +139,12 @@ void IRQ_EXTI0_Config()
     RCC_APB2PeriphClockCmd (RCC_APB2Periph_SYSCFG,ENABLE);
     /* Declarer PA0 comme source d'interruption */
     SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOA,EXTI_PinSource0);
-    /* Param. des signaux qui declencheront l'appel de EXTI0_IRQHandler()
-     * autrement dit on parametre les signaux associes a la "ligne 0"
-     * ici : sur front montant ("Trigger_Rising")
-     */
-    EXTI_InitTypeDef EXTI0_params;
+    EXTI_InitTypeDef EXTI0_params; // Param. des signaux qui declencheront l'appel de EXTI0_IRQHandler()
     EXTI_StructInit(&EXTI0_params);
-    EXTI0_params.EXTI_Line = EXTI_Line0;
-    EXTI0_params.EXTI_LineCmd = ENABLE;
+    EXTI0_params.EXTI_Line = EXTI_Line0; // Observe Ligne 0
+    EXTI0_params.EXTI_LineCmd = ENABLE; // Active Ligne
     EXTI0_params.EXTI_Trigger = EXTI_Trigger_Rising_Falling;
-// Front Descendant : EXTI_Trigger_Falling
-// Front Montant : EXTI_Trigger_Rising
-// Front : EXTI_Trigger_Rising_Falling
+// EXTI_Trigger_Falling ; EXTI_Trigger_Rising ; EXTI_Trigger_Rising_Falling
 
     EXTI_Init(&EXTI0_params);
 
