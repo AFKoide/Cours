@@ -41,9 +41,11 @@ void GPIO_Biblio()
 }
 
 /*
-Prescalaire = Compte x.
-A x, +1.
-
+Prescalaire => Compte x.
+A x+1, compteur + 1 ;
+Ttimer = T_CPUClock * (prescaler) * (periode) = (prescaler)(periode)/f_CPUClock
+Peut etre prescaler+1 & periode+1
+f_CPUClock = 16 MHz
 */
 void TIM5_Config()
 {
@@ -80,8 +82,8 @@ void TIM4_PWM_Config()
     /* Configurer TIM4 a 20 ms */
     TIM_TimeBaseInitTypeDef timer_4;
     TIM_TimeBaseStructInit(&timer_4);
-    timer_4.TIM_Period = 3200; // Diminuer le timer et augmenter le prescalaire augmente la période d'allumage de la diode.
-    timer_4.TIM_Prescaler = 10;
+    timer_4.TIM_Period = 32000; // Diminuer le timer et augmenter le prescalaire augmente la période d'allumage de la diode.
+    timer_4.TIM_Prescaler = 1;
     TIM_TimeBaseInit(TIM4,&timer_4);
     TIM_Cmd(TIM4, ENABLE);
 
@@ -162,7 +164,10 @@ void TIM2_IRQ_Config()
 {
     /*Activer TIM2 sur APB1 */
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2,ENABLE);
-    /* Configurer TIM2 a 500 ms */
+    /* Configurer TIM2 a 500 ms
+    timer_2 . TIM_Prescaler = 16000 -1;
+    timer_2 . TIM_Period = 500;
+    */
     TIM_TimeBaseInitTypeDef timer_2;
     TIM_TimeBaseStructInit(&timer_2);
     timer_2.TIM_Prescaler = 0;
