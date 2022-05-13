@@ -3,57 +3,44 @@
 
 void GPIO_METAL(void)
 {
-    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
-    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
-    // Active les ports B & A du microcontrôleur
-    GPIO_InitTypeDef leds_PB;
-    // Défini une structure qui sera utilisée par le GPIO pour la led B
-    GPIO_StructInit( & leds_PB);
-    // Initialise la structure de led B
-    leds_PB.GPIO_Mode = GPIO_Mode_OUT;
-    // Configure le mode pour la structure de led B en OUT
-    leds_PB.GPIO_Pin = GPIO_Pin_7|GPIO_Pin_6;
-    // Choisit le pin 7 et 6
-    GPIO_Init(GPIOB, & leds_PB);
-    // Ecrit les paramètres de led B dans GPIOB
+// Faut connaitre les adresses de la memory map.
+// ## 1. Activer GPIOB (port B)
+    long * RCC_AHBENR =( long *) (0x40023800 + 0 x1C ) ;
+    (* RCC_AHBENR ) |= (1 < <1) ;
 
-    GPIO_InitTypeDef Boutton;
-	GPIO_StructInit( & Boutton);
-	Boutton.GPIO_Mode = GPIO_Mode_IN;
-	Boutton.GPIO_Pin = GPIO_Pin_0;
-	GPIO_Init(GPIOA, & Boutton);
+// ## 2. PB7 en tant que sortie
+    long * GPIOB_MODER =( long *) (0x40020400 + 0 x0 ) ;
+    (* GPIOB_MODER ) &= ~(0 b11 < <14) ;
+    (* GPIOB_MODER ) |= 0 b01 < <14
 
-    while (1) {
-		if(GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0) == 1)
-		{
-			GPIO_SetBits(GPIOB, GPIO_Pin_7);
-			for (int k = 0; k < 500000; k++) {}
-			GPIO_ResetBits(GPIOB, GPIO_Pin_7);
-			for (int k = 0; k < 500000; k++) {}
-		}
-		GPIO_ResetBits(GPIOB, GPIO_Pin_7);
-    }
+// ## 1. Allumer la LED
+    (* GPIOB_ODR ) |= 0 b1 < <7;
+    // ## 2. Eteindre la LED
+    (* GPIOB_ODR ) &= ~(0 b1 < <7) ;
 }
 
 void GPIO_Biblio()
 {
-        RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB,ENABLE);
-    //Active le périphérique GPIOB
+// Active le coté port B ou A du microcontrôleur
+    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIO{A|B}, {ENABLE|DISABLE});
+// Défini une structure qui sera utilisée par le GPIO
+    GPIO_InitTypeDef {Nom};
+// Initialise la structure utilisé
+    GPIO_StructInit( & {Nom});
+// Configure la structure en entrée ou sortie
+    {Nom}.GPIO_Mode = GPIO_Mode_{OUT|IN};
+// Choisi le pin numéro
+    {Nom}.GPIO_Pin = GPIO_Pin_{Numéro};
+// Ecrit les paramètres de la structure du coté qu'on choisi
+    GPIO_Init(GPIO{A|B}, & {Nom});
+    while (1) {
 
-    GPIO_InitTypeDef leds_PB; //Structure pour leds
-    GPIO_StructInit(&leds_PB); //Init la structure
-    leds_PB.GPIO_Mode = GPIO_Mode_OUT; //Défini le mode
-    leds_PB.GPIO_Pin = GPIO_Pin_8; //Choisi le pin 8
-    GPIO_Init(GPIOB,&leds_PB); //Compile le programme
-
-    while(1) {
-        GPIO_SetBits(GPIOB,GPIO_Pin_8); //Allume le pin 8
-        for(int k=0; k<100000;k++){} //Attente
-        GPIO_ResetBits(GPIOB,GPIO_Pin_8); //Eteint le pin 8
-        for(int k=0; k<100000;k++){} //Attente
-    }
-
-    return 0;
+// Lit le pin {Numéro} 
+    GPIO_ReadInputDataBit(GPIO{A|B}, GPIO_Pin_{Numéro});
+// Défini a 1 le pin choisi
+    GPIO_SetBits(GPIO{A|B}, GPIO_Pin_{Numéro});
+// Défini a 0 le pin choisi
+    GPIO_ResetBits(GPIO{A|B}, GPIO_Pin_{Numéro});
 }
 
 void TIM5_Config()
@@ -94,23 +81,127 @@ void ADC1_Config()
 
     /* Activer ADC1 sur APB2 */
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
-    /* Configurer ADC1 en 12 bit, simple acquisition */
     ADC_InitTypeDef adc_1;
     ADC_StructInit(&adc_1);
-    adc_1.ADC_NbrOfConversion = 1;
-    adc_1.ADC_Resolution = ADC_Resolution_12b;
-    ADC_Init(ADC1, &adc_1);
-    ADC_Cmd(ADC1, ENABLE);
+    adc_1.ADC_NbrOfConversion = 1; // simple acquisition
+    adc_1.ADC_Resolution = ADC_Resolution_12b; // ADC1 en 12 bit
+    ADC_Init(ADC1, &adc_1); // Init
+    ADC_Cmd(ADC1, ENABLE); // Activation
 }
-
 // Acquisition d'une valeur
 // PA5 : ch = ADC_Channel_5
 uint16_t ADC1_Get(uint8_t ch)
 {
     ADC_RegularChannelConfig(ADC1, ch, 1, ADC_SampleTime_4Cycles);
     ADC_SoftwareStartConv(ADC1);
-    while(ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET)
-        ;
-
+    while(ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET) {}
     return  ADC_GetConversionValue(ADC1);
+}
+
+void TIM4_PWM_Config()
+{
+    /*Activer TIM4 sur APB1 */
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4,ENABLE);
+    /* Configurer TIM4 a 20 ms */
+    TIM_TimeBaseInitTypeDef timer_4;
+    TIM_TimeBaseStructInit(&timer_4);
+    timer_4.TIM_Period = 3200; // Diminuer le timer et augmenter le prescalaire augmente la période d'allumage de la diode.
+    timer_4.TIM_Prescaler = 10;
+    TIM_TimeBaseInit(TIM4,&timer_4);
+    TIM_Cmd(TIM4, ENABLE);
+
+    /* Configurer le comparateur de sortie OC1 de TIM4 */
+    /* pour faire du PWM */
+    TIM_OCInitTypeDef timer_4_oc_1;
+    TIM_OCStructInit(&timer_4_oc_1);
+    timer_4_oc_1.TIM_OCMode = TIM_OCMode_PWM1;
+    timer_4_oc_1.TIM_Pulse = 1000;
+    timer_4_oc_1.TIM_OutputState = TIM_OutputState_Enable;
+    TIM_OC1Init(TIM4,&timer_4_oc_1);
+
+    /* Configurer le comparateur de sortie OC2 de TIM4 */
+    /* pour faire du PWM */
+    TIM_OCInitTypeDef timer_4_oc_2;
+    TIM_OCStructInit(&timer_4_oc_2);
+    timer_4_oc_2.TIM_OCMode = TIM_OCMode_PWM1;
+    timer_4_oc_2.TIM_Pulse = 1000;
+    timer_4_oc_2.TIM_OutputState = TIM_OutputState_Enable;
+    TIM_OC2Init(TIM4,&timer_4_oc_2);
+
+    /* Configurer le comparateur de sortie OC3 de TIM4 */
+    /* pour faire du PWM */
+    TIM_OCInitTypeDef timer_4_oc_3;
+    TIM_OCStructInit(&timer_4_oc_3);
+    timer_4_oc_3.TIM_OCMode = TIM_OCMode_PWM1;
+    timer_4_oc_3.TIM_Pulse = 1000;
+    timer_4_oc_3.TIM_OutputState = TIM_OutputState_Enable;
+    TIM_OC3Init(TIM4,&timer_4_oc_3);
+
+    /*Activer GPIOB sur AHB */
+    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB,ENABLE);
+    /* Configurer PB7 comme "Alternative Function" pour preparer son utilisation en PWM */
+    GPIO_InitTypeDef gpio_b;
+    GPIO_StructInit(&gpio_b);
+    gpio_b.GPIO_Mode = GPIO_Mode_AF;
+    gpio_b.GPIO_Pin = GPIO_Pin_6|GPIO_Pin_7|GPIO_Pin_8;
+    gpio_b.GPIO_Speed = GPIO_Speed_10MHz;
+    GPIO_Init(GPIOB, &gpio_b);
+
+    /* relier PB7 a TIM4/OC2 */
+    GPIO_PinAFConfig(GPIOB, GPIO_PinSource6, GPIO_AF_TIM4); // Vert
+    GPIO_PinAFConfig(GPIOB, GPIO_PinSource7, GPIO_AF_TIM4); // Bleu
+    GPIO_PinAFConfig(GPIOB, GPIO_PinSource8, GPIO_AF_TIM4); // Rouge
+}
+
+// callback pour l'interruption externe EXTI0_IRQ
+void EXTI0_IRQHandler(void) // Le code a executer quand il y a interruption.
+{
+    if(EXTI_GetITStatus(EXTI_Line0) != RESET) // Permet de faire une seule fois l'interruption au lieu de la répéter.
+    {
+        /* Clear the EXTI line 0 pending bit (enlève le flag) */
+        EXTI_ClearITPendingBit(EXTI_Line0);
+        GPIO_ToggleBits(GPIOB,GPIO_Pin_7); // Inverse état du pin 7
+        GPIO_ToggleBits(GPIOB,GPIO_Pin_6); // Inverse état du pin 6
+    }
+}
+// ### EXTI0 sur PA0
+// Configuration
+void IRQ_EXTI0_Config()
+{
+    // # Interrupteur
+    /* Activer GPIOA sur AHB */
+    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA,ENABLE);
+    /* Configurer PB7 comme entree tout-ou-rien */
+    GPIO_InitTypeDef gpio_a;
+    GPIO_StructInit(&gpio_a);
+    gpio_a.GPIO_Mode = GPIO_Mode_IN;
+    gpio_a.GPIO_Pin = GPIO_Pin_0;
+    GPIO_Init(GPIOA,&gpio_a);
+
+    /* Activer SYSCFG sur APB2
+     * pour permettre l'utilisation des interruptions externes */
+    RCC_APB2PeriphClockCmd (RCC_APB2Periph_SYSCFG,ENABLE);
+    /* Declarer PA0 comme source d'interruption */
+    SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOA,EXTI_PinSource0);
+    /* Param. des signaux qui declencheront l'appel de EXTI0_IRQHandler()
+     * autrement dit on parametre les signaux associes a la "ligne 0"
+     * ici : sur front montant ("Trigger_Rising")
+     */
+    EXTI_InitTypeDef EXTI0_params;
+    EXTI_StructInit(&EXTI0_params);
+    EXTI0_params.EXTI_Line = EXTI_Line0;
+    EXTI0_params.EXTI_LineCmd = ENABLE;
+    EXTI0_params.EXTI_Trigger = EXTI_Trigger_Rising_Falling;
+// Front Descendant : EXTI_Trigger_Falling
+// Front Montant : EXTI_Trigger_Rising
+// Front : EXTI_Trigger_Rising_Falling
+
+    EXTI_Init(&EXTI0_params);
+
+    /* Activer l'interruption dans le NVIC */
+    NVIC_InitTypeDef nvic;
+    NVIC_Init(&nvic);
+    nvic.NVIC_IRQChannel = EXTI0_IRQn;
+    nvic.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&nvic);
 }
