@@ -167,6 +167,8 @@ void TIM2_IRQ_Config()
     /* Configurer TIM2 a 500 ms
     timer_2 . TIM_Prescaler = 16000 -1;
     timer_2 . TIM_Period = 500;
+    44 kHz -> 363 period & 0 prescaler.
+    16000000/44000 = 363.
     */
     TIM_TimeBaseInitTypeDef timer_2;
     TIM_TimeBaseStructInit(&timer_2);
