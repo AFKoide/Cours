@@ -65,13 +65,13 @@ int main(void) {
 		int switch_status = GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0);
 		if (switch_status == Bit_SET && prev_switch_status == 0) {
 			// A REMPLIR : ce que l'on doit executer si le bouton est appuye
-			interrupteur++;
+			interrupteur++; // Nb d'appuie sur l'interrupteur
 			TIM_Cmd(TIM2, DISABLE);
 			TIM_SetCounter(TIM2, 0);
 			TIM_TimeBaseInitTypeDef timer_2;
 			TIM_TimeBaseStructInit(&timer_2);
 			timer_2.TIM_Prescaler = 0;
-			timer_2.TIM_Period = note_periode[interrupteur%8];
+			timer_2.TIM_Period = note_periode[interrupteur%8]; // A 8, on redescend à 0
 			TIM_TimeBaseInit(TIM2, &timer_2);
 			TIM_Cmd(TIM2, ENABLE);
 		}

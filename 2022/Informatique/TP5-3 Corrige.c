@@ -28,7 +28,7 @@ int main(void)
     T = malloc(100*sizeof(float));
     for(int k=0;k<100;k++)
     {
-    T[k] = 511 * sin(2*3.14159*k/100) + 2047;
+        T[k] = 511 * sin(2*3.14159*k/100) + 2047;
 
     }
 

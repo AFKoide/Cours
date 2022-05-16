@@ -8,7 +8,7 @@ void TIM2_IRQ_Config();
 
 int main(void)
 {
-        TIM2_IRQ_Config();
+    TIM2_IRQ_Config();
 
     // # LED sur PB7
     /* Activer GPIOB sur AHB */
@@ -28,7 +28,7 @@ void TIM2_IRQHandler() {
     if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
     {
         TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
-        GPIO_ToggleBits(GPIOB, GPIO_Pin_7);
+        GPIO_ToggleBits(GPIOB, GPIO_Pin_7); // Inversion du pin 7
     }
 }
 
