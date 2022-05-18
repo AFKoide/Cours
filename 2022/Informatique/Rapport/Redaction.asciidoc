@@ -4,7 +4,8 @@ Par Martelet Curtis
 :partnums:
 :hardbreaks:
 :toc:
-:doctype: book
+
+<<<
 
 == Introduction aux interruptions.
 
@@ -65,8 +66,8 @@ void IRQ_EXTI0_Config()
 }
 ----
 
-Une fois l'interruption configurée, il s'agit maintenant de définir ce qu'il se passera une fois celle-ci en action.
-La fonction `EXTI0_IRQHandler()` est faite pour cela : elle est appelée quand l'interruption a lieu.
+Une fois l'interruption configurée, il s'agit maintenant de définir ce qu'elle réalisera.
+La fonction `EXTI0_IRQHandler()` est faite pour cela : elle s'execute quand l'interruption a lieu.
 
 On souhaite donc inverser l'état d'une LED que l'on aura choisie. `GPIO_ToggleBits` est la fonction du GPIO qui permet d'inverser l'état d'un pin. Il est configuré fonction du coté (A ou B) et de son numéro.
 [source,c]
@@ -88,7 +89,7 @@ Ici, le if évite que l'interruption se réalise plusieurs fois d'affilé, par e
 Avec cette interruption, on inversera les états des LEDs PB6 et PB7 sur la pression et la relève du bouton.
 
 Pour que les états des LEDs soient inversés l'un par rapport à l'autre, il suffit de définir l'état de base d'une des LEDs comme étant allumé :
-on ajoute, avant la boucle du main, la fonction `GPIO_SetBits` qui se définie comme `GPIO_ToggleBits`. Cette fonction "set" à 1 le pin configuré, ce qui revient à alimenter la LED.
+on ajoute, avant la boucle du main, la fonction `GPIO_SetBits` qui se définie comme `GPIO_ToggleBits`. Cette fonction "set" à 1 le pin configuré, ce qui revient à alimenter la DEL.
 
 La fonction main de cet exercice devrait donc ressembler à cela :
 [source,c]
@@ -119,12 +120,13 @@ Voir l'<<annexe,annexe>> pour le code entier.
 
 === Interruptions Périodique
 
-Si le premier exercice ordonnait une interruption sur l'appuie d'un bouton (donc une source extérieure), ce second exercice se basera sur l'horloge du microcontrôleur pour ordonner l'interruption.
+Si le premier exercice ordonnait une interruption sur l'appuie d'un bouton (donc une commande extérieure), ce second exercice se basera sur l'horloge du microcontrôleur pour ordonner l'interruption.
 
-On souhaite faire clignoter la LED toutes les 500ms.
+On souhaite faire clignoter la DEL toutes les 500ms.
 On va utiliser le Timer 2 de la carte pour mesurer ce temps.
 
 [source,c]
+.TIM2_IRQ_Config
 ------
 void TIM2_IRQ_Config()
 {
@@ -151,31 +153,44 @@ void TIM2_IRQ_Config()
 }
 ------
 
+La fréquence du microcontrôleur étant de 16Mhz, on choisi un prescalaire de 16000 : `TIM_Period` s'incrémentera toutes les ms.
+Voulant une interruptions toutes les 500ms, il suffira de définir la valeur de `TIM_Period` à 500.
+
 Le code de l'interruption est identique à celle des interruptions extérieures, au détail près qu'elle s'appelle `TIM2_IRQHandler`.
+
+[source,c]
+.TIM2_IRQHandler
+------
+void TIM2_IRQHandler() {
+    if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
+    {
+        TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
+        GPIO_ToggleBits(GPIOB, GPIO_Pin_7); // Inversion du pin 7
+    }
+}
+------
 
 ==== Changement de Fréquence
 
-On nous demande cette fois-ci une fréquence de 44kHz. On choisi cette fois-ci de mettre le prescaler à 0.
+On nous demande cette fois-ci une fréquence de 44kHz.
+On décide cette fois-ci de mettre le prescalaire à 0.
 Fhorloge = 44 kHz ; CPU = 16 MHz.
 
 Thorloge = (TIM_Period+1)*(TIM_Prescaler+1)/16e6
-1/44e3 = TIM_Period/16e6 <=> TIM_Period = 16e6/44e3 = 363.6 (on arrondira au supérieur)
+1/44e3 = TIM_Period/16e6 <=> TIM_Period = 16e6/44e3 = *363.6* (on arrondira au supérieur)
 
 Une fois reconfiguré, on observe sur l'oscilloscope que la fréquence observée est la moitié de la fréquence prévue, à cause du fonctionnement de l'horloge
 
-
-=== Le DAC
-Le DAC (ou Digital to Analogic Convertor) est utilisé pour transformer une valeur de la carte en une tension analogique.
-Selon le nombre de bit alloué au convertisseur, 
+<<<
 
 == Générer un courant sinusoïdal
 
 Maintenant que l'on comprend comment le DAC fonctionne, on veut s'en servir pour générer une tension sinusoïdale sur le pin *PA4* de la carte.
 Malheureusement, le microcontrôleur n'est pas capable de faire par lui même ce signal, c'est pourquoi nous allons l'aider en calculant les valeurs qu'il générera.
 
-=== Le Sinus
+=== Le sinus
 
-Pour réaliser le sinus, nous avons tout d'abord besoin de la bibliothèque `math`. Sans elle, le programme ne sait pas le calculer. 
+Avant toute chose, nous avons besoin de la bibliothèque `math (math.h)` pour calculer le sinus. 
 
 On stockera les valeurs du sinus dans un tableau que l'on définira à l'aide de la fonction `malloc`.
 Malloc permet d'allouer à une variable un espace qui sera calculé en fonction du type de variable présente dedans :
@@ -190,6 +205,7 @@ où k est un incrément qui ira de 0 à 99 (100 valeurs).
 
 Nous avons donc dans le main le calcul du sinus :
 [source,c]
+.Calcul du sinus
 ------
 #include <math.h>
 
@@ -203,8 +219,9 @@ int main()
     }
 }
 ------
+
 Le microcontrôleur n'est pas capable de générer une tension négative, et sa valeur maximale est 3V.
-On choisi donc de décaler la valeur moyenne du sinus de 1.5V. Ainsi, la valeur max est 3V et ma valeur minimale est 0V.
+On choisi donc de décaler la valeur moyenne du sinus de 1.5V. Ainsi, la valeur max sera 3V et ma valeur minimale sera 0V.
 
 Le convertisseur analogique/numérique de la carte fonctionne sur 12 bits : 2^12 = 4096 valeurs.
 Donc pour 3V, le convertisseur est égal à 4095 ; pour 1.5V (la valeur moyenne), 2047 ; et pour 0V, 0.
@@ -217,6 +234,8 @@ Donc pour 3V, le convertisseur est égal à 4095 ; pour 1.5V (la valeur moyenne)
 
 J'ai utilisé un produit en croix pour convertir les valeurs du convertisseurs en tension.
 
+
+image::sinus convertisseur.jpg
 
 ....
 k = linspace(0,99,100000);
@@ -232,11 +251,59 @@ title("Tension en sortie du convertisseur")
 axis([0 99 0 3])
 ....
 
-=== DAC & Sinus
+=== DAC & sinus
 
-Maintenant que le sinus est calculé et stocké dans la variable _Tension_, il est temps de ré-employer le code du précédent exercice : le `DCA1` et `TIM2`.
+Maintenant que le sinus est calculé et stocké dans la variable _Tension_, il est temps de générer le signal en sortie de la carte.
+Pour ce faire, on ré-employe une fonction du code du précédent exercice, `TIM2` et le convertisseur Digital à Analogique de la carte.
+Ce dernier sera employé pour réaliser des interruptions périodiques.
 
-Nous n'avons pas besoin de toucher à la configuration. Le préscaleur (_timer_2.TIM_Prescaler_) et la période (_timer_2.TIM_Period_) restent les mêmes puisque l'on garde la fréquence de 440Hz.
+==== Configuration du DAC
+
+Le DAC est un convertisseur Digital à Analogique 12 bits.
+Dans ce TD, il est nécessaire pour convertir les valeurs du sinus en une tension comprise entre 0V et 3V.
+
+[source,c]
+.DAC1_Config
+------
+void DAC1_Config()
+{
+    /*Activer GPIOA sur AHB */
+    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+    /* Configurer PA4 en mode analogique*/
+    GPIO_InitTypeDef gpio_a;
+    GPIO_StructInit(&gpio_a);
+    gpio_a.GPIO_Mode  = GPIO_Mode_AN; // Mode Analogique
+    gpio_a.GPIO_Pin = GPIO_Pin_4;  // Sortie sur PIN 4
+    GPIO_Init(GPIOA, &gpio_a);
+
+    /*Activer DAC sur APB1 */
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_DAC, ENABLE);
+    /* Configurer DAC1 avec parametres par defaut */
+    DAC_InitTypeDef dac_1;
+    DAC_StructInit(&dac_1);
+    DAC_Init(DAC_Channel_1, &dac_1);
+    /* Activer DAC1 */
+    DAC_Cmd(DAC_Channel_1, ENABLE);
+}
+------
+
+Maintenant que le DAC est configuré, il ne reste plus qu'à générer le signal.
+Le DAC utilise deux fonctions pour convertir puis générer une tension :
+- DAC_SetChannel1Data et initialise la tension.
+- DAC_SoftwareTriggerCmd émet la valeur.
+
+[source,c]
+------
+void DAC1_Set(uint16_t value)
+{
+    DAC_SetChannel1Data(DAC_Align_12b_R , value);
+    DAC_SoftwareTriggerCmd(DAC_Channel_1 , ENABLE);
+}
+------
+
+==== Configuration du TIMER
+
+Nous n'avons pas besoin de toucher à sa configuration. Le prescalaire (_timer_2.TIM_Prescaler_) et la période (_timer_2.TIM_Period_) restent les mêmes puisque l'on garde la fréquence de 44kHz.
 
 Il est nécessaire de déclarer _Tension_ en variable globale : ainsi, ses valeurs pourront être utilisée dans l'interruption. Son incrémenteur (que l'on appellera _n_) sera également déclarée en variable globale.
 
@@ -255,10 +322,22 @@ void TIM2_IRQHandler() {
 }
 ------
 
+Finalement, il est temps d'écrire l'interruption en elle-même. 
+
+[source,c]
+------
+void TIM2_IRQHandler() {
+    if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
+    {
+        DAC1_Set(Tension[n%100]); // Converti la n-ème valeur de Tension & n=100, alors n=0
+        n++; 
+    }
+}
+------
+
 === Écoute au Casque
 
-Il est temps de brancher un casque à notre microcontrôleur. Cependant, ce dernier fonctionne avec des tensions comprises entre -1.5V et 1.5V.
-Comme dit précédemment, la carte n'est pas capable de générer ces signaux. 
+Il n'est pas possible de brancher directement un casque à notre microcontrôleur. Le casque fonctionne avec des tensions comprises entre -1.5V et 1.5V, or, la carte n'est pas capable de générer ces valeurs négatifs. 
 En réalisant un pont diviseur de tension et en y ajoutant un condensateur, on peut abaisser la tension moyenne de 1.5V à 0V.
 Ainsi, on peut brancher le casque au microcontrôleur.
 
@@ -269,11 +348,14 @@ Le son entendu est plus aiguë que ce que l'on devrait avoir.
 
 En mettant un montage suiveur entre le condensateur et le casque, l'AOP joue le role d'une alimentation qui va fournir un signal de meilleur qualité au casque, permettant d'entendre le DO.
 
+<<<
 
 == Le Mini-Synthétiseur
 
+Cette exercice demandera que l'on réutilise des fonctions déjà utilisé.
+
 Dans un premier temps,  l'on modifie la fréquence du DAC sur l'appuie du bouton *PA0*. 
-Chacune de ces fréquences correspondent à une note de musique. Le changement de fréquence modifiera le son produit.
+Chacune de ces fréquences correspondent à une note de musique, ainsi chaque pression changera la note produite.
 [cols="2b,^,^,^,^,^,^,^,^"]
 |===
 |Note|Do|Re|Mi|Fa|Sol|La|Si|Do
@@ -287,16 +369,37 @@ Ces valeurs sont initialisée dans une variable nommée _note_periode_.
 unsigned int note_periode[8] = {611,544,484,458,408,363,323,306};
 ------
 
-Pour générer 
+Générer une onde nécessite que l'on utilise 
 
+Comme vu dans la première partie, on configure le GPIO pour faire fonctionner le bouton *PA0*. 
+Cette fois-ci, on n'utilisera pas une interruption pour réaliser l'action du bouton.
+Dans le while :
+[source,c]
+------
+int switch_status = GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0);
+if (switch_status == Bit_SET && prev_switch_status == 0)
+{
+	interrupteur++; // Nb d'appuie sur l'interrupteur
+	TIM_Cmd(TIM2, DISABLE); // Désactive le Compteur
+	TIM_SetCounter(TIM2, 0);
+	TIM_TimeBaseInitTypeDef timer_2;
+	TIM_TimeBaseStructInit(&timer_2);
+	timer_2.TIM_Prescaler = 0;
+	timer_2.TIM_Period = note_periode[interrupteur%8]; // A 8, on redescend à 0
+	TIM_TimeBaseInit(TIM2, &timer_2);
+	TIM_Cmd(TIM2, ENABLE);
+}
+prev_switch_status = switch_status;
+------
 
+<<<
 
 == Mini Projet : Filtrage Numérique d'un Signal
 
-Cette dernière partie du TP réutilisera plusieurs des fonctions du Synthétiseur, 
-
+Cette ultime partie du TP convertira la carte, que l'on utilisait jusqu'à présent pour générer des 
 
 ==== Get_Adc_quickly
+
 Cette fonction est utilisée pour 
 [source,C]
 ----
@@ -324,6 +427,7 @@ __IO uint32_t DR;           /*!< ADC regular data register,                   Ad
 |===
 
 ==== DAC1_Set_Quickly
+
 Cette fonction sert à 
 
 Diminuer adc revient à diminuer le volume en sortie
@@ -340,11 +444,13 @@ void DAC1_Set_Quickly(uint16_t value) {
 #define DAC_BASE              (APB1PERIPH_BASE + 0x7400)
 #define DAC_Align_12b_R                    ((uint32_t)0x00000000)
 
-
+<<<
 
 == Annexe [[id,annexe]]
+
+=== Exercice 1
+
 [source,c]
-.Exercice 1
 ------
 #include "stm32l1xx.h"
 
@@ -423,4 +529,356 @@ void IRQ_EXTI0_Config()
     nvic.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&nvic);
 }
+------
+
+<<<
+
+=== Exercice 2
+[source,c]
+------
+#include "stm32l1xx.h"
+
+#include <math.h>
+#define pi 3.141592
+#include <stdlib.h>
+
+void TIM2_IRQ_Config();
+
+int main(void)
+{
+    TIM2_IRQ_Config();
+
+    // # LED sur PB7
+    /* Activer GPIOB sur AHB */
+    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB,ENABLE);
+    /* Configurer PB7 comme sortie tout-ou-rien */
+    GPIO_InitTypeDef gpio_b;
+    GPIO_StructInit(&gpio_b);
+    gpio_b.GPIO_Mode = GPIO_Mode_OUT;
+    gpio_b.GPIO_Pin = GPIO_Pin_7;
+    GPIO_Init(GPIOB,&gpio_b);
+
+    while(1) { }
+}
+
+// callback pour l'interruption periodique associee a TIM2
+void TIM2_IRQHandler() {
+    if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
+    {
+        TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
+        GPIO_ToggleBits(GPIOB, GPIO_Pin_7); // Inversion du pin 7
+    }
+}
+
+// ### TIMER 2 + IRQ a 500 ms
+// Configuration Timer 2 a 500 ms
+// avec emission d'IRQ : execute periodiquement TIM2_IRQHandler()
+void TIM2_IRQ_Config()
+{
+    /*Activer TIM2 sur APB1 */
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2,ENABLE);
+    /* Configurer TIM2 a 500 ms */
+    TIM_TimeBaseInitTypeDef timer_2;
+    TIM_TimeBaseStructInit(&timer_2);
+    timer_2.TIM_Prescaler = 0; // Prescalaire et Période ont au final le même résultat
+    timer_2.TIM_Period = 364-1; // Cependant, on utilise Prescalaire pour compter le temps et Période pour mesurer le temps.
+// Fhorloge = 44 000 Hz ; CPU = 16*10^6
+// Thorloge = Modificateur/16x10^6 <=> 1/44000 = TIM_Period/16x10^6 <=> TIM_Period = 16x10^6/44000 = 363.6 (on arrondira au supérieur)
+
+// On retrouve 2kHz, la moitié de la fréquence prévue, à cause du fonctionnement de l'horloge
+    TIM_TimeBaseInit(TIM2,&timer_2);
+    TIM_SetCounter(TIM2,0);
+    TIM_Cmd(TIM2, ENABLE);
+
+    /* Associer une interruption a TIM2 */
+    TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
+
+    NVIC_InitTypeDef nvic;
+    /* Configuration de l'interruption */
+    nvic.NVIC_IRQChannel = TIM2_IRQn;
+    nvic.NVIC_IRQChannelPreemptionPriority = 0;
+    nvic.NVIC_IRQChannelSubPriority = 1;
+    nvic.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&nvic);
+}
+------
+
+<<<
+
+=== Exercice 3
+[source,c]
+------
+#include "stm32l1xx.h"
+
+#include <math.h>
+
+void DAC1_Config();
+void DAC1_Set(uint16_t value);
+
+void TIM2_IRQ_Config();
+
+float* T;
+int n=0;
+
+int main(void)
+{
+    TIM2_IRQ_Config();
+    DAC1_Config();
+
+    // # LED sur PB7
+    /* Activer GPIOB sur AHB */
+    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB,ENABLE);
+    /* Configurer PB7 comme sortie tout-ou-rien */
+    GPIO_InitTypeDef gpio_b;
+    GPIO_StructInit(&gpio_b);
+    gpio_b.GPIO_Mode = GPIO_Mode_OUT;
+    gpio_b.GPIO_Pin = GPIO_Pin_7;
+    GPIO_Init(GPIOB,&gpio_b);
+
+    T = malloc(100*sizeof(float));
+    for(int k=0;k<100;k++)
+    {
+        T[k] = 511 * sin(2*3.14159*k/100) + 2047;
+
+    }
+
+
+    while(1) {
+
+    }
+}
+
+// callback pour l'interruption periodique associee a TIM2
+void TIM2_IRQHandler() {
+    if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
+    {
+        TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
+        GPIO_ToggleBits(GPIOB, GPIO_Pin_7);
+        DAC1_Set(T[n%100]);
+        n++;
+    }
+}
+
+// ### TIMER 2 + IRQ a 500 ms
+// Configuration Timer 2 a 500 ms
+// avec emission d'IRQ : execute periodiquement TIM2_IRQHandler()
+void TIM2_IRQ_Config()
+{
+    /*Activer TIM2 sur APB1 */
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2,ENABLE);
+    /* Configurer TIM2 a 500 ms */
+    TIM_TimeBaseInitTypeDef timer_2;
+    TIM_TimeBaseStructInit(&timer_2);
+    timer_2.TIM_Prescaler = 0;
+    timer_2.TIM_Period = 363;
+    TIM_TimeBaseInit(TIM2,&timer_2);
+    TIM_SetCounter(TIM2,0);
+    TIM_Cmd(TIM2, ENABLE);
+
+    /* Associer une interruption a TIM2 */
+    TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
+
+    NVIC_InitTypeDef nvic;
+    /* Configuration de l'interruption */
+    nvic.NVIC_IRQChannel = TIM2_IRQn;
+    nvic.NVIC_IRQChannelPreemptionPriority = 0;
+    nvic.NVIC_IRQChannelSubPriority = 1;
+    nvic.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&nvic);
+}
+
+
+// ### DAC1 (DAC Channel 1) sur PA4
+// Configuration
+void DAC1_Config()
+{
+    /*Activer GPIOA sur AHB */
+    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+    /* Configurer PA4 en mode analogique*/
+    GPIO_InitTypeDef gpio_a;
+    GPIO_StructInit(&gpio_a);
+    gpio_a.GPIO_Mode  = GPIO_Mode_AN;
+    gpio_a.GPIO_Pin = GPIO_Pin_4;
+    GPIO_Init(GPIOA, &gpio_a);
+
+    /*Activer DAC sur APB1 */
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_DAC, ENABLE);
+    /* Configurer DAC1 avec parametres par defaut */
+    DAC_InitTypeDef dac_1;
+    DAC_StructInit(&dac_1);
+    DAC_Init(DAC_Channel_1, &dac_1);
+    /* Activer DAC1 */
+    DAC_Cmd(DAC_Channel_1, ENABLE);
+}
+
+void DAC1_Set(uint16_t value)
+{
+    DAC_SetChannel1Data( DAC_Align_12b_R, value );
+    DAC_SoftwareTriggerCmd( DAC_Channel_1, ENABLE );
+
+}
+
+------
+
+<<<
+
+=== Exercice 4
+[source,c]
+------
+#include "stm32l1xx.h"
+
+#include <math.h>
+#include <stdlib.h>
+
+void DAC1_Config();
+void DAC1_Set(uint16_t value);
+void GPIOA_PA0_Config();
+
+void TIM2_IRQ_Config();
+
+unsigned int note_periode[8] = {611,544,484,458,408,363,323,306};
+
+
+float* T;
+int n = 0;
+int interrupteur = 0;
+
+void buildSawTooth() {
+    for(int k=0; k<100;k++) {
+        T[k] = 2047-511 + (k*1022/100);
+    }
+}
+void buildTriangle() {
+	int k;
+        for(int k=0; k<100/2;k++) {
+            T[k] = 2047-511 + (k*1022*2/100);
+        }
+        for(; k<100;k++) {
+            T[k] = 2047 + 511 -((k-100/2)*1022*2/100);
+        }
+}
+void buildSinus() {
+	for (int k = 0; k < 100; k++) {
+		T[k] = 511 * sin(2 * 3.14159 * k / 100) + 2047;
+	}
+}
+
+int main(void) {
+	TIM2_IRQ_Config();
+	DAC1_Config();
+	GPIOA_PA0_Config();
+
+	// # LED sur PB7
+	/* Activer GPIOB sur AHB */
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
+	/* Configurer PB7 comme sortie tout-ou-rien */
+	GPIO_InitTypeDef gpio_b;
+	GPIO_StructInit(&gpio_b);
+	gpio_b.GPIO_Mode = GPIO_Mode_OUT;
+	gpio_b.GPIO_Pin = GPIO_Pin_7;
+	GPIO_Init(GPIOB, &gpio_b);
+
+	T = malloc(100 * sizeof(float));
+
+	//buildSinus();
+	//buildSawTooth();
+	//buildTriangle();
+
+	GPIOA_PA0_Config();
+
+	int prev_switch_status = 0;
+
+	while (1) {
+		int switch_status = GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0);
+		if (switch_status == Bit_SET && prev_switch_status == 0) {
+			// A REMPLIR : ce que l'on doit executer si le bouton est appuye
+			interrupteur++; // Nb d'appuie sur l'interrupteur
+			TIM_Cmd(TIM2, DISABLE);
+			TIM_SetCounter(TIM2, 0);
+			TIM_TimeBaseInitTypeDef timer_2;
+			TIM_TimeBaseStructInit(&timer_2);
+			timer_2.TIM_Prescaler = 0;
+			timer_2.TIM_Period = note_periode[interrupteur%8]; // A 8, on redescend à 0
+			TIM_TimeBaseInit(TIM2, &timer_2);
+			TIM_Cmd(TIM2, ENABLE);
+		}
+		prev_switch_status = switch_status;
+	}
+}
+
+// callback pour l'interruption periodique associee a TIM2
+void TIM2_IRQHandler() {
+	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) {
+		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
+		GPIO_ToggleBits(GPIOB, GPIO_Pin_7);
+		DAC1_Set(T[n % 100]);
+		n++;
+	}
+}
+
+// ### TIMER 2 + IRQ a 500 ms
+// Configuration Timer 2 a 500 ms
+// avec emission d'IRQ : execute periodiquement TIM2_IRQHandler()
+void TIM2_IRQ_Config() {
+	/*Activer TIM2 sur APB1 */
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+	/* Configurer TIM2 a 500 ms */
+	TIM_TimeBaseInitTypeDef timer_2;
+	TIM_TimeBaseStructInit(&timer_2);
+	timer_2.TIM_Prescaler = 0;
+	timer_2.TIM_Period = 363;
+	TIM_TimeBaseInit(TIM2, &timer_2);
+	TIM_SetCounter(TIM2, 0);
+	TIM_Cmd(TIM2, ENABLE);
+
+	/* Associer une interruption a TIM2 */
+	TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
+
+	NVIC_InitTypeDef nvic;
+	/* Configuration de l'interruption */
+	nvic.NVIC_IRQChannel = TIM2_IRQn;
+	nvic.NVIC_IRQChannelPreemptionPriority = 0;
+	nvic.NVIC_IRQChannelSubPriority = 1;
+	nvic.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&nvic);
+}
+
+// ### DAC1 (DAC Channel 1) sur PA4
+// Configuration
+void DAC1_Config() {
+	/*Activer GPIOA sur AHB */
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+	/* Configurer PA4 en mode analogique*/
+	GPIO_InitTypeDef gpio_a;
+	GPIO_StructInit(&gpio_a);
+	gpio_a.GPIO_Mode = GPIO_Mode_AN;
+	gpio_a.GPIO_Pin = GPIO_Pin_4;
+	GPIO_Init(GPIOA, &gpio_a);
+
+	/*Activer DAC sur APB1 */
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_DAC, ENABLE);
+	/* Configurer DAC1 avec parametres par defaut */
+	DAC_InitTypeDef dac_1;
+	DAC_StructInit(&dac_1);
+	DAC_Init(DAC_Channel_1, &dac_1);
+	/* Activer DAC1 */
+	DAC_Cmd(DAC_Channel_1, ENABLE);
+}
+
+void DAC1_Set(uint16_t value) {
+	DAC_SetChannel1Data( DAC_Align_12b_R, value);
+	DAC_SoftwareTriggerCmd( DAC_Channel_1, ENABLE);
+
+}
+
+void GPIOA_PA0_Config() {
+	// switch PA0
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+	GPIO_InitTypeDef switch_PA;
+	GPIO_StructInit(&switch_PA);
+	switch_PA.GPIO_Mode = GPIO_Mode_IN;
+	switch_PA.GPIO_Pin = GPIO_Pin_0;
+	GPIO_Init(GPIOB, &switch_PA);
+}
+
 ------
