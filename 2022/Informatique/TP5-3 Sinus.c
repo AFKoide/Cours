@@ -61,8 +61,8 @@ void DAC1_Config ()
 }
 void DAC1_Set(uint16_t value)
 {
-    DAC_SetChannel1Data( DAC_Align_12b_R , value );
-    DAC_SoftwareTriggerCmd( DAC_Channel_1 , ENABLE );
+    DAC_SetChannel1Data(DAC_Align_12b_R , value);
+    DAC_SoftwareTriggerCmd(DAC_Channel_1 , ENABLE);
 }
 
 // ### TIMER 2 + IRQ a 500 ms

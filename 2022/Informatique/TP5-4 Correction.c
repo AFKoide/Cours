@@ -151,5 +151,5 @@ void GPIOA_PA0_Config() {
 	GPIO_StructInit(&switch_PA);
 	switch_PA.GPIO_Mode = GPIO_Mode_IN;
 	switch_PA.GPIO_Pin = GPIO_Pin_0;
-	GPIO_Init(GPIOB, &switch_PA);
+	GPIO_Init(GPIOA, &switch_PA);
 }
