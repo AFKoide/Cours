@@ -14,7 +14,7 @@ Par Martelet Curtis
 Avant tout, ces TP ont été réalisé sur une carte microcontrôleur _STM 32L152C-Discovery_.
 
 Une interruption est une fonction électronique du microcontrôleur.
-A la différence d'une fonction que l'on programme, une interruption est conçu pour que l'on ait pas à attendre pour qu'elle soit effective.
+A la différence d'une fonction que l'on programme, une interruption est conçu pour que l'on ait pas à attendre.
 
 Pour débuter, nous souhaitons piloter les LEDs *PB6* et *PB7* de la carte à l'aide du bouton *PB0*. 
 On utilisera une interruption pour réaliser cette fonction.
@@ -22,11 +22,11 @@ On utilisera une interruption pour réaliser cette fonction.
 On doit réaliser le changement d'état des LEDs sur le front montant et descendant de *PB0*.
 
 A l'aide du registre du microcontrôleur (stm32l1xx.h), on trouve que c'est `EXTI_Trigger` qui défini l'activation de l'interruption en fonction du front que l'on veut : 
-Front Descendant : EXTI_Trigger_Falling.
-Front Montant : EXTI_Trigger_Rising.
-Front Montant/Descendant : EXTI_Trigger_Rising_Falling.
+Front Descendant : _EXTI_Trigger_Falling_.
+Front Montant : _EXTI_Trigger_Rising_.
+Front Montant/Descendant : _EXTI_Trigger_Rising_Falling_.
 
-On utilise la fonction IRQ_EXTI0_Config() pour configurer l'interruption :
+On utilise la fonction `IRQ_EXTI0_Config` pour configurer l'interruption :
 [source,c]
 ----
 void IRQ_EXTI0_Config()
@@ -67,9 +67,9 @@ void IRQ_EXTI0_Config()
 ----
 
 Une fois l'interruption configurée, il s'agit maintenant de définir ce qu'elle réalisera.
-La fonction `EXTI0_IRQHandler()` est faite pour cela : elle s'execute quand l'interruption a lieu.
+La fonction `EXTI0_IRQHandler` est faite pour cela : elle s'execute quand l'interruption a lieu.
 
-On souhaite donc inverser l'état d'une LED que l'on aura choisie. `GPIO_ToggleBits` est la fonction du GPIO qui permet d'inverser l'état d'un pin. Il est configuré fonction du coté (A ou B) et de son numéro.
+On souhaite donc inverser l'état d'une DEL que l'on aura choisie. `GPIO_ToggleBits` est la fonction du GPIO qui permet d'inverser l'état d'un pin. Il est configuré en fonction du coté (A ou B) et du numéro de la pin.
 [source,c]
 ----
 // callback pour l'interruption externe EXTI0_IRQ
@@ -89,12 +89,12 @@ Ici, le if évite que l'interruption se réalise plusieurs fois d'affilé, par e
 Avec cette interruption, on inversera les états des LEDs PB6 et PB7 sur la pression et la relève du bouton.
 
 Pour que les états des LEDs soient inversés l'un par rapport à l'autre, il suffit de définir l'état de base d'une des LEDs comme étant allumé :
-on ajoute, avant la boucle du main, la fonction `GPIO_SetBits` qui se définie comme `GPIO_ToggleBits`. Cette fonction "set" à 1 le pin configuré, ce qui revient à alimenter la DEL.
+On ajoute, avant la boucle du main, la fonction `GPIO_SetBits` qui se paramètre comme `GPIO_ToggleBits`. Cette fonction "set" à 1 le pin configuré, ce qui revient à alimenter la DEL.
 
 La fonction main de cet exercice devrait donc ressembler à cela :
 [source,c]
 .Fonction Main
-----
+------
 int main(void)
 {
     // # LED sur PB7 et PB6
@@ -106,7 +106,7 @@ int main(void)
     gpio_b.GPIO_Pin = GPIO_Pin_7|GPIO_Pin_6; // Pin choisi : 7 et 6
     GPIO_Init(GPIOB,&gpio_b);
     /* allumer la LED*/
-    GPIO_SetBits(GPIOB,GPIO_Pin_7); // Set à 1 le pin 7 du coté B. La LED est allumée.
+    GPIO_SetBits(GPIOB,GPIO_Pin_7); // Set à 1 le pin 7 du coté B. La DEL est allumée.
     // configuration de l'interruption
     IRQ_EXTI0_Config();
 
@@ -114,16 +114,14 @@ int main(void)
         // Rien car on attend l'interruption
     }
 }
-----
-
-Voir l'<<annexe,annexe>> pour le code entier.
+------
 
 === Interruptions Périodique
 
 Si le premier exercice ordonnait une interruption sur l'appuie d'un bouton (donc une commande extérieure), ce second exercice se basera sur l'horloge du microcontrôleur pour ordonner l'interruption.
 
 On souhaite faire clignoter la DEL toutes les 500ms.
-On va utiliser le Timer 2 de la carte pour mesurer ce temps.
+On va utiliser le *Timer 2* de la carte pour mesurer ce temps.
 
 [source,c]
 .TIM2_IRQ_Config
@@ -153,7 +151,7 @@ void TIM2_IRQ_Config()
 }
 ------
 
-La fréquence du microcontrôleur étant de 16Mhz, on choisi un prescalaire de 16000 : `TIM_Period` s'incrémentera toutes les ms.
+La fréquence du microcontrôleur étant de 16Mhz, on choisi un prescaler de 16000 : `TIM_Period` s'incrémentera toutes les ms.
 Voulant une interruptions toutes les 500ms, il suffira de définir la valeur de `TIM_Period` à 500.
 
 Le code de l'interruption est identique à celle des interruptions extérieures, au détail près qu'elle s'appelle `TIM2_IRQHandler`.
@@ -173,29 +171,38 @@ void TIM2_IRQHandler() {
 ==== Changement de Fréquence
 
 On nous demande cette fois-ci une fréquence de 44kHz.
-On décide cette fois-ci de mettre le prescalaire à 0.
-Fhorloge = 44 kHz ; CPU = 16 MHz.
+On décide cette fois-ci de mettre le prescaler à 0 (`TIM_Prescaler` = 0).
+Fréquence voulue = 44 kHz ; Fréquence du CPU = 16 MHz.
 
 Thorloge = (TIM_Period+1)*(TIM_Prescaler+1)/16e6
 1/44e3 = TIM_Period/16e6 <=> TIM_Period = 16e6/44e3 = *363.6* (on arrondira au supérieur)
 
-Une fois reconfiguré, on observe sur l'oscilloscope que la fréquence observée est la moitié de la fréquence prévue, à cause du fonctionnement de l'horloge
+Une fois reconfiguré, on observe sur l'oscilloscope que la fréquence observée n'est pas 44kHz, mais 22kHz : ramené en période, 44kHz = 22.7us et 22kHz = 45.5us.
+Une période de la DEL est quand elle a été allumée et éteinte une fois.
+Hors, le code actuel fait que tous les 22.7us (44kHz), on inverse l'état de la DEL.
+Ainsi, 22.7us + 22.7us = 45.5us, soit 22kHz.
+
+Pour remédier à ce problème, on peut par exemple réduire de moitié la valeur de `timer_2.TIM_Period`, soit 182 au lieu de 364.
 
 <<<
 
 == Générer un courant sinusoïdal
 
-Maintenant que l'on comprend comment le DAC fonctionne, on veut s'en servir pour générer une tension sinusoïdale sur le pin *PA4* de la carte.
-Malheureusement, le microcontrôleur n'est pas capable de faire par lui même ce signal, c'est pourquoi nous allons l'aider en calculant les valeurs qu'il générera.
+Maintenant que l'on sait comment réaliser des interruptions périodiquement, on veut générer une tension sinusoïdale sur le pin *PA4* de la carte.
+Cependant, le microcontrôleur n'est pas capable de lui-même de faire ce signal, c'est pourquoi nous allons l'aider en calculant en amont les valeurs qu'il générera.
 
 === Le sinus
 
-Avant toute chose, nous avons besoin de la bibliothèque `math (math.h)` pour calculer le sinus. 
+Avant toute chose, nous avons besoin de la bibliothèque *math* (`math.h`) pour utiliser le sinus. 
 
-On stockera les valeurs du sinus dans un tableau que l'on définira à l'aide de la fonction `malloc`.
+Nous stockerons les valeurs du sinus dans un tableau nommé _Tension_ que l'on définira à l'aide de la fonction `malloc`.
 Malloc permet d'allouer à une variable un espace qui sera calculé en fonction du type de variable présente dedans :
-`Tension = malloc(100*sizeof(float));`
+[source,c]
+------
+Tension = malloc(100*sizeof(float));
+------
 Tension fait maintenant la taille de 100 valeurs du type float.
+Ce tableau devra être déclaré globalement pour que l'interruption puisse s'en servir.
 
 Les préparations maintenant faites, il faut maintenant calculer le sinus.
 
@@ -203,28 +210,27 @@ L'équation du sinus est :
 Tension = 511 * sin(2*3.14159*k/100) + 2047;
 où k est un incrément qui ira de 0 à 99 (100 valeurs).
 
-Nous avons donc dans le main le calcul du sinus :
 [source,c]
 .Calcul du sinus
 ------
 #include <math.h>
+float* Tension;
 
 int main()
 {
-    float* Tension;
     Tension = malloc(100*sizeof(float));
-    for(int k=0;k<100;k++)
-    {
+    for(int k=0;k<100;k++) {
         Tension[k] = 511 * sin(2*3.14159*k/100) + 2047;
     }
 }
 ------
 
-Le microcontrôleur n'est pas capable de générer une tension négative, et sa valeur maximale est 3V.
-On choisi donc de décaler la valeur moyenne du sinus de 1.5V. Ainsi, la valeur max sera 3V et ma valeur minimale sera 0V.
+Le microcontrôleur ne peut générer des tensions qu'entre 0 et 3V.
+On choisi donc de décaler la valeur moyenne du sinus de +1.5V ; les valeurs seront comprises dans l'amplitude valide.
 
-Le convertisseur analogique/numérique de la carte fonctionne sur 12 bits : 2^12 = 4096 valeurs.
+Le convertisseur analogique à numérique de la carte fonctionne sur 12 bits : 2^12 = 4096 valeurs.
 Donc pour 3V, le convertisseur est égal à 4095 ; pour 1.5V (la valeur moyenne), 2047 ; et pour 0V, 0.
+C'est pour cela que l'on ajoute 2047 à l'équation, pour centrer le sinus sur 1.5V.
 
 * La valeur minimale du sinus est donc :
 2047 - 511 = *1536*, ce qui donne une tension en sortie du convertisseur de *1.25V*.
@@ -234,33 +240,36 @@ Donc pour 3V, le convertisseur est égal à 4095 ; pour 1.5V (la valeur moyenne)
 
 J'ai utilisé un produit en croix pour convertir les valeurs du convertisseurs en tension.
 
-
-image::sinus convertisseur.jpg
-
-....
-k = linspace(0,99,100000);
-y = 0.374267578*sin(pi*k*2/100) + 1.5
-
-min(y)
-max(y)
-
-plot(k,y)
-xlabel('k')
-ylabel('Tension')
-title("Tension en sortie du convertisseur")
-axis([0 99 0 3])
-....
-
 === DAC & sinus
 
 Maintenant que le sinus est calculé et stocké dans la variable _Tension_, il est temps de générer le signal en sortie de la carte.
-Pour ce faire, on ré-employe une fonction du code du précédent exercice, `TIM2` et le convertisseur Digital à Analogique de la carte.
-Ce dernier sera employé pour réaliser des interruptions périodiques.
+Pour ce faire, on ré-emploie une fonction du code du précédent exercice, *TIM2*.
+On devra également utiliser le convertisseur Digital à Analogique (*DAC*).
+
+==== Configuration du TIMER
+
+Nous n'avons pas besoin de toucher à la configuration précédente de *TIM2*. Le prescaler (`_timer_2.TIM_Prescaler`) et la période (`timer_2.TIM_Period`) restent les mêmes puisque l'on garde la fréquence de 44kHz.
+
+La seule partie qui change est l'interruption en elle même :
+[source,c]
+------
+void TIM2_IRQHandler() {
+    if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
+    {
+        TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
+        GPIO_ToggleBits(GPIOB, GPIO_Pin_7); // Débugage
+        DAC1_Set(Tension[n%100]); // Converti la valeur en tension 
+        // On ne dépasse pas 99 valeurs : à n = 100, n%100 = 0
+        n++; // Incrémentation
+    }
+}
+------
+On déclarer en variable globale _n_, l'incrémenteur de _Tension_.
 
 ==== Configuration du DAC
 
-Le DAC est un convertisseur Digital à Analogique 12 bits.
-Dans ce TD, il est nécessaire pour convertir les valeurs du sinus en une tension comprise entre 0V et 3V.
+Le *DAC* est un convertisseur Digital à Analogique.
+Dans ce TD, il est nécessaire pour convertir les valeurs du sinus en une tension.
 
 [source,c]
 .DAC1_Config
@@ -273,12 +282,12 @@ void DAC1_Config()
     GPIO_InitTypeDef gpio_a;
     GPIO_StructInit(&gpio_a);
     gpio_a.GPIO_Mode  = GPIO_Mode_AN; // Mode Analogique
-    gpio_a.GPIO_Pin = GPIO_Pin_4;  // Sortie sur PIN 4
+    gpio_a.GPIO_Pin = GPIO_Pin_4;     // Sortie sur PIN 4
     GPIO_Init(GPIOA, &gpio_a);
 
     /*Activer DAC sur APB1 */
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_DAC, ENABLE);
-    /* Configurer DAC1 avec parametres par defaut */
+    /* Configurer DAC1 avec paramètres par défaut */
     DAC_InitTypeDef dac_1;
     DAC_StructInit(&dac_1);
     DAC_Init(DAC_Channel_1, &dac_1);
@@ -287,10 +296,10 @@ void DAC1_Config()
 }
 ------
 
-Maintenant que le DAC est configuré, il ne reste plus qu'à générer le signal.
+Maintenant que le DAC est configuré, il ne reste plus qu'à convertir les valeurs et à les émettre.
 Le DAC utilise deux fonctions pour convertir puis générer une tension :
-- DAC_SetChannel1Data et initialise la tension.
-- DAC_SoftwareTriggerCmd émet la valeur.
+- `DAC_SetChannel1Data` et initialise la tension.
+- `DAC_SoftwareTriggerCmd` émet la valeur.
 
 [source,c]
 ------
@@ -301,45 +310,11 @@ void DAC1_Set(uint16_t value)
 }
 ------
 
-==== Configuration du TIMER
-
-Nous n'avons pas besoin de toucher à sa configuration. Le prescalaire (_timer_2.TIM_Prescaler_) et la période (_timer_2.TIM_Period_) restent les mêmes puisque l'on garde la fréquence de 44kHz.
-
-Il est nécessaire de déclarer _Tension_ en variable globale : ainsi, ses valeurs pourront être utilisée dans l'interruption. Son incrémenteur (que l'on appellera _n_) sera également déclarée en variable globale.
-
-La seule partie qui change est l'interruption en elle même :
-[source,c]
-------
-void TIM2_IRQHandler() {
-    if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
-    {
-        TIM_ClearITPendingBit(TIM2, TIM_IT_Update);  // Remise à 0
-        GPIO_ToggleBits(GPIOB, GPIO_Pin_7); // Débugage (vérifier que l'interruption a lieu)
-        DAC1_Set(Tension[n%100]); // Converti la valeur en tension 
-        // On ne dépasse pas 99 valeurs : à n = 100, n%100 = 0
-        n++; // Incrémentation
-    }
-}
-------
-
-Finalement, il est temps d'écrire l'interruption en elle-même. 
-
-[source,c]
-------
-void TIM2_IRQHandler() {
-    if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
-    {
-        DAC1_Set(Tension[n%100]); // Converti la n-ème valeur de Tension & n=100, alors n=0
-        n++; 
-    }
-}
-------
-
 === Écoute au Casque
 
 Il n'est pas possible de brancher directement un casque à notre microcontrôleur. Le casque fonctionne avec des tensions comprises entre -1.5V et 1.5V, or, la carte n'est pas capable de générer ces valeurs négatifs. 
 En réalisant un pont diviseur de tension et en y ajoutant un condensateur, on peut abaisser la tension moyenne de 1.5V à 0V.
-Ainsi, on peut brancher le casque au microcontrôleur.
+Ainsi, on peut brancher le casque au microcontrôleur par l'intermédiaire.
 
 Une fois que l'on branche un casque sur le circuit, le son entendu n'est pas un DO, mais une note plus aiguë. 
 Cela s'explique par le casque qui a besoin qu'on l'attaque avec une tension supérieure à celle fournie en sortie du condensateur. 
@@ -352,10 +327,11 @@ En mettant un montage suiveur entre le condensateur et le casque, l'AOP joue le 
 
 == Le Mini-Synthétiseur
 
-Cette exercice demandera que l'on réutilise des fonctions déjà utilisé.
+A l'aide des fonctions précédemment utilisées, cet exercice demande que l'on émette du son en fonction 
 
 Dans un premier temps,  l'on modifie la fréquence du DAC sur l'appuie du bouton *PA0*. 
 Chacune de ces fréquences correspondent à une note de musique, ainsi chaque pression changera la note produite.
+
 [cols="2b,^,^,^,^,^,^,^,^"]
 |===
 |Note|Do|Re|Mi|Fa|Sol|La|Si|Do
@@ -369,11 +345,9 @@ Ces valeurs sont initialisée dans une variable nommée _note_periode_.
 unsigned int note_periode[8] = {611,544,484,458,408,363,323,306};
 ------
 
-Générer une onde nécessite que l'on utilise 
-
 Comme vu dans la première partie, on configure le GPIO pour faire fonctionner le bouton *PA0*. 
-Cette fois-ci, on n'utilisera pas une interruption pour réaliser l'action du bouton.
-Dans le while :
+Cette fois-ci, on n'utilisera pas une interruption pour réaliser l'action du bouton car cela causerait des problèmes lors de l'execution.
+On place dans le while :
 [source,c]
 ------
 int switch_status = GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0);
@@ -381,26 +355,77 @@ if (switch_status == Bit_SET && prev_switch_status == 0)
 {
 	interrupteur++; // Nb d'appuie sur l'interrupteur
 	TIM_Cmd(TIM2, DISABLE); // Désactive le Compteur
-	TIM_SetCounter(TIM2, 0);
+	TIM_SetCounter(TIM2, 0); // Reinitialise le Compteur
 	TIM_TimeBaseInitTypeDef timer_2;
 	TIM_TimeBaseStructInit(&timer_2);
-	timer_2.TIM_Prescaler = 0;
-	timer_2.TIM_Period = note_periode[interrupteur%8]; // A 8, on redescend à 0
+	timer_2.TIM_Prescaler = 0; 
+	timer_2.TIM_Period = note_periode[interrupteur%8]; // Change valeur de la période du timer
+    // A 8, on redescend à 0
 	TIM_TimeBaseInit(TIM2, &timer_2);
 	TIM_Cmd(TIM2, ENABLE);
 }
-prev_switch_status = switch_status;
+prev_switch_status = switch_status; // Stock l'état n dans une variable n-1.
 ------
+
+Comme tout à l'heure 
+
+=== Signal sinus
+
+[source,c]
+------
+void buildSinus() {
+	for (int k = 0; k < 100; k++) {
+		T[k] = 511 * sin(2 * 3.14159 * k / 100) + 2047;
+	}
+}
+------
+
+=== Signal en dent de scie
+
+[source,c]
+------
+void buildSawTooth() {
+    for(int k=0; k<100;k++) {
+        T[k] = 2047-511 + (k*1022/100);
+    }
+}
+------
+
+=== Signal en triangle
+
+[source,c]
+------
+void buildTriangle() {
+	int k;
+    for(int k=0; k<100/2;k++) {
+        T[k] = 2047-511 + (k*1022*2/100);
+    }
+    for(; k<100;k++) {
+        T[k] = 2047 + 511 -((k-100/2)*1022*2/100);
+    }
+}
+------
+
+Le signal qui me parait le plus agressif à l'écoute est le second, c'est à dire en dent de scie.
+
+
+
 
 <<<
 
 == Mini Projet : Filtrage Numérique d'un Signal
 
-Cette ultime partie du TP convertira la carte, que l'on utilisait jusqu'à présent pour générer des 
+Cette ultime partie du TP transformera le microcontrôleur en carte son.
+On devra être capable, par exemple, d'atténuer les aiguës ou les graves, d'augmenter le volume sonore en sortie du montage...
+
+Après avoir réalisé le montage qui aura en entrée la sortie JACK du PC et en sortie le casque, on compare le signal en entrée et en sortie.
+
+
+Les fonctions primordiales de ce programme, `Get_Adc_quickly` et `DAC1_Set_Quickly`, sont écrites en *Bare Metal*. Si ces dernières étaient écrite en langage bibliothèque (c'est à dire en utilisant la bibliothèque de )
 
 ==== Get_Adc_quickly
 
-Cette fonction est utilisée pour 
+Cette fonction est utilisée pour convertir le signal arrivant du PC en des valeurs pour la carte.
 [source,C]
 ----
 uint16_t Get_Adc_Quickly() {
@@ -428,7 +453,7 @@ __IO uint32_t DR;           /*!< ADC regular data register,                   Ad
 
 ==== DAC1_Set_Quickly
 
-Cette fonction sert à 
+Cette fonction est l'inverse Get_Adc_quickly : elle converti les valeurs traité par la carte en une tension pour le casque.
 
 Diminuer adc revient à diminuer le volume en sortie
 
@@ -443,6 +468,18 @@ void DAC1_Set_Quickly(uint16_t value) {
 #define     __IO    volatile             /*!< Defines 'read / write' permissions              */
 #define DAC_BASE              (APB1PERIPH_BASE + 0x7400)
 #define DAC_Align_12b_R                    ((uint32_t)0x00000000)
+
+
+=== Passe Bas
+
+
+
+
+=== Compresseur Audio
+
+Le but d'un compresseur audio est d'égaliser les sons qu'il a à traité : les sons les plus forts sont atténués tandis que les plus faibles sont amplifiés.
+
+
 
 <<<
 
@@ -580,8 +617,8 @@ void TIM2_IRQ_Config()
     /* Configurer TIM2 a 500 ms */
     TIM_TimeBaseInitTypeDef timer_2;
     TIM_TimeBaseStructInit(&timer_2);
-    timer_2.TIM_Prescaler = 0; // Prescalaire et Période ont au final le même résultat
-    timer_2.TIM_Period = 364-1; // Cependant, on utilise Prescalaire pour compter le temps et Période pour mesurer le temps.
+    timer_2.TIM_Prescaler = 0; // prescaler et Période ont au final le même résultat
+    timer_2.TIM_Period = 364-1; // Cependant, on utilise prescaler pour compter le temps et Période pour mesurer le temps.
 // Fhorloge = 44 000 Hz ; CPU = 16*10^6
 // Thorloge = Modificateur/16x10^6 <=> 1/44000 = TIM_Period/16x10^6 <=> TIM_Period = 16x10^6/44000 = 363.6 (on arrondira au supérieur)
 
