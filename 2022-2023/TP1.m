@@ -47,3 +47,6 @@ semilogx(w, Phi);
 set(gcf, 'Name', 'Phase')
 set(get(gca, 'XLabel'), 'String', 'Pulsation (rad/s)');
 set(get(gca, 'YLabel'), 'String', '°');
+
+
+%------------------ Exercice 1
