@@ -2,6 +2,8 @@ clc
 close all
 clear all
 
+
+%------------------ Exercice 1
 syms w C R z1 z2 Ve
 
 MNA = [1/z1 -1/z1 1;-1/z1 (1/z1)+(1/R)+1i*C*w 0; 1 0 0];
@@ -22,13 +24,13 @@ e2 = X(2)
 ik = X(3)
 
 
-%%%%%%%%%%%%% Bode
+%%% Bode %%%
 
-w = logspace(0,6,1000);
+w = logspace(0,10,1000);
 % Calculs
 
-h = subs(e2/e1)
-H = laplace(h)
+H = subs(e2/e1)
+% H = laplace(h)
 
 G = 20.*log10(abs(H));
 Phi = angle(H)*180/pi;
