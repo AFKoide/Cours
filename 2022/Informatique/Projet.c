@@ -12,9 +12,9 @@ uint16_t Get_Adc_Quickly();
  *  PasseBas
  *    Entrees :
  *     - input est la derniere valeur recuperee sur le ADC
- *     - freq_norm : frequence de coupure exprimee en pourcentage de la bande passante totale.
+ *     - freq_norm : fréquence de coupure exprimee en pourcentage de la bande passante totale.
  *    Sorties :
- *     - prevOutput est l'amplitude precedente. Doit pointer sur une variable globale qui vaut 0 initialement, ensuite elle evolue sans besoin d'intervenir dessus
+ *     - prevOutput est l'amplitude précédente. Doit pointer sur une variable globale qui vaut 0 initialement, ensuite elle evolue sans besoin d'intervenir dessus
  *    Retour :
  *    - nouvelle amplitude, apres filtrage
  */
@@ -25,13 +25,12 @@ uint16_t PasseBas(uint16_t input,uint16_t freqNorm, uint16_t* prevOutput)
     return output;
 }
 
-uint16_t pb;
+/* Initialise_Compresseur :
+ * - prepare  la  mémoire  pour un  compresseur pour un DAC 12 bit*
+ * - precalcule  la  fonction  de  compression*
 
-/***   initialise_Compresseur : - prepare  la  memoire  pour un  compresseur
- * pour un DAC 12 bit*
- *                              - precalcule  la  fonction  de  compression*
- * Entrees : - m :   coefficient  de  compression , doit  etre  situe  entre
- *           0.001  et  0.005*
+ * Entrees : 
+ * - m :   coefficient  de  compression , doit  etre  situe  entre 0.001  et  0.005
 
  * Sorties :
  * Retour : tableau  contenant  la  fonction  de  transfert d’un  compresseur
@@ -44,23 +43,21 @@ uint16_t* initialise_Compresseur(float m) {
 	}
 	return stock;
 }
-/*   compresseur : applique  la  fonction  de  compression  au  signal  fourni  enentree*
+/*   compresseur : applique  la  fonction  de  compression  au  signal  fourni  en entree
  * Entrees : - input : nouvelle  valeur  fournie  par le DAC*
- * 			 - stock : fonction  de  compression  precalculee  par initialise_Compresseur*
+ * 			 - stock : fonction  de  compression  precalculee  par initialise_Compresseur
  * Sorties :
  *   Retour : valeur  de ’input ’ filtree  par la  fonction  de  compression
  */
 uint16_t  compresseur(uint16_t  input ,uint16_t* stock){
 	input = input & 0xFFF;
-// s’assurer  que l’entree  est  bien  sur 12 bit
+// S’assurer  que l’entree  est  bien  sur 12 bit
 	return stock[input];
 }
 
 uint16_t* comp;
+uint16_t pb;
 
-/**
- *  Programme principal (hors interruptions)
- */
 int main(void)
 {
     pb = 0;
@@ -78,22 +75,12 @@ int main(void)
     gpio_b.GPIO_Pin = GPIO_Pin_7;
     GPIO_Init(GPIOB,&gpio_b);
 
-     comp = initialise_Compresseur(0.0015);
+    comp = initialise_Compresseur(0.0015);
 
     TIM2_IRQ_Config(); // lancer l'interruption maintenant que tout le reste est pret
 
-    while(1) {
-
-
-    }
+    while(1) { }
 }
-
-
-
-
-
-
-
 
 
 /**
@@ -107,15 +94,12 @@ void TIM2_IRQHandler() {
         GPIOB->ODR ^= GPIO_Pin_7;
         uint16_t adc = Get_Adc_Quickly();
 
-
-
-
-        DAC1_Set_Quickly(PasseBas(adc,10,&pb)); // Diminuer adc revient à diminuer le volume en sortie
+        DAC1_Set_Quickly(PasseBas(adc,10,&pb)); 
+        // Faire varier adc revient à faire varier le volume en sortie
 /*  
 // #define     __IO    volatile             /*!< Defines 'read / write' permissions              */
 // #define DAC_BASE              (APB1PERIPH_BASE + 0x7400)
 // #define DAC_Align_12b_R                    ((uint32_t)0x00000000)
-
 
         DAC1_Set_Quickly( compresseur(adc,comp));
         GPIOB->ODR ^= GPIO_Pin_7;
@@ -134,7 +118,7 @@ void TIM2_IRQ_Config()
     TIM_TimeBaseInitTypeDef timer_2;
     TIM_TimeBaseStructInit(&timer_2);
     timer_2.TIM_Prescaler = 0;
-    timer_2.TIM_Period = 363;// periode = (1/16e6) * (120+1)*(2+1) pour 440 Hz par exemple
+    timer_2.TIM_Period = 363; // période = (1/16e6) * (120+1)*(2+1) pour 440 Hz par exemple
     TIM_TimeBaseInit(TIM2,&timer_2);
     TIM_SetCounter(TIM2,0);
     TIM_Cmd(TIM2, ENABLE);
