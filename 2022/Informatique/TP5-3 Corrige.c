@@ -1,5 +1,4 @@
 #include "stm32l1xx.h"
-
 #include <math.h>
 
 void DAC1_Config();
@@ -26,10 +25,8 @@ int main(void)
     GPIO_Init(GPIOB,&gpio_b);
 
     T = malloc(100*sizeof(float));
-    for(int k=0;k<100;k++)
-    {
+    for(int k=0;k<100;k++) {
         T[k] = 511 * sin(2*3.14159*k/100) + 2047;
-
     }
 
 
@@ -43,9 +40,10 @@ void TIM2_IRQHandler() {
     if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
     {
         TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
-        GPIO_ToggleBits(GPIOB, GPIO_Pin_7);
-        DAC1_Set(T[n%100]);
-        n++;
+        GPIO_ToggleBits(GPIOB, GPIO_Pin_7); // Débug
+        DAC1_Set(T[n%100]); // Converti la valeur en tension 
+        // On ne dépasse pas 99 valeurs : à n = 100, n%100 = 0
+        n++; // Incrémentation
     }
 }
 
@@ -87,8 +85,8 @@ void DAC1_Config()
     /* Configurer PA4 en mode analogique*/
     GPIO_InitTypeDef gpio_a;
     GPIO_StructInit(&gpio_a);
-    gpio_a.GPIO_Mode  = GPIO_Mode_AN;
-    gpio_a.GPIO_Pin = GPIO_Pin_4;
+    gpio_a.GPIO_Mode  = GPIO_Mode_AN; // Mode Analogique
+    gpio_a.GPIO_Pin = GPIO_Pin_4; // Sortie sur PIN 4
     GPIO_Init(GPIOA, &gpio_a);
 
     /*Activer DAC sur APB1 */
