@@ -64,7 +64,7 @@ int main(void) {
 	while (1) {
 		int switch_status = GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0);
 		if (switch_status == Bit_SET && prev_switch_status == 0) {
-			// A REMPLIR : ce que l'on doit executer si le bouton est appuye
+			// A REMPLIR : ce que l'on doit executer si le bouton est appuyé
 			interrupteur++; // Nb d'appuie sur l'interrupteur
 			TIM_Cmd(TIM2, DISABLE);
 			TIM_SetCounter(TIM2, 0);
