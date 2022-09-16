@@ -36,5 +36,3 @@ core_cm3.h
     \li to specify the access to peripheral variables.
     \li for automatic generation of peripheral register debug information.
 */
-
-La fonction Passe Bas supprime un très grand nombres de pic sur l'oscilloscope. À l'oreille, le son est plus grave.
