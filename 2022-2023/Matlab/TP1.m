@@ -2,7 +2,6 @@ clc
 close all
 clear all
 
-
 %------------------ Exercice 1
 syms w C R z1 z2 Ve
 
@@ -19,9 +18,9 @@ X = subs(X, z2, (1/R)+1i*C*w);
 X = subs(X, R, 1e3);
 X = subs(X, C, 1e-9);
 
-e1 = X(1)
-e2 = X(2)
-ik = X(3)
+e1 = X(1);
+e2 = X(2);
+ik = X(3);
 
 
 %%% Bode %%%
@@ -29,7 +28,7 @@ ik = X(3)
 w = logspace(0,10,1000);
 % Calculs
 
-H = subs(e2/e1)
+H = subs(e2/e1);
 % H = laplace(h)
 
 G = 20.*log10(abs(H));
@@ -49,4 +48,4 @@ set(get(gca, 'XLabel'), 'String', 'Pulsation (rad/s)');
 set(get(gca, 'YLabel'), 'String', '°');
 
 
-%------------------ Exercice 1
+%------------------ Exercice 2
