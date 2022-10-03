@@ -1,0 +1,54 @@
+On peut saturer une pile, mais pas contrôler son utilisation.
+
+Si on donne une table de 5 000 000 entrées, un message d'erreur "stock overflow" apparait suivit d'un plantage.
+
+Mon allocation sur la pile est appellée "allocation statique". 
+
+On cherche donc un moyen de libérer de la mémoire une fois le le programme fini.
+
+
+La fonction malloc permet d'allouer dynamiquement de la ram. 
+void* malloc(int [nombre ram]);
+
+Cependant, on ne contrôlera pas les types des pointeurs.
+
+Si l'on veut réserver 10 entiers, ils seront alloués par la ram 
+
+int* T;
+T=malloc(40);	//On pointe sur un int* des valeurs en void*.
+//Il faut donc :
+T=int* malloc(40);
+
+Une fois le programme sera fini, la ram allouée pourra être libérée par la fonction free([variable de malloc (T dans l'exemple ci-dessus)])
+
+Déclarer tableau & valeurs
+Il existe plusieurs moyen de déclarer un tableau de valeur en C:
+char blabla[4] déclare un tableau nommé blabla de 4.
+char blablablav2[] déclare un tableau blablablav2 de taille variable. Cette taille sera définie en fonction du nombre de valeur mise dedans.
+
+Pour déclarer des valeurs dans le tableau, il existe 3 facons :
+char S[4] = "ABC";
+char S[4];
+S[0] = 65;
+S[1] = 66;
+S[2] = 67;
+S[3] = 0;
+char S[4];
+S[0] = 'A';
+S[1] = 'B';
+S[2] = 'C';
+S[3] = '\0';
+
+Pour afficher une chaine de caractère, il faut utiliser le paramètre %s
+Quand à un char, il faut utiliser %c
+
+
+On sait afficher une chaine, il faut maintenant la modifier :
+scanf("%s",S) permet d'écrire dans une chaine. Il faut cependant prédéfinir une taille pour le tableau (200 est un minimum et 500 un max (meme si on peut en prendre plus, mais ca servirait à rien))
+
+
+
+Pour créer une matrice, deux méthodes sont employées :
+La première consiste en découper une chaine de valeur en fonction d'une dimension.
+On appellera ensuite les valeurs en fonctions de deux variables, i et j : i désigne le nombre de ligne, et j les colonnes.
+k = [taille ligne] * i + j 

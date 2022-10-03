@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1602232758 source:/home/e20180008290/Programmes C/TP1/main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+

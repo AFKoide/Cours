@@ -1,0 +1,21 @@
+On peut faire une chaine de caractère en créant une structure composée de d'une valeur et de l'adresse de la suivante.
+Cela à comme avantage que l'ajout de nouvelle valeur est bien plus simple que toutes les autres options.
+
+
+Les chaines se font à l'aide d'allocation dynamiques.
+On crée la structure du maillon : il sera composée de la valeur à stocker, et de l'adresse du prochain maillon. 
+Le principe du programme est que l'on utilise une fonction qui remplira le maillon et créera le prochain.
+Il aura comme variable en entrée la valeur de l'adresse de son maillon et la valeur, en sortira l'adresse du maillon suivant.
+Pour éviter les problèmes en cas d'ajout de valeur, on initiale la chaine avec une chaine nulle.
+
+L'ajout de valeur se fait en modifiant 1 adresse.
+On modifie l'adresse
+
+
+
+La fonction d'insertion se fait à l'aide d'allocation dynamique. On crée une structure maillon qui est composée de la valeur et de l'adresse du prochain maillon. 
+On crée ensuite un maillon "origine" qui sera le début de notre chaine. Il servira d'initialisation, donc peut rester vide.
+Une fois cela fait, on utilise une fonction qui créera un maillon avec une valeur l'on lui donne. Cette fonction créera un maillon et renverra son adresse.
+
+L'ajout de valeur en milieu de chaine se fait à l'aide des adresses : 
+La valeur que l'on souhaite inserer aura comme adresse de maillon pointé l'adresse de la valeur qui le suivra, l'adresse qui 

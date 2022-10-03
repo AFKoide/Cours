@@ -1,0 +1,2 @@
+V : Francais 2, Anglais : 7, Math 4.
+Y : Francais 7, Anglais : 4, Math 20.

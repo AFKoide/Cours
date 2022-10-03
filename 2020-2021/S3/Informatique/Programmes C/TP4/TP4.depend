@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1602234655 source:/home/e20180008290/Programmes C/TP4/main.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+
+1602234158 source:/home/e20180008290/Programmes C/TP4/4.1.c
+

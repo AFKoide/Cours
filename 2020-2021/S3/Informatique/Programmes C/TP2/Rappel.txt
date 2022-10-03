@@ -1,0 +1,10 @@
+Différence malloc et []
+
+Les [] est un tableau statique : il prend de la place sur la pile.
+Cette pile est définie, si bien que l'on ne peut pas mettre autant de
+valeur que l'on souhaite. De plus, a la fin d'une fonction, elle sera détruite.
+
+Le malloc crée un tableau dynamique : il prend de la place où il peut.
+Cette opération permet de créer plus de case qu'un tableau normal, 
+et le tableau est gardé jusqu'à la fin du programme. Il faut le libérer 
+à la main.
