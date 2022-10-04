@@ -1,10 +1,21 @@
 Pour programmer le simulateur d'architecture :
 - Dans "Programmes & Données"
 Ecrire à l'adresse que l'on veut l'instruction que l'on veut.
-Une fois 
+Selon l'instruction, écrire à la bonne adresse la valeur que l'on souhaite (LOAD B, Dir, 8 => mettre à l'adresse 8 une valeur).
+
+
 
 
 - Dans "Séquenceur"
+Ecrire sur un papier les instructions a faire.
+Les espaces séparent les noms de portes.
+
 SelMS est la sortie du multiplexeur Agi2. 
+.SelMS= 1 -> Fait un +1 sur l'adresse du registre.
+.SelMS= 2 -> Prend l'adresse du registre de Aig3 ()
+.SelMS= 3 -> Prend l'adresse donnée par la RAM 
+.SelMS= 4 -> Adresse suivante donnée par le registre.
+
+Le FETCH commence toujours à l'adresse 498 et va jusqu'à l'étape 500 (3 cycles eRAMM->eREMM->Mise en Forme).
 Si on veut faire un +1, on peut utiliser SelMS=4 pour passer par le bloc +1.
 Mettre FIN relance un cycle fetch automatiquement.
