@@ -1,0 +1,28 @@
+Pour programmer le simulateur d'architecture :
+- Dans "Programmes & Données"
+Ecrire à l'adresse que l'on veut l'instruction que l'on veut.
+Selon l'instruction, écrire à la bonne adresse la valeur que l'on souhaite (LOAD B, Dir, 8 => mettre à l'adresse 8 une valeur).
+L'instruction défini arbitrairement une adresse de registre où il faut coder les portes : pour le LOAD B, l'adresse 0 dans le séquenceur est le 111 ; pour un ADD, c'est l'adresse 20.
+Quand on rencontre un FIN, CO s'incrémente donc le FETCH va récupérer à la mémoire +1 de la RAM.
+
+
+- Dans "Séquenceur"
+Ecrire sur un papier les instructions a faire.
+Les espaces séparent les noms de portes.
+
+SelMS est la sortie du multiplexeur Agi2. 
+.SelMS= 1 -> Fait un +1 sur l'adresse du registre. Le +1 est prioritaire sur "Addresse Suivante". 
+.SelMS= 2 -> Prend l'adresse du registre de Aig3 ()
+.SelMS= 3 -> Prend l'adresse donnée par la RAM 
+.SelMS= 4 -> Adresse suivante donnée par le registre.
+Si utilise Adresse Suivante, faire SelMS=4, si veut adresse+1, faire SelMS=1.
+
+Le FETCH commence toujours à l'adresse 498 et va jusqu'à l'étape 500 (3 cycles eRAMM->eREMM->Mise en Forme).
+Si on veut faire un +1, on peut utiliser SelMS=1 pour passer par le bloc +1.
+Mettre FIN relance un cycle fetch automatiquement avec l'adresse de la RAM+1.
+
+Quand on lance une autre instruction, on doit mettre FIN sur la précédente. 
+
+Quand on fait du conditionnel, on doit utiliser au moins 4 adresses de registre :
+A l'adresse d'initialisation du JUMP, on se met a une adresse >320 (car <320 est interdit). A 321 (par exemple), on test : si la condition est vraie, Aig3=1 ; sinon, Aig3=0. Or, Aig3=0 fait +1 de l'adresse actuel, et Aig3=1 fait adresse suivante.
+On aura donc X<320 l'ordre initial qui nous envoie vers 321 ; comparaison des valeurs ; 322 action si faux ; X (Adresse Suivante) action si vrai.
