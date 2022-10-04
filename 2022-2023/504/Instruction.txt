@@ -22,3 +22,7 @@ Si on veut faire un +1, on peut utiliser SelMS=1 pour passer par le bloc +1.
 Mettre FIN relance un cycle fetch automatiquement avec l'adresse de la RAM+1.
 
 Quand on lance une autre instruction, on doit mettre FIN sur la précédente. 
+
+Quand on fait du conditionnel, on doit utiliser au moins 4 adresses de registre :
+A l'adresse d'initialisation du JUMP, on se met a une adresse >320 (car <320 est interdit). A 321 (par exemple), on test : si la condition est vraie, Aig3=1 ; sinon, Aig3=0. Or, Aig3=0 fait +1 de l'adresse actuel, et Aig3=1 fait adresse suivante.
+On aura donc X<320 l'ordre initial qui nous envoie vers 321 ; comparaison des valeurs ; 322 action si faux ; X (Adresse Suivante) action si vrai.
