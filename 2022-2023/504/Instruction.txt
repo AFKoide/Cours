@@ -1,0 +1,10 @@
+Pour programmer le simulateur d'architecture :
+- Dans "Programmes & Données"
+Ecrire à l'adresse que l'on veut l'instruction que l'on veut.
+Une fois 
+
+
+- Dans "Séquenceur"
+SelMS est la sortie du multiplexeur Agi2. 
+Si on veut faire un +1, on peut utiliser SelMS=4 pour passer par le bloc +1.
+Mettre FIN relance un cycle fetch automatiquement.
