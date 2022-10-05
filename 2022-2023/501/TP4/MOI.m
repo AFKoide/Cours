@@ -22,12 +22,21 @@ C2 = 3.3e-9;
 C1 = 47e-9;
 
 %%%- Pratique -%%%
+
+%.% Première partie
 % Créer un tableau
 % Premiere colonne fréquence
 % Seconde colonne Ve
 % Troisième colonne Vs
 % save [nom] [nom fichier]
+% Tracer a chaque ajout de points.
 % semilogx(m(:,1),20*log10(m(:,3)./m(:,2)),'s')
+
+%.% Seconde partie
+% Régler w0: régler déphasage vs/ve = 90° car w0 quand déphasage = 90°
+% Régler m: Dépassement(%) = 100*exp(-pi*m/(sqrt(1-m^2))
+% avec Q=2, m=1/4 => D=100*exp(-pi*0.25/sqrt(1-.25^2))=44.1%
+% Donc pour Ve = 920mV, Vsdépassement = 0.920*(1+0.44) = 1.33V
 
 
 %%% Bode
@@ -45,3 +54,4 @@ xlabel('Fréquence (Hz)')
 ylabel('Module (dB)')
 legend('Théorique','Pratique')
 grid on
+
