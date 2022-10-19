@@ -23,7 +23,10 @@ Vref=2.5;R=25e3;Rref=2.5e3;
 R1=R;R2=R;R3=R;R4=R;
 
 T = linspace(0,100,1000);
-R_TD = 100*(1+0.00385.*T);
+R_TD = 100*(1+0.00385.*T); % Platine => coef de resistance à la chaleur plus élevé que les autres métaux normalement utilisés.
+% Thermocouple : effet silbet != effet peltier => Courant dans jonction PN crée diff de température, cette diff permet de réguler température. 
+% Donc Silbet crée tension avec diff de température.
+% Sinon silicium : principe embalement thermique, + chaud, + rapidement Vmax
 
 Vout=subs(Vout);
 Vout1=0.1*(1+0.00385.*T);
@@ -32,6 +35,6 @@ Vout1=0.1*(1+0.00385.*T);
 % T = (Vout-0.1)/0.00385;
 
 subplot(2,1,1)
-plot(Vout)
-subplot(2,1,1)
+plot(T,R_TD)
+subplot(2,1,2)
 plot(T,Vout1)
