@@ -1,3 +1,8 @@
+% % % % % % % % % % j'en peux plus
+% % % % % % % % % % je m'enerve beaucoup
+% % % % % % % % % % j'essaie et je me fais crier dessus
+% % % % % % % % % % je vais surement arreter d essayer
+
 netlist={
     'Ve e+ 0 Ve'
     'X1 e+ e- out'
@@ -6,7 +11,7 @@ netlist={
     'Rl out 0 Rl'};
 [X,name]=fspice(netlist) 
 H = X(3)/X(1) % Gain de 2.
-
+% Courant de l'AOP est égal à   -(Ve*(2R + Rl))/(R*Rl)
 % Montage avec AOP permet de coller des morceaux de circuit ensemble au
 % lieu de faire bout pas bout car montage AOP a une impédance de sortie nulle 
 % Fonction de transfert = produit de toutes les fonctions
@@ -19,3 +24,4 @@ netlist={
 % Emetteur commun/Collecteur commun -> Suiveur
 % Collecteur commun => impédance entrée grande - impédance sortie faible
 % Emetteur commun 
+
