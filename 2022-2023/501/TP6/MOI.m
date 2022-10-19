@@ -27,15 +27,18 @@ R_TD = 100*(1+0.00385.*T);
 
 
 Vout=subs(Vout);
+Irref=subs(Irref);
 Vout1=0.1*(1+0.00385.*T);
+
+plot(Irref)
+
+R-TD = [100 200 300 400 500]
+Vout = [  ]
+V1 = []
+V2 = []
 
 % T = ((R_TD/100)-1)/0.00385;
 % T = (Vout-0.1)/0.00385;
-
-subplot(2,1,1)
-plot(T,R_TD)
-subplot(2,1,2)
-plot(T,Vout1)
 
 % Platine => coef de resistance à la chaleur plus élevé que les autres métaux normalement utilisés.
 % Thermocouple : effet silbet != effet peltier => Courant dans jonction PN crée diff de température, cette diff permet de réguler température. 
@@ -44,3 +47,15 @@ plot(T,Vout1)
 % ELECTRONIQUE DE CONDITIONNEMENT
 
 % pont de wheatstone 
+
+
+% Modele parfait ne prend pas en compte de l'offset, les pertes des AOPs et
+% les différentes inconsistances qui causent des parasites (soudures, rouille etc.)
+% parfait change la valeur de R_TD
+
+% Théorème de Shanon : fréquence échantillonnage doit être inférieur à la fréquence du signal.
+% L'échantillonnage amplifie le bruit du signal -> filtre d'
+
+
+% Relation entre Vsortie et Ventree reste toujours la même pour un AOP sauf
+% si on (dé)branche un dipôle.
