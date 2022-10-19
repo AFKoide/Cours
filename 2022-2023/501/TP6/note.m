@@ -2,7 +2,6 @@
 % % % % % % % % % % je m'enerve beaucoup
 % % % % % % % % % % j'essaie et je me fais crier dessus
 % % % % % % % % % % je vais surement arreter d essayer
-
 netlist={
     'Ve e+ 0 Ve'
     'X1 e+ e- out'
@@ -25,3 +24,4 @@ netlist={
 % Collecteur commun => impédance entrée grande - impédance sortie faible
 % Emetteur commun 
 
+% E[x] -> valeur des résistances disponibles
