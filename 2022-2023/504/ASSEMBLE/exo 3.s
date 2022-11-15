@@ -28,7 +28,7 @@ faux:		add r0, r0, #4
 
 			mov r1, #0
 			mov r4, #0
-mult:		add r1, r1, #1 /* i */
+mult:		add r1, r1, #1 /* i */ /* oN PEUT FAIRE MIEUX AVEC UN SHIFT (LSL) */
 			add r4, r3, r4
 			cmp r1, #14 /* Sortir LOOP */
 			blt mult
