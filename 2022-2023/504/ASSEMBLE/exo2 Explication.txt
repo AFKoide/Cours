@@ -1,0 +1,35 @@
+r0 contient l'adresse de vector. Les valeurs sont des INTs, donc occupe 4 emplacements dans la mémoire.
+R1 et R2 = 0
+dans loop:
+R1=R1+1
+R3 prend la valeur à l'adresse de R0 (25 (19 en HEX))
+R2=R2+R3 (0+25)
+R0=R0+4
+R1 = 4?
+Non donc retour dans loop
+
+R1=R1+1
+R3 prend la valeur à l'adresse de R0 (-5 (fffffffb en HEX))
+R2=R2+R3 (25+-5=20)
+R0=R0+4
+R1 = 4?
+Non donc retour dans loop
+
+R1=R1+1
+R3 prend la valeur à l'adresse de R0 (60 (3c en HEX))
+R2=R2+R3 (20+60=80)
+R0=R0+4
+R1 = 4?
+Non donc retour dans loop
+
+R1=R1+1
+R3 prend la valeur à l'adresse de R0 (20 (14 en HEX))
+R2=R2+R3 (80+20=100)
+R0=R0+4
+R1 = 4?
+Oui
+A l'adresse de R0 (R0= &vector+5), on stocke R2 (100 (64 en HEX)).
+On remet l'adresse stocké dans le LR quand on a fait le 'bl main' pour revenir après le moment où on est rentré dans main.
+end
+
+On entre puis reste bloqué dans LoopForever.
