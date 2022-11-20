@@ -75,7 +75,7 @@ legend('Bruit')
 xlabel('Temps (s)');
 ylabel('Tension (V)');
 subplot(3,1,3)
-plot(t,s,t,b,'r')
+plot(t,s,t,b,'r')   
 legend('Signal','Bruit')
 xlabel('Temps (s)');
 ylabel('Tension (V)');
