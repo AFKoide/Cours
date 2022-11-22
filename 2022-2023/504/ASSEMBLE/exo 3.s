@@ -26,13 +26,20 @@ faux:		add r0, r0, #4
 			blt loop
 
 
-			mov r1, #0
+/*			mov r1, #0
 			mov r4, #0
-mult:		add r1, r1, #1 /* i */ /* oN PEUT FAIRE MIEUX AVEC UN SHIFT (LSL) */
+mult:		add r1, r1, #1
 			add r4, r3, r4
-			cmp r1, #14 /* Sortir LOOP */
+			cmp r1, #17
 			blt mult
+*/
+			lsl r4, r3, #4 //R3*4
+			add r4, r3, r4 // R4+R3
 
-			str
+			ldr r0,=max
+			str r3,[r0]
+			ldr r0,=mul_by_17
+			str r4,[r0]
+
 			bx lr
 .end
