@@ -17,7 +17,7 @@ main:		ldr r0, =key
 			ldr r3, [r0]
 			mov r0, #0
 loop:		add r0, r0, #1
-			ldrb r4, [r1]// Chargement message
+			ldrb r4, [r1]// Chargement lettre
 
 			cmp r4, #00
 			beq quitter
@@ -29,10 +29,10 @@ loop:		add r0, r0, #1
 
 			b loop
 quitter:
+			str r4,[r2]
 			ldr r1,=len
 			sub r0, r0, #1
 			str r0,[r1]
 
 			bx lr
-
 .end
