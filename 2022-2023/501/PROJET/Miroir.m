@@ -30,6 +30,30 @@ ylabel('Tension')
 ylim([0 12])
 grid on
 
+% Mode Différentiel
+%%% VB1 a la masse
+Vin = -50e-3:10e-3:50e-3;
+Vc1 = [-10.85 -10.46 -9.97 -9.4 -8.77 -8.1 -7.45 -6.84 -6.29 -5.84 -5.47];
+Vc2 = [-5.53 -5.93 -6.42 -7 -7.64 -8.31 -8.96 -9.58 -10.13 -10.59 -10.96];
+Ve =  [515.8e-3 524e-3 531e-3 538e-3 544e-3 549.7e-3 554e-3 557.7e-3 560.7e-3 563e-3 564.8e-3];
+Vout =[11.87 11.88 11.88 11.88 11.88 11.88 11.88 11.88 11.88 11.88 11.88];
+
+figure
+subplot(2,1,1)
+plot(Vin,Vc1,'k',Vin,Vc2,'r')
+legend('V_c_1','V_c_2','location','best')
+ylabel('Tension')
+title({'Sans Miroir';'Mode Différentiel'})
+grid on
+
+subplot(2,1,2)
+plot(Vin,Ve,'b',Vin,Vout,'g')
+legend('V_i_n','V_o_u_t','location','best')
+xlabel('Tension V_i_n')
+ylabel('Tension')
+ylim([0 12])
+grid on
+
 %------ Montage avec le miroir de courant
 % Mode Commun
 Vin = -50e-3:10e-3:50e-3;
