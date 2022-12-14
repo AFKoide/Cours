@@ -1,29 +1,30 @@
 clear all;close all;clc
 
-Vin = -10:1:10;
-R11=33e3 ; R1=22e3 ; R2=R1;
+%%%% Mode Commun
+Vb = 0:1:10;
+R1=33e3 ; R2=22e3 ; R3=R1;
 
-Ve = 0.6+Vin;
-Ie1 = ((12-Ve)/R11)/2;
+Ve = 0.6+Vb;
+Ie1 = ((12-Ve)/R1)/2;
 Ie2 = Ie1;
-Ib1=Ie1 ; Ib2=Ie2;
+Vc1 = (R2.*Ie1)-12;Vc2 = (R3.*Ie2)-12;
+
+% Vc1 = (R1.*Ie1)-12 => (R1.*(((12-Ve)/R11)/2))-12 <=> (R1.*(((12-0.6+Vb)/R11)/2))-12
 
 figure
-plot(Vin,Ib1)
-xlabel('V_i_n')
-ylabel('I_b_1')
-xline(0,'--')
+plot(Vb,Vc1,'k',Vb,Vc2,'r')
 title('Evolution Courant Collecteur')
-subtitle('Mode Continue')
+legend('V_c_1','V_c_2')
 
 
-Vin1=0:1:10 ; Vin2=-Vin1;
+%%%% Mode Différentiel
+Vin=linspace(-50e-3,50e-3,100)
+Vb1=Vin;Vb2=-Vin;
 
-Ve2 = 0.6+Vin2;
-Ve1 = 0.6+Vin1;
-Ie1 = ((12-Ve1)/R11)/2;
-Ie2 = ((12-Ve2)/R11)/2;
-Ib1=Ie1 ; Ib2=Ie2;
+Ve2 = 0.6+Vb2;
+Ve1 = 0.6+Vb1;
+Ie1 = ((12-Ve1)/R1)./(1+exp(0.025.*Vb1);
+Ie2 = ((12-Ve2)/R1)./(1+exp(0.025.*Vb2);
 
 figure
 plot(Vin1,Ib1)
@@ -32,6 +33,4 @@ plot(Vin2,Ib2)
 xlabel('V_i_n')
 ylabel('Courant')
 legend('I_b_1','I_b_2','location','best')
-xline(0,'--')
 title('Evolution Courant Collecteur')
-subtitle('Mode Différentiel')
