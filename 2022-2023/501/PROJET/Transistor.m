@@ -13,7 +13,7 @@ Vc1 = (R2.*Ie1)-12;Vc2 = (R3.*Ie2)-12;
 
 figure
 plot(Vb,Vc1,'k',Vb,Vc2,'r')
-title('Evolution Courant Collecteur')
+title('Evolution Tension Collecteur')
 legend('V_c_1','V_c_2')
 
 
@@ -27,10 +27,6 @@ Ie1 = ((12-Ve1)/R1)./(1+exp(0.025.*Vb1));
 Ie2 = ((12-Ve2)/R1)./(1+exp(0.025.*Vb2));
 
 figure
-plot(Vin1,Ib1)
-hold on
-plot(Vin2,Ib2)
-xlabel('V_i_n')
-ylabel('Courant')
-legend('I_b_1','I_b_2','location','best')
-title('Evolution Courant Collecteur')
+plot(Vin,Vc1,'k',Vin,Vc2,'r')
+legend('V_c_1','V_c_2','location','best')
+title('Evolution Tension Collecteur')
