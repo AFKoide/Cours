@@ -21,3 +21,25 @@ CR
 
 **PRATIQUE**
 
+Ordre des Module s<br>
+2. Oscillateur
+On a le signal en entrée (le message) à qui on ajoute un autre signal.
+
+s(t)= k*cos(2*pi*f*t)*[1+alpha*cos(2*pi*f0*t)]
+alpha compris [-1;1] -> Niveau
+
+3. Multiplicateur
+
+4. Gain Puissance
+Multiplie courant (sans toucher tension) puis ca va dans antenne. Antenne trop petite -> champ magnétique (et pas electromagnetique)
+
+5. Reception
+Receptionne le signal et 
+
+6. Filtre
+Passe Haut le signal
+
+7. 
+
+8. Haut Parleur
+Emet le signal et fait office de passe bas (bobine).
