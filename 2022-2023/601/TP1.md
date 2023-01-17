@@ -1,7 +1,10 @@
 **NOTE COURS**
-_Modulation amplitude_ : l'amplitude de l'intégralité du signal varie en fonction d'un paramètre (exe: le temps).
-Si on génere un signal et qu'il varie en fonction de cette modulation, on aura alors un signal
 
+_Modulation amplitude_ :
+
+l'amplitude de l'intégralité du signal varie en fonction d'un paramètre (exe: le temps).
+Si on génere un signal et qu'il varie en fonction de cette modulation, on aura alors un signal
+<br><br>
 Oscillateur resistance negative
 circuit LC 
 
