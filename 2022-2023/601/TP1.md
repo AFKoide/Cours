@@ -1,5 +1,9 @@
 **NOTE COURS**
 
+https://www.analog.com/media/en/technical-documentation/data-sheets/ad633.pdf
+https://www.youtube.com/watch?v=x_APePdtrfQ
+https://en.wikipedia.org/wiki/Schottky_barrier
+
 _Modulation amplitude_ :
 
 l'amplitude de l'intégralité du signal varie en fonction d'un paramètre (exe: le temps).
@@ -21,7 +25,7 @@ CR
 
 **PRATIQUE**
 
-Ordre des Module s<br>
+Ordre des Modules <br>
 2. Oscillateur
 On a le signal en entrée (le message) à qui on ajoute un autre signal.
 
