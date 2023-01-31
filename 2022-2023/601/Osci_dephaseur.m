@@ -4,7 +4,7 @@ clear;
 % C fixe frequence car R fix donc f = 1k <=> C = 6.4975e-08 ou 6.5e-8
 
 netlist={
-    uA741('e+','e-','out')
+    uA741('0','e-','out')
     'R1 e- out 29e3'
     'C1 out d1 6.5e-8'
     'R3 0 d1 1e3'
@@ -25,3 +25,5 @@ f = 1/(2*pi*R*C*sqrt(6))
 plot(sim.t,sim.X_t(sim.probe_id(1:2),:))
 grid
 legend('Vout','Vin')
+
+% On a un offset de 2e-3V causé par l'AOP. On pourrait le corriger avec un générateur.
