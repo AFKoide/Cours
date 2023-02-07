@@ -1,3 +1,5 @@
+{:toc}
+
 ## TP1) Introduction
 https://www.analog.com/media/en/technical-documentation/data-sheets/ad633.pdf <br>
 https://www.youtube.com/watch?v=x_APePdtrfQ <br>
@@ -44,11 +46,14 @@ R4. Haut Parleur
 Emet le signal et fait office de passe bas (bobine).
 
 
-## TP2) L'oscilloscope
-
+## TP2) L'oscillateur
+##### PAGE 211.
+On utilise un oscillateur à pont de Wien. <br>
+<br>
+On doit avoir un gain de 3. On a amplificateur inverseur (1+R2/R1) et on veut un petit courant donc R2 et R1 >= 1k.
 
 ## TP3) Le PLL
-
+##### PAGE 217 & 219
 Detecteur d'enveloppe => Pour démoduler le signal.
 
 Transmission -> Signal envoyé = Signal recu (+Bruit)
@@ -60,3 +65,6 @@ Si on utilise un filtre RC simple, on risque de ne pas assez atténuer arriver a
 
 On doit utiliser pour le signal du OL la meme frequence que la porteuse. Sauf que c'est pratiquement impossible : même avec une frequence précise a 5 chiffres apres la virgule, on a pas le filtrage parfait.
 On va récupérer alors la fréquence de la porteuse avec le PFF.
+
+PFF -> VCO.
+Le VCO génère une tension avec une fréquence proportionnelle à la tension en entrée. On utilise une résistance et une capacité pour régler 
