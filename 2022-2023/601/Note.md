@@ -1,7 +1,6 @@
-## TP1
-https://www.analog.com/media/en/technical-documentation/data-sheets/ad633.pdf
-https://www.youtube.com/watch?v=x_APePdtrfQ
-https://en.wikipedia.org/wiki/Schottky_barrier
+## TP1) Introduction
+https://www.analog.com/media/en/technical-documentation/data-sheets/ad633.pdf <br>
+https://www.youtube.com/watch?v=x_APePdtrfQ <br>
 
 _Modulation amplitude_ :
 
@@ -16,22 +15,20 @@ Charge quand Vc > Ve donc diode bloque.
 Décharge petit a petit quand Ve > Vc 
 
 
-
 Diode Schottky -> Seuil de passage environ 0V & temps pour passage environ 0
 
-CR
 
-
-**PRATIQUE**
 
 Ordre des Modules <br>
 E1. Oscillateur
-On a le signal en entrée (le message) à qui on ajoute un autre signal.
-
-s(t)= k*cos(2*pi*f*t)*[1+alpha*cos(2*pi*f0*t)]
-alpha compris [-1;1] -> Niveau
+Crée une modulation avec une charge et une décharge.
+`f=1/(2*pi*sqrt(R*C))` (environ 84kHz.)
 
 E2. Multiplicateur
+Multiplie l'oscillateur (le porteur) avec un signal (moduleur).
+
+`s(t)= k*cos(2*pi*f*t)*[1+alpha*cos(2*pi*f0*t)]`
+alpha compris [-1;1] -> Niveau
 
 E3. Gain Puissance
 Multiplie courant (sans toucher tension) puis ca va dans antenne. Antenne trop petite -> champ magnétique (et pas electromagnetique)
@@ -48,10 +45,10 @@ R4. Haut Parleur
 Emet le signal et fait office de passe bas (bobine).
 
 
+## TP2) L'oscilloscope
 
 
-
-## TP3
+## TP3) Le PLL
 
 Detecteur d'enveloppe => Pour démoduler le signal.
 
