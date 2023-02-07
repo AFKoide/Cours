@@ -61,3 +61,6 @@ Rapport signal/bruit
 
 On a le signal porté a 10k et le portant a 2ft.
 Si on utilise un filtre RC simple, on risque de ne pas assez atténuer arriver a 2ft, donc on prend ordre 2.
+
+On doit utiliser pour le signal du OL la meme frequence que la porteuse. Sauf que c'est pratiquement impossible : même avec une frequence précise a 5 chiffres apres la virgule, on a pas le filtrage parfait.
+On va récupérer alors la fréquence de la porteuse avec le PFF.
