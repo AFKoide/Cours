@@ -1,5 +1,4 @@
-**NOTE COURS**
-
+## TP1
 https://www.analog.com/media/en/technical-documentation/data-sheets/ad633.pdf
 https://www.youtube.com/watch?v=x_APePdtrfQ
 https://en.wikipedia.org/wiki/Schottky_barrier
@@ -47,3 +46,18 @@ Passe Haut le signal
 
 8. Haut Parleur
 Emet le signal et fait office de passe bas (bobine).
+
+
+
+
+
+## TP3
+
+Detecteur d'enveloppe => Pour démoduler le signal.
+
+Transmission -> Signal envoyé = Signal recu (+Bruit)
+On utilise modulation d'amplitude car 
+Rapport signal/bruit
+
+On a le signal porté a 10k et le portant a 2ft.
+Si on utilise un filtre RC simple, on risque de ne pas assez atténuer arriver a 2ft, donc on prend ordre 2.
