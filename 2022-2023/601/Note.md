@@ -1,6 +1,6 @@
 {:toc}
 
-## TP1) Introduction
+## TP1 : Introduction
 https://www.analog.com/media/en/technical-documentation/data-sheets/ad633.pdf <br>
 https://www.youtube.com/watch?v=x_APePdtrfQ <br>
 
@@ -48,7 +48,7 @@ Emet le signal et fait office de passe bas (bobine).
 
 
 
-## TP2) L'oscillateur
+## TP2 : L'oscillateur
 ##### PAGE 211.
 On utilise un oscillateur à pont de Wien. <br>
 <br>
@@ -57,7 +57,7 @@ On doit avoir un gain de 3. On a amplificateur inverseur (1+R2/R1) et on veut un
 
 
 
-## TP3) Le PLL
+## TP3 : Le PLL
 ##### PAGE 217 & 219
 Detecteur d'enveloppe => Pour démoduler le signal.
 
@@ -68,7 +68,7 @@ Problème :
 On a le signal porté a 10k et le portant a 2ft.
 Si on utilise un filtre RC simple, on risque de ne pas assez atténuer arriver a 2ft, donc on prend ordre 2.
 
-On doit utiliser pour le signal du OL la meme frequence que la porteuse. Sauf que c'est pratiquement impossible : même avec une frequence précise a 5 chiffres apres la virgule, on a pas le filtrage parfait.
+On doit utiliser pour le signal du OL la meme frequence que la porteuse. Sauf que c'est pratiquement impossible : même avec une frequence précise a 5 chiffres apres la virgule, on n'a pas un filtrage correct.
 On va récupérer alors la fréquence de la porteuse avec le PFF.
 
 
@@ -81,4 +81,10 @@ Dans le 4046, il y a aussi un OU EXCLUSIF. Il est utilisé avec le VCO.
 On met une capacité de liaison avant le OU EXCLUSIF pour avoir le signal centré sur Vdd/2.
 Plage de capture. Bruit de phase.
 On veut Plage petite.  
-`fl=228e3; sqrt(2*pi*fl/(1000*10e-9))/(2*pi)`
+`fl=228e3; ? = sqrt(2*pi*fl/(1000*10e-9))/(2*pi)`
+
+On a un signal sinusoidal -> on fait un signal carré avec une frequence deux fois plus grande que le signal sinusoidal.
+
+S'accroche sur la porteuse car les autres ont une trop grosse fréquence.
+
+Trigger ne doit pas etre trop grand car sinon on ne risque pas de pouvoir générer le signal carré, faut alors baisser le taux de modulation.
