@@ -46,19 +46,24 @@ R4. Haut Parleur
 Emet le signal et fait office de passe bas (bobine).
 
 
+
+
 ## TP2) L'oscillateur
 ##### PAGE 211.
 On utilise un oscillateur à pont de Wien. <br>
 <br>
 On doit avoir un gain de 3. On a amplificateur inverseur (1+R2/R1) et on veut un petit courant donc R2 et R1 >= 1k.
 
+
+
+
 ## TP3) Le PLL
 ##### PAGE 217 & 219
 Detecteur d'enveloppe => Pour démoduler le signal.
 
 Transmission -> Signal envoyé = Signal recu (+Bruit)
-On utilise modulation d'amplitude car 
-Rapport signal/bruit
+On n'utilise pas la modulation d'amplitude car le bruit fait varier l'amplitude (Rapport signal/bruit) -> On utilise donc modulation de fréquence.
+Problème : 
 
 On a le signal porté a 10k et le portant a 2ft.
 Si on utilise un filtre RC simple, on risque de ne pas assez atténuer arriver a 2ft, donc on prend ordre 2.
@@ -66,8 +71,14 @@ Si on utilise un filtre RC simple, on risque de ne pas assez atténuer arriver a
 On doit utiliser pour le signal du OL la meme frequence que la porteuse. Sauf que c'est pratiquement impossible : même avec une frequence précise a 5 chiffres apres la virgule, on a pas le filtrage parfait.
 On va récupérer alors la fréquence de la porteuse avec le PFF.
 
+
 PFF -> CD4046 -> VCO.
-Le VCO génère une tension avec une fréquence proportionnelle à la tension en entrée. On utilise une résistance et une capacité pour déterminer le parametre lineaire. <br>
+Le VCO génère une tension avec une fréquence proportionnelle à la tension en entrée. On utilise une résistance et une capacité pour déterminer le parametre lineaire du VCO. <br>
 `f0 = Vdd/2`
 <br>
-Dans le 4046, il y a aussi un OU EXCLUSIF et 
+Dans le 4046, il y a aussi un OU EXCLUSIF. Il est utilisé avec le VCO. 
+<br>
+On met une capacité de liaison avant le OU EXCLUSIF pour avoir le signal centré sur Vdd/2.
+Plage de capture. Bruit de phase.
+On veut Plage petite.  
+`fl=228e3; sqrt(2*pi*fl/(1000*10e-9))/(2*pi)`
