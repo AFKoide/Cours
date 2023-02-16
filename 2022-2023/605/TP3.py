@@ -46,6 +46,7 @@ plt.xlabel('temps (s)');plt.ylabel('Réponse')
 plt.grid(True);plt.show()
 
 print("Erreur de position: ",1-y[-1])
+print("Le temps de réponse est: ",)
 
 # CORRECTEUR 2
 a=1
@@ -67,6 +68,8 @@ plt.title("Réponse Indicielle du système avec le correcteur 1 & 2")
 plt.xlabel('temps (s)');plt.ylabel('Réponse')
 plt.grid(True);plt.show()
 
+print("Erreur de position: ",1-y[-1])
+print("Le temps de réponse est: ",)
 
 # CORRECTEUR 3
 a=1
@@ -87,3 +90,6 @@ plt.axhline(y[-1]+0.05,color='g',linestyle='-.');plt.axhline(y[-1]-0.05,color='g
 plt.title("Réponse Indicielle du système avec correcteur 1 & 3")
 plt.xlabel('temps (s)');plt.ylabel('Réponse')
 plt.grid(True);plt.show()
+
+print("Erreur de position: ",1-y[-1])
+print("Le temps de réponse est: ",)
