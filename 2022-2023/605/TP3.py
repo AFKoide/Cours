@@ -2,7 +2,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from control.matlab import *
 
-H = tf(1,[0.01,4e-3,10])
+
+
+J=0.01;C=0.004;K=10;Ki=0.05;
+
+H = tf(Ki,[J,C,K])
 print(H)
 
 #Determination de la réponse indicielle
@@ -13,3 +17,34 @@ plt.plot(T,y)
 plt.title("Réponse Indicielle du système")
 plt.xlabel('temps (s)');plt.ylabel('Réponse')
 plt.grid(True);plt.show()
+
+
+# CORRECTEUR 1
+wn=76
+e=0.707
+
+z,p,k = tf2zpk(wn**2,[1,2*e*wn,wn**2])
+print("Zéros: ",z,"\tPôles: ",p,"\tGain: ",k)
+
+a=6985
+b=35.5
+c=389
+
+C1 = a*tf([1,b],[1,c])
+print(C1)
+
+S = feedback(C1*H,1)
+print(S)
+
+y,T = step(S)
+
+plt.plot(T,y)
+plt.axhline(1,color='k',linestyle='--')
+plt.axhline(y[-1]+0.05,color='g',linestyle='-.')
+plt.title("Réponse Indicielle du système avec correcteur 1")
+plt.xlabel('temps (s)');plt.ylabel('Réponse')
+plt.grid(True);plt.show()
+
+print("Erreur de position: ",1-y[-1])
+
+# CORRECTEUR 2
