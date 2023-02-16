@@ -48,3 +48,42 @@ plt.grid(True);plt.show()
 print("Erreur de position: ",1-y[-1])
 
 # CORRECTEUR 2
+a=1
+b=15.37
+c=1
+
+C2 = a*tf([1,b],[1,c])
+print(C2)
+
+S2 = feedback(C2*C1*H,1)
+print(S2)
+
+y,T = step(S2)
+
+plt.plot(T,y)
+plt.axhline(1,color='k',linestyle='--')
+plt.axhline(y[-1]+0.05,color='g',linestyle='-.');plt.axhline(y[-1]-0.05,color='g',linestyle='-.')
+plt.title("Réponse Indicielle du système avec correcteur 1")
+plt.xlabel('temps (s)');plt.ylabel('Réponse')
+plt.grid(True);plt.show()
+
+
+# CORRECTEUR 3
+a=1
+b=20
+c=0
+
+C3 = a*tf([1,b],[1,c])
+print(C3)
+
+S3 = feedback(C3*C1*H,1)
+print(S3)
+
+y,T = step(S3)
+
+plt.plot(T,y)
+plt.axhline(1,color='k',linestyle='--')
+plt.axhline(y[-1]+0.05,color='g',linestyle='-.');plt.axhline(y[-1]-0.05,color='g',linestyle='-.')
+plt.title("Réponse Indicielle du système avec correcteur 1")
+plt.xlabel('temps (s)');plt.ylabel('Réponse')
+plt.grid(True);plt.show()
