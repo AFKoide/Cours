@@ -37,7 +37,7 @@ $f=1/(2*pi*sqrt(R*C))$ (environ 84kHz.)
 - E2. Multiplicateur <br>
 Multiplie le signal en sortie de l'oscillateur (le porteur) avec un signal que l'on souhaite transporter (le moduleur).
 
-$s(t)= k*cos(2*pi*f*t)*[1+alpha*cos(2*pi*f0*t)]$
+$s(t)=k*cos(2*pi*f*t)*[1+alpha*cos(2*pi*f0*t)]$
 alpha compris [-1;1] -> Niveau
 
 - E3. Émetteur <br>
@@ -69,7 +69,7 @@ On utilise un oscillateur à pont de Wien. <br>
 On utilise un détecteur d'enveloppe (circuit RC) pour connaître la valeur max du signal qui ondule. On relie ce détecteur à un JFET  qui fera office d'une résistance et, avec un potentiomètre, va remplacer R2. Ainsi, la valeur de R2 variera en fonction de la tension de sortie (si tension trop haute, alors R2 diminue ; inversement).<br>
 
 LE PRODUIT GAIN BANDE<br>
-$GB = Gain*BandePassante = cste$ en V/V (tension par tension).
+$GB=Gain*BandePassante=cste$ en V/V (tension par tension).
 Slew Rate = V*W
 
 
