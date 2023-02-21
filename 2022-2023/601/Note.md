@@ -4,7 +4,7 @@
       - [PAGE 211.](#page-211)
 - [TP3 : Le PLL](#tp3--le-pll)
       - [PAGE 217 \& 219](#page-217--219)
-- [TP4](#tp3--le-pll)
+- [TP4](#tp4)
 
 ## Astuce
 
