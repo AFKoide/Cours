@@ -109,3 +109,6 @@ On a un signal sinusoidal -> on fait un signal carré avec une frequence deux fo
 S'accroche sur la porteuse car les autres ont une trop grosse fréquence.
 
 Trigger ne doit pas etre trop grand car sinon on ne risque pas de pouvoir générer le signal carré, faut alors baisser le taux de modulation.
+
+### TP4
+On multiplie une fonction de transfert par 1/p pour faire la réponse impulsionnelle d'un système dans laplace.
