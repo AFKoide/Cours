@@ -117,3 +117,5 @@ Cependant, le signal en sortie du PLL est déphasé de -pi/2. Donc on utilise un
 
 Le PLL consomme de la tension à intervalles régulières, ce qui crée des perturbations. Chaque pic sur le signal en sortie est une commutation du PLL.
 Capacité -> Ajoute tension continue
+
+Compromis entre valeur moyenne OU Exclusive et la plage de capture : plus le filtre est bas, plus la bande de capture est petite. (voir cours)
