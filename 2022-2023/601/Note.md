@@ -114,3 +114,6 @@ Trigger ne doit pas etre trop grand car sinon on ne risque pas de pouvoir géné
 On multiplie une fonction de transfert par 1/p pour faire la réponse impulsionnelle d'un système dans laplace. <br>
 Le signal en sortie du PLL est de la forme carrée et pas un sinus. Cela a un importance car ce signal est moins pur qu'un sinus (car le carré est composé de plusieurs sinus). On a juste à filtrer avec un meilleur filtre. <br>
 Cependant, le signal en sortie du PLL est déphasé de -pi/2. Donc on utilise un AOP déphaseur pour annuler le déphasage (+pi/2). Problème, le montage avec l'AOP souffre du slow-rate,ce qui fait que l'on a pas des carrés parfaits.
+
+Le PLL consomme de la tension à intervalles régulières, ce qui crée des perturbations. Chaque pic sur le signal en sortie est une commutation du PLL.
+Capacité -> Ajoute tension continue
