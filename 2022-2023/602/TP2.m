@@ -11,6 +11,11 @@
 % a la taille de la fente
 % I0 l'intensité insidente et I l'intensité sortante
 
+% I(x) = I0*(2*J1(k*r0*sin(θ))/(k*r0*sin(θ)))^2
+% r0 = d0/2k = 2*pi/lambda
+% 
+
 % https://web.mit.edu/8.02t/www/802TEAL3D/visualizations/coursenotes/modules/guide14.pdf
+
 a = linspace(0,1e-6,10);
 x = linspace(
