@@ -11,5 +11,6 @@
 % a la taille de la fente
 % I0 l'intensité insidente et I l'intensité sortante
 
+% https://web.mit.edu/8.02t/www/802TEAL3D/visualizations/coursenotes/modules/guide14.pdf
 a = linspace(0,1e-6,10);
 x = linspace(
