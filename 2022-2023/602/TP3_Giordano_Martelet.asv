@@ -1,0 +1,12 @@
+clear all;
+close all;
+
+IDEL=[-50 -20 -10 0 5 10 15 20 25 30 35 40 45 50]
+V_trans=[0 0 0 74e-3 -212e-3 -625e-3 -1.02 -1.42 -1.80 -2.21 -2.60 -3 -3.40 -3.87];
+plot(IDEL,-V_trans);
+title('Evolution de la tension de sortie transimpedance en fonction du courant d alimentaion de la DEL');
+xlabel('Courant DEL (mA)');
+ylabel('Tension transimpedance (V)');
+grid;
+
+load [Nom du fichier].dat Q4
