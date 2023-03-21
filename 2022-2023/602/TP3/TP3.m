@@ -14,14 +14,14 @@ load 4ba.dat
 load 4c.dat
 
 plot(X4b(:,1),X4b(:,2),X4ba(:,1),X4ba(:,2),'r');
-title('FFT ');
+title('FFT du signal lumineux pour F=1000Hz');
 xlabel('Fréquence (Hz)');
 ylabel('Décibel (dB)');
 legend('Sans Atténuateur','Atténuateur oc=0.6')
 grid;
 
 plot(X4c(:,1),X4c(:,2));
-title('Evolution de la tension de sortie transimpedance en fonction du courant d alimentaion de la DEL');
+title('FFT du signal lumineux pour F=1000Hz');
 xlabel('Fréquence (Hz)');
 ylabel('Décibel (dB)');
 legend('Atténuateur oc=5')

@@ -1,7 +1,5 @@
 import numpy as np
 
-
-
 print("TP Algebre Lineaire!\n\n")
 
 # Scalaire
