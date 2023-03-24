@@ -10,8 +10,7 @@ R2_reel = R2*(1+5/100*(2*rand(n,1)-1));
 C1_reel = C1*(1+10/100*(2*rand(n,1)-1)); % Capacité*(1+tol_Capa*(2*rand(n,1)-1));
 C2_reel = C2*(1+10/100*(2*rand(n,1)-1));
 
-netlist=...
-    {'R1 Vin 1 R1';
+netlist={'R1 Vin 1 R1';
     'R2 1 e+ R2';
     'C1 1 Vout C1';
     'C2 e+ 0 C2';
@@ -32,3 +31,4 @@ semilogx(f,20*log10(abs(H_reel_max)),'b',f,20*log10(abs(H_reel_min)),'g')
 hold on
 semilogx(f,20*log10(abs(subs(H))))
 legend('Maximum','Minimum','Théorique')
+grid on
