@@ -50,6 +50,7 @@ a=1;b=-1.2;c=0.32
 H = tf([K],[a,b,c],0.1)
 P = pole(H)
 print('Les pôles de H sont:',P)
+# Les pôles de H sont compris dans [-1;1]. Ce système est donc stable.
 
 # Hb1 = H/(1+H)   # C'est faux
 # print("Hb=",Hb1)
