@@ -7,7 +7,7 @@ plt.close('all')
 
 
 ## EXERCICE 1
-G = tf([0,2,1],[1,2,1])
+G = tf([2,1],[1,2,1])
 Gz = c2d(G,0.1)
 
 plt.figure()
@@ -19,7 +19,7 @@ plt.title("Comparaison entre système et système échantillonné")
 plt.xlabel('temps (s)');plt.ylabel('Réponse')
 plt.legend(["Système classique","Système échantillonné"])
 plt.grid(True);plt.show()
-# Que le signal soit échantillonné ou pas, la réponse indicielle n'a aucune différence.
+# Que le signal soit échantillonné ou pas, la réponse indicielle ne change pas.
 # On peut en conclure que l'échantillonnage ne modifie en rien la réponse.
 
 
@@ -51,8 +51,8 @@ H = tf([K],[a,b,c],0.1)
 P = pole(H)
 print('Les pôles de H sont:',P)
 
-Hb1 = H/(1+H)
-print("Hb=",Hb1)
+# Hb1 = H/(1+H)   # C'est faux
+# print("Hb=",Hb1)
 Hb2 = feedback(H,1)
 print("Avec la fonction feedback, on a Hb=",Hb2)
 
@@ -86,9 +86,7 @@ plt.xlabel('temps (s)');plt.ylabel('Réponse')
 plt.grid(True);plt.show()
 
 # Pour un K=0.68, on a un système oscillant.
-# Cela explique les courbe verticale sur la figure 3: ces dernier correspondent à l'amortissement et puisque l'on a pas d'amortissement, alors les courbes sont tres grandes.
 # Pour un K=0.6, le système oscille dans un premier temps, puis le stabilise à environ 0.8.
-# Comme pour le signal à K=0.6, on relève des droites verticales grande sur la figure 4, mais plus petite que celle sur la figure 3.
 
 
 
@@ -117,12 +115,12 @@ Hdz1 = feedback(Hd1,1)
 Hdz2 = feedback(Hd2,1)
 
 print("Hdz1=",Hdz1)
-# Le pôle de Hdz1 est égal à -5.953: ce dernier est inférieur à -1, il n'est donc pas stable.
+# Le pôle de Hdz1 est égal à -5.953: il est inférieur à -1, le système n'est donc pas stable.
 print("Hdz2=",Hdz2)
-# Le pôle de Hdz1 est égal à -0.04679: ce dernier est supérieur à -1, il est donc stable.
+# Le pôle de Hdz2 est égal à -0.04679: il est compris dans [-1;1], le système est stable.
 
 
-# D'après Shanon, la fréquence d'échantillonnage doit être deux fois supérieure à la fréquence du signal.
+# D'après Shanon, la fréquence d'échantillonnage doit être deux fois supérieure à la fréquence du signal à échantillonné.
 # Dans le cas de H, on a τ=0.1, donc la période d'échantillonnage doit être deux fois plus petite que τ.
 # T_ech = 0.1/2 = 0.05. La période d'échantillonnage doit donc être égale ou inférieure à 0.05.
 # T=0.1 est supérieur à 0.05: le critère n'est pas respecté.
