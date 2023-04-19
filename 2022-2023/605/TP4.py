@@ -19,7 +19,8 @@ plt.title("Comparaison entre système et système échantillonné")
 plt.xlabel('temps (s)');plt.ylabel('Réponse')
 plt.legend(["Système classique","Système échantillonné"])
 plt.grid(True);plt.show()
-
+# Que le signal soit échantillonné ou pas, la réponse indicielle n'a aucune différence.
+# On peut en conclure que l'échantillonnage ne modifie en rien la réponse.
 
 
 # EXERCICE 2
@@ -42,7 +43,7 @@ print("Les Pôles de Hd sont:",P)
 ## EXERCICE 3
 print("\n\nEXERCICE 3\n")
 # La condition de stabilité d'un système échantillonné est que les modules des pôles
-# doivent être compris dans le cercle unitaire,soit entre -1 et 1.
+# doivent être compris dans le cercle unitaire, soit entre -1 et 1.
 
 K=1
 a=1;b=-1.2;c=0.32
@@ -85,7 +86,9 @@ plt.xlabel('temps (s)');plt.ylabel('Réponse')
 plt.grid(True);plt.show()
 
 # Pour un K=0.68, on a un système oscillant.
+# Cela explique les courbe verticale sur la figure 3: ces dernier correspondent à l'amortissement et puisque l'on a pas d'amortissement, alors les courbes sont tres grandes.
 # Pour un K=0.6, le système oscille dans un premier temps, puis le stabilise à environ 0.8.
+# Comme pour le signal à K=0.6, on relève des droites verticales grande sur la figure 4, mais plus petite que celle sur la figure 3.
 
 
 
@@ -119,5 +122,8 @@ print("Hdz2=",Hdz2)
 # Le pôle de Hdz1 est égal à -0.04679: ce dernier est supérieur à -1, il est donc stable.
 
 
-# On peut en conclure que la fréquence d'échantillonnage a son importance: il est possible
-# que si cette dernière est trop petite, on ne relèvera pas assez de point, et donc 
+# D'après Shanon, la fréquence d'échantillonnage doit être deux fois supérieure à la fréquence du signal.
+# Dans le cas de H, on a τ=0.1, donc la période d'échantillonnage doit être deux fois plus petite que τ.
+# T_ech = 0.1/2 = 0.05. La période d'échantillonnage doit donc être égale ou inférieure à 0.05.
+# T=0.1 est supérieur à 0.05: le critère n'est pas respecté.
+# T=0.01 est inférieur à 0.05: le critère est respecté.
