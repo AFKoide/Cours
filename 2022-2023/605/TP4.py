@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from control.matlab import *
 from scipy import signal
-from math import sqrt
 
 plt.close('all')
 
@@ -47,7 +46,7 @@ print("\n\nEXERCICE 3\n")
 
 K=1
 a=1;b=-1.2;c=0.32
-H = c2d(tf([K],[a,b,c]),0.1)
+H = tf([K],[a,b,c],0.1)
 P = pole(H)
 print('Les pôles de H sont:',P)
 
@@ -56,26 +55,69 @@ print("Hb=",Hb1)
 Hb2 = feedback(H,1)
 print("Avec la fonction feedback, on a Hb=",Hb2)
 
+
+K=0.67
+H1 = tf([K],[a,b,c],0.1)
 plt.figure()
-rlist,klist = rlocus(Hb2)
-plt.grid();plt.show()
+rlist,klist = rlocus(H1)
+plt.show()
+# Le système stable car sur la figure, les points sont dans le cercle unitaire.
+K=0.68
+H2 = tf([K],[a,b,c],0.1)
+plt.figure()
+rlist,klist = rlocus(H2)
+plt.show()
+# Le système est stable pour les mêmes raisons que le précédent graphique.
 
-# Le système n'est pas stable car le module des pôles est supérieur à 1.
+y,T= step(feedback(H2,1))
+plt.figure()
+plt.plot(T,y)
+plt.title("Réponse indicielles pour K=0.68")
+plt.xlabel('temps (s)');plt.ylabel('Réponse')
+plt.grid(True);plt.show()
+K=0.6
+H3 = tf([K],[a,b,c],0.1)
+y,T= step(feedback(H3,1))
+plt.figure()
+plt.plot(T,y)
+plt.title("Réponse indicielles pour K=0.6")
+plt.xlabel('temps (s)');plt.ylabel('Réponse')
+plt.grid(True);plt.show()
 
-    
+# Pour un K=0.68, on a un système oscillant.
+# Pour un K=0.6, le système oscille dans un premier temps, puis le stabilise à environ 0.8.
+
+
+
 ## EXERCICE 4
 print("\n\nEXERCICE 4\n")
-H = tf([0.9,],[1,-0.9])
-Hd = c2d(H,0.01)
-y,T= step(feedback(Hd,1))
+H = tf([0.9,0],[1,-0.9],0.1)
+y,T= step(feedback(H,1))
 plt.figure()
 plt.plot(T,y)
 plt.title("Erreur de position du système")
 plt.xlabel('temps (s)');plt.ylabel('Réponse')
 plt.grid(True);plt.show()
 
+Erreur = 1-y[-1]
+print("L'erreur de position est",Erreur)
+
+
+
 ## EXERCICE 5
 print("\n\nEXERCICE 5\n")
 H = tf([10],[0.1,1])
 Hd1 = c2d(H,0.1)
 Hd2 = c2d(H,0.01)
+
+Hdz1 = feedback(Hd1,1)
+Hdz2 = feedback(Hd2,1)
+
+print("Hdz1=",Hdz1)
+# Le pôle de Hdz1 est égal à -5.953: ce dernier est inférieur à -1, il n'est donc pas stable.
+print("Hdz2=",Hdz2)
+# Le pôle de Hdz1 est égal à -0.04679: ce dernier est supérieur à -1, il est donc stable.
+
+
+# On peut en conclure que la fréquence d'échantillonnage a son importance: il est possible
+# que si cette dernière est trop petite, on ne relèvera pas assez de point, et donc 
