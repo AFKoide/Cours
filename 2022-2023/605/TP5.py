@@ -49,3 +49,5 @@ plt.grid(True);plt.show()
 
 # On peut observer que la réponse en boucle fermée a une erreur de position nulle et un temps de réponse extrèmement faible.
 # Cependant, on a un dépassement très important.
+
+# On peut donc conclure que le ZDAN est un correcteur de stabilité, de vitesse et de position.
