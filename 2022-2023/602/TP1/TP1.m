@@ -2,10 +2,10 @@ clc
 close all
 
 % 1
-I = 6.13e-6 % A
+% Je relève un photocourant de 6.13uA.
 
 % 2
-I = 472e-9 % A
+% Je relève un photocourant de 472nA.
 % A la sortie du miroir M3, la lumière est maintenant uniquement rouge.
 
 % 3
@@ -44,10 +44,10 @@ grid minor
 
 
 % 6
-lum_filtre = load('data2.txt');
+laser = load('data2.txt');
 
 figure()
-plot(lum_filtre(:,3),-lum_filtre(:,4))
+plot(laser(:,3),-laser(:,4))
 title('Spectre optique de la lumière blanche filtrée')
 xlabel('Longueur d onde (nm)'); ylabel('Sensibilité (A/W)')
 grid minor
@@ -57,7 +57,7 @@ grid minor
 
 
 % 8
-Transmission_Filtre = lum_filtre(:,4)./lum_blanc(:,4);
+Transmission_Filtre = laser(:,4)./lum_blanc(:,4);
 
 figure()
 plot(lambda,Transmission_Filtre)
@@ -75,3 +75,24 @@ grid minor
 % 1
 % En fermant la fente, on observe que la tache lumineuse s'étale sur l'axe
 % horizontal: on a une diffraction.
+% La fonction mathématique est un sinus cardinal.
+
+% 2
+% Je relève un photocourant de 350nA.
+
+% 3
+% On peut déduire que la longueur d'onde du laser est égale à 633nm.
+
+
+
+% 4
+% Non car le laser emet à une seule longueur d'onde. On n'a alors pas besoin 
+% de corriger
+
+laser = load('data3.txt');
+
+figure()
+plot(laser(:,3),-laser(:,4))
+title('Spectre optique du laser rouge')
+xlabel('Longueur d onde (nm)'); ylabel('Sensibilité (A/W)')
+grid minor
