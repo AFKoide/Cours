@@ -47,9 +47,10 @@ print("x: ",x,"\ty: ",y,"\tz: ",z)
 ## MODELE GEOMETRIQUE INVERSE
 x=0.181;y=0;z=0.063
 
+d = sqrt(x**2+y**2)
 q0 = atan2(x,-y)
 # q1 = atan2(z+l04,x-l3)+atan2(l2,l1)
-q1 = atan2(z-l04,x-l3)+acos((l1**2+((x-l3)**2+(z-l04)**2)-l2**2)/(2*l1*sqrt((x-l3)**2+(z-l04)**2)))
+q1 = atan2(z-l04,d-l3)+acos((l1**2+((d-l3)**2+(z-l04)**2)-l2**2)/(2*l1*sqrt((d-l3)**2+(z-l04)**2)))
 q2 = -q1+acos(((sqrt(x**2+y**2)-l3)**2+(z-l04)**2-l1**2-l2**2)/(2*l1*l2))
 
 print("q0: ",np.degrees(q0),"\tq1: ",np.degrees(q1),"\tq2: ",np.degrees(q2))
