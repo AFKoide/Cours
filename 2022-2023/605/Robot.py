@@ -30,27 +30,48 @@ print("l0-l4: ",l[0],"\tl1: ",l[1],"\tl2: ",l[2],"\tl3: ",l[3])
 l04=l[0];l1=l[1];l2=l[2];l3=l[3]
 
 
-## MODELE GEOMETRIQUE DIRECT
-q0=np.radians(90)
-q1=np.radians(51)
-q2=np.radians(65)
-q3=np.radians(0)
+##                  MODELE GEOMETRIQUE DIRECT
+# q0=np.radians(q0)
+# q1=np.radians(q1)
+# q2=np.radians(q2)
+# q3=np.radians(0)
+# 
+# d = l1*cos(q1)+l2*cos(q2)+l3*cos(q3)
+# x = d*cos(q0)
+# y = d*sin(q0)
+# z = l04+l1*sin(q1)-l2*sin(q2)
+# 
+# print("x: ",x,"\ty: ",y,"\tz: ",z)
+def MGD(q0,q1,q2,q3):
+    q0=np.radians(q0)
+    q1=np.radians(q1)
+    q2=np.radians(q2)
+    q3=np.radians(q3)
+    
+    d = l1*cos(q1)+l2*cos(q2)+l3*cos(q3)
+    x = d*cos(q0)
+    y = d*sin(q0)
+    z = l04+l1*sin(q1)-l2*sin(q2)
 
-d = l1*cos(q1)+l2*cos(q2)+l3*cos(q3)
-x = d*cos(q0)
-y = d*sin(q0)
-z = l04+l1*sin(q1)-l2*sin(q2)
-
-print("x: ",x,"\ty: ",y,"\tz: ",z)
+    return x,y,z
 
 
-## MODELE GEOMETRIQUE INVERSE
-x=0.181;y=0;z=0.063
 
-d = sqrt(x**2+y**2)
-q0 = atan2(x,-y)
-# q1 = atan2(z+l04,x-l3)+atan2(l2,l1)
-q1 = atan2(z-l04,d-l3)+acos((l1**2+((d-l3)**2+(z-l04)**2)-l2**2)/(2*l1*sqrt((d-l3)**2+(z-l04)**2)))
-q2 = -q1+acos(((sqrt(x**2+y**2)-l3)**2+(z-l04)**2-l1**2-l2**2)/(2*l1*l2))
 
-print("q0: ",np.degrees(q0),"\tq1: ",np.degrees(q1),"\tq2: ",np.degrees(q2))
+##                  MODELE GEOMETRIQUE INVERSE
+# x=0.181;y=0;z=0.063
+# d = sqrt(x**2+y**2)
+# 
+# q0 = atan2(x,-y)
+# q1 = atan2(z-l04,d-l3)+acos((l1**2+((d-l3)**2+(z-l04)**2)-l2**2)/(2*l1*sqrt((d-l3)**2+(z-l04)**2)))
+# q2 = -q1+acos(((sqrt(x**2+y**2)-l3)**2+(z-l04)**2-l1**2-l2**2)/(2*l1*l2))
+# 
+# print("q0: ",np.degrees(q0),"\tq1: ",np.degrees(q1),"\tq2: ",np.degrees(q2))
+def MGD(x,y,z):
+    d = sqrt(x**2+y**2)
+    
+    q0 = atan2(x,-y)
+    q1 = atan2(z-l04,d-l3)+acos((l1**2+((d-l3)**2+(z-l04)**2)-l2**2)/(2*l1*sqrt((d-l3)**2+(z-l04)**2)))
+    q2 = -q1+acos(((sqrt(x**2+y**2)-l3)**2+(z-l04)**2-l1**2-l2**2)/(2*l1*l2))
+
+    return q0,q1,q2
