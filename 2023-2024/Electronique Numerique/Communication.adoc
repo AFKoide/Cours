@@ -50,3 +50,20 @@ Une fois la quantification réalisée, il faut convertir ce signal en séquence 
 
 === 4) Stockage et traitement
 Finalement, une fois le signal converti en une suite binaire, on peut alors le stocker dans la mémoire d'un dispositif numérique pour qu'il soit traité (logiciel de mixage), exploité (FFT) ou encore pour être converti en un signal analogique (exemple, un CD).
+
+
+
+
+= Sauce
+:hide-uri-scheme:
+
+. https://www.lelivrescolaire.fr/page/7359612
+. http://ressources.uac.bj/ressources/unt/iutenligne/sciences-de-l-ingenieur/791-module-signaux-systeme/AnalogiqueNumerique/index.html
+. https://en.wikipedia.org/wiki/Digital_signal
+. https://en.wikipedia.org/wiki/Digital_signal_processing
+. 
+. 
+. 
+. 
+. 
+. 
