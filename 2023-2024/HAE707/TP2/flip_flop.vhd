@@ -1,7 +1,5 @@
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
-USE IEEE.std_logic_arith.ALL;
-USE IEEE.std_logic_unsigned.ALL;
 
 -- Bascule JK
 ENTITY flip_flop IS
@@ -13,13 +11,15 @@ END flip_flop;
 
 -- Programme
 ARCHITECTURE bascule OF flip_flop IS
+SIGNAL temp_q : STD_LOGIC;
 BEGIN
-	SIGNAL temp_q : std_logic;
-	memoire       : PROCESS (j, k, clk, reset)
+	memoire       : PROCESS (clk, reset)
 	BEGIN
-		IF clk'EVENT AND clk = '1' THEN
+        IF RESET ='1' THEN
+            temp_q <= '0'; 
+		ELSIF clk'EVENT AND clk = '1' THEN
 			IF j = '0' AND k = '0' THEN
-				temps_q <= q;
+				temp_q <= q;
 			ELSIF j = '0' AND k = '1' THEN
 				temp_q <= '0';
 			ELSIF j = '1' AND k = '0' THEN
@@ -28,6 +28,6 @@ BEGIN
 				temp_q <= NOT(q);
 			END IF;
 		END IF;
-		q <= temp_q;
 	END PROCESS;
+    q <= temp_q;
 END bascule;    
