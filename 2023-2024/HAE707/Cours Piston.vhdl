@@ -54,3 +54,6 @@ architecture state_machine for piston is
         end if;
     end process;
 end state_machine;
+
+-- Un signal ne peut etre piloté que par un seul processus. Cpt ne peut donc pas être initialisé par state_comb : il faut que ce soit l'horloge qui s'en occupe.
+-- On initialisera donc cpt a chaque changement d'état.
