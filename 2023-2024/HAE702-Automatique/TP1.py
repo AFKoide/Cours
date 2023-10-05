@@ -96,7 +96,7 @@ def equvec():
     sys_ss = ss(A,B,C,D)
     y,T = step(sys_ss)
     plt.figure()
-    plt.plot(T,y);plt.grid('on');plt.title("Angle du Moteur");plt.show()
+    plt.plot(T,y);plt.grid('on');plt.title("");plt.show()
 
 equ2(50)
 equtf()
