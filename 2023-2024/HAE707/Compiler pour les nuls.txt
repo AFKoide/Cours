@@ -1,0 +1,6 @@
+https://gist.github.com/milannedic/ab6e1a40257e5a5a20fe6cd2af8d8231
+
+ghdl -i *.vhdl
+ghdl -m -fexplicit --ieee=synopsys [Nom du fichier tb]
+ghdl -r  [Nom du fichier tb] --stop-time=500us --vcd=wave.vcd
+gtkwave wave.vcd

@@ -14,7 +14,9 @@ ENTITY additionneur1 IS
 END additionneur1;
 
 ARCHITECTURE Behavioral OF additionneur1 IS
+signal temp_S : std_logic(8 downto 0);
 BEGIN
-            S <= (A XOR B) WHEN COM='0' ELSE S <= (A  B);
-        R <= ;
+	temp_S <= (A xor B) when COM='0' else temp_S = A-B;
+	S <= temp_S(7 downto 0);
+	R <= temp_S(8);
 END Behavioral;

@@ -2,6 +2,7 @@ entity exercice_1 is port (
     pret, R_W, h, reset : in bit;
     OE, WE : out bit
 );
+END entity;
 
 architecture state_machine for example is 
     type StateType is (Attente, Lecture, Ecriture, Decision);
