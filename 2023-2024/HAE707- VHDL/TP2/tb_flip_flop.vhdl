@@ -1,7 +1,3 @@
--- Testbench automatically generated online
--- at https://vhdl.lapinoo.net
--- Generation date : 26.9.2023 13:49:12 UTC
-
 library ieee;
 use ieee.std_logic_1164.all;
 
@@ -22,19 +18,12 @@ architecture tb of tb_flip_flop is
     signal clk   : std_logic;
     signal reset : std_logic;
     signal q     : std_logic;
-
-    constant TbPeriod : time := 1000 ns; -- EDIT Put right period here
+    
+    constant TbPeriod : time := 50 ns; -- EDIT Put right period here
     signal TbClock : std_logic := '0';
     signal TbSimEnded : std_logic := '0';
-
 begin
-
-    dut : flip_flop
-    port map (j     => j,
-              k     => k,
-              clk   => clk,
-              reset => reset,
-              q     => q);
+    dut : flip_flop port map (j,k,clk,reset,q);
 
     -- Clock generation
     TbClock <= not TbClock after TbPeriod/2 when TbSimEnded /= '1' else '0';
@@ -51,23 +40,27 @@ begin
         -- Reset generation
         -- EDIT: Check that reset is really your reset signal
         reset <= '1';
-        wait for 100 ns;
+        wait for 20 ns;
         reset <= '0';
-        wait for 100 ns;
+        wait for 20 ns;
 
         -- EDIT Add stimuli here
-        wait for 100 * TbPeriod;
-
+        j <= '0';
+        k <= '0';
+        wait for 2 * TbPeriod;
+        j <= '1';
+        k <= '0';
+        wait for 2 * TbPeriod;
+        j <= '0';
+        k <= '1';
+        wait for 2 * TbPeriod;
+        j <= '1';
+        k <= '1';
+        wait for 2 * TbPeriod;
+        j <= '1';
+        k <= '1';
         -- Stop the clock and hence terminate the simulation
         TbSimEnded <= '1';
         wait;
     end process;
-
 end tb;
-
--- Configuration block below is required by some simulators. Usually no need to edit.
-
-configuration cfg_tb_flip_flop of tb_flip_flop is
-    for tb
-    end for;
-end cfg_tb_flip_flop;
