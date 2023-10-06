@@ -1,13 +1,13 @@
 LIBRARY IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.std_logic_arith.all;
-use IEEE.std_logic_unsigned.all;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.std_logic_arith.all;
+USE IEEE.std_logic_unsigned.all;
 
 -- Bascule D
 ENTITY latch IS
 	PORT (
-		d, clk, reset : IN std_logic;
-		q             : OUT std_logic
+		d, clk, reset : IN std_logic; -- Protéger contre écriture
+		q             : OUT std_logic -- Protéger contre lecture
 	);
 END latch;
 
@@ -18,12 +18,11 @@ BEGIN
 	copie : PROCESS (clk, reset) BEGIN
 		IF reset = '1' THEN
 			temp_q <= '0';
-			IF clk'EVENT AND clk = '1' THEN
-				temp_q <= NOT(q);
-			ELSE
-				temp_q <= q;
-			END IF;
-        END IF;
+		ELSIF clk = '1' THEN
+			temp_q <= d;
+		ELSE
+			temp_q <= temp_q;
+		END IF;
 	END PROCESS;
     q <= temp_q;
 END bascule_d;
