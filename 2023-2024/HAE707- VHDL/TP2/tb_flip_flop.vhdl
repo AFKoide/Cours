@@ -5,62 +5,53 @@ entity tb_flip_flop is
 end tb_flip_flop;
 
 architecture tb of tb_flip_flop is
+
     component flip_flop
-        port (j     : in std_logic;
-              k     : in std_logic;
-              clk   : in std_logic;
-              reset : in std_logic;
-              q     : out std_logic);
+        port (D   : in std_logic;
+              R   : in std_logic;
+              clk : in std_logic;
+              q   : out std_logic;
+              qb  : out std_logic);
     end component;
 
-    signal j     : std_logic;
-    signal k     : std_logic;
-    signal clk   : std_logic;
-    signal reset : std_logic;
-    signal q     : std_logic;
-    
-    constant TbPeriod : time := 50 ns; -- EDIT Put right period here
+    signal D   : std_logic;
+    signal R   : std_logic;
+    signal clk : std_logic;
+    signal q   : std_logic;
+    signal qb  : std_logic;
+
+    constant TbPeriod : time := 20 ns; -- EDIT Put right period here
     signal TbClock : std_logic := '0';
     signal TbSimEnded : std_logic := '0';
-begin
-    dut : flip_flop port map (j,k,clk,reset,q);
 
+begin
+    dut : flip_flop port map (D,R,clk,q,qb);
+    
     -- Clock generation
     TbClock <= not TbClock after TbPeriod/2 when TbSimEnded /= '1' else '0';
 
     -- EDIT: Check that clk is really your main clock signal
     clk <= TbClock;
 
-    stimuli : process
-    begin
-        -- EDIT Adapt initialization as needed
-        j <= '0';
-        k <= '0';
-
-        -- Reset generation
-        -- EDIT: Check that reset is really your reset signal
-        reset <= '1';
-        wait for 20 ns;
-        reset <= '0';
-        wait for 20 ns;
-
-        -- EDIT Add stimuli here
-        j <= '0';
-        k <= '0';
-        wait for 2 * TbPeriod;
-        j <= '1';
-        k <= '0';
-        wait for 2 * TbPeriod;
-        j <= '0';
-        k <= '1';
-        wait for 2 * TbPeriod;
-        j <= '1';
-        k <= '1';
-        wait for 2 * TbPeriod;
-        j <= '1';
-        k <= '1';
-        -- Stop the clock and hence terminate the simulation
+    horloge : process begin
+        wait for TbPeriod*10;
         TbSimEnded <= '1';
+        
+        wait;
+    end process;
+    
+    Entree : process begin
+        D <= '1';
+        R <= '0';
+        wait for 2 * TbPeriod;
+        D <= '0';
+        wait for 2 * TbPeriod;
+        D <= '1';
+        wait for TbPeriod;
+        R <= '1';
+        wait for TbPeriod;
+        R <= '0';
+        wait for TbPeriod;
         wait;
     end process;
 end tb;
