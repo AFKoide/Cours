@@ -40,4 +40,5 @@ begin
                     END CASE;
         END IF;
     END PROCESS;
+    S <= temp_s;
 end Behavioral;
