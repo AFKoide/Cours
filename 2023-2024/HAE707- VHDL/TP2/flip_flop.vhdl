@@ -6,8 +6,8 @@ USE IEEE.std_logic_unsigned.all;
 -- Bascule JK
 ENTITY flip_flop IS
 	PORT (
-		j, k, clk, reset : IN std_logic;
-		q                : OUT std_logic
+		D, R, clk : IN std_logic;
+		q, qb     : OUT std_logic
 	);
 END flip_flop;
 
@@ -15,21 +15,33 @@ END flip_flop;
 ARCHITECTURE bascule OF flip_flop IS
 SIGNAL temp_q : STD_LOGIC;
 BEGIN
-	memoire       : PROCESS (clk, reset)
+	asynchrone : PROCESS (D,R,clk)
 	BEGIN
-        IF RESET ='1' THEN
+        IF R ='1' THEN -- Asynchrone car le reset est prioritaire
             temp_q <= '0'; 
 		ELSIF clk'EVENT AND clk = '1' THEN
-			IF j = '0' AND k = '0' THEN
-				temp_q <= temp_q;
-			ELSIF j = '0' AND k = '1' THEN
-				temp_q <= '0';
-			ELSIF j = '1' AND k = '0' THEN
-				temp_q <= '1';
-			ELSIF j = '1' AND k = '1' THEN
-				temp_q <= NOT(temp_q);
-			END IF;
-		END IF;
+            temp_q <= d;
+        ELSE
+            temp_q <= temp_q;
+            END IF;
 	END PROCESS;
     q <= temp_q;
-END bascule;    
+    qb <= NOT(temp_q);
+END bascule;
+
+--ARCHITECTURE bascule OF flip_flop IS
+--SIGNAL temp_q : STD_LOGIC;
+--BEGIN
+--	synchrone : PROCESS (D,R,clk)
+--	BEGIN
+--	IF clk'EVENT AND clk = '1' THEN -- Synchrone car l'horloge est prioritaire
+--	   IF R ='1' THEN 
+--	       temp_q <= '0';
+--	   ELSE
+--	       temp_q <= d;
+--       END IF;
+--    END IF;
+--	END PROCESS;
+--    q <= temp_q;
+--    qb <= NOT(temp_q);
+--END bascule;
