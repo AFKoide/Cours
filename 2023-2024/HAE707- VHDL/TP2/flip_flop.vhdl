@@ -1,5 +1,7 @@
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.std_logic_arith.all;
+USE IEEE.std_logic_unsigned.all;
 
 -- Bascule JK
 ENTITY flip_flop IS
@@ -19,13 +21,13 @@ BEGIN
             temp_q <= '0'; 
 		ELSIF clk'EVENT AND clk = '1' THEN
 			IF j = '0' AND k = '0' THEN
-				temp_q <= q;
+				temp_q <= temp_q;
 			ELSIF j = '0' AND k = '1' THEN
 				temp_q <= '0';
 			ELSIF j = '1' AND k = '0' THEN
 				temp_q <= '1';
 			ELSIF j = '1' AND k = '1' THEN
-				temp_q <= NOT(q);
+				temp_q <= NOT(temp_q);
 			END IF;
 		END IF;
 	END PROCESS;
