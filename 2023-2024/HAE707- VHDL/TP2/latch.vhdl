@@ -1,5 +1,7 @@
 LIBRARY IEEE;
-USE IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.std_logic_arith.all;
+use IEEE.std_logic_unsigned.all;
 
 -- Bascule D
 ENTITY latch IS
