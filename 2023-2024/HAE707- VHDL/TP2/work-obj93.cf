@@ -1,22 +1,22 @@
 v 3
-file . "compteur_tb.vhdl" "20231005164140.000" "20231005184227.175":
-  entity tb_compteur at 5( 124) + 0 on 4;
-  architecture tb of tb_compteur at 11( 214) + 0 on 4;
-  configuration cfg_tb_compteur at 63( 1582) + 0 on 4;
-file . "tb_latch.vhdl" "20230926134808.000" "20231005184227.176":
+file . "tb_latch.vhdl" "20231006074824.000" "20231006141958.914":
   entity tb_latch at 5( 124) + 0 on 4;
   architecture tb of tb_latch at 11( 208) + 0 on 4;
   configuration cfg_tb_latch at 67( 1641) + 0 on 4;
-file . "tb_flip_flop.vhdl" "20231002120120.000" "20231005184227.176":
+file . "tb_flip_flop.vhdl" "20231006074824.000" "20231006141958.914":
   entity tb_flip_flop at 5( 124) + 0 on 4;
   architecture tb of tb_flip_flop at 11( 216) + 0 on 4;
   configuration cfg_tb_flip_flop at 70( 1773) + 0 on 4;
-file . "latch.vhdl" "20230926142024.000" "20231005184227.176":
+file . "latch.vhdl" "20231006074824.000" "20231006141958.913":
   entity latch at 1( 0) + 0 on 4;
   architecture bascule_d of latch at 13( 186) + 0 on 4;
-file . "flip_flop.vhdl" "20230926155520.000" "20231005184227.175":
+file . "flip_flop.vhdl" "20231006074824.000" "20231006141958.912":
   entity flip_flop at 1( 0) + 0 on 4;
   architecture bascule of flip_flop at 13( 201) + 0 on 4;
-file . "compteur.vhdl" "20231005164158.000" "20231005184227.164":
+file . "compteur.vhdl" "20231006074824.000" "20231006142014.041":
   entity compteur at 1( 0) + 0 on 4;
-  architecture behaviour of compteur at 13( 223) + 0 on 4;
+  architecture behaviour of compteur at 13( 239) + 0 on 4;
+file . "tb_compteur.vhdl" "20231006074824.000" "20231006141958.914":
+  entity tb_compteur at 5( 124) + 0 on 4;
+  architecture tb of tb_compteur at 11( 214) + 0 on 4;
+  configuration cfg_tb_compteur at 59( 1521) + 0 on 4;
