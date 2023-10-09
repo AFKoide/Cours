@@ -6,9 +6,9 @@ USE IEEE.std_logic_unsigned.all;
 -- Compteur 8 bits
 ENTITY feu IS 
 	PORT (
-        ReqV, ReqH             : IN STD_LOGIC;
-        h                      : IN STD_LOGIC;
-        RH, YH, VH, RV, YV, VV : OUT STD_LOGIC
+        ReqH       : IN STD_LOGIC;
+        h          : IN STD_LOGIC;
+        RH, YH, VH : OUT STD_LOGIC
 	);
 END feu;
 
@@ -16,26 +16,15 @@ END feu;
 ARCHITECTURE Behaviour OF feu IS
 SIGNAL compteur_h : std_logic_vector(3 DOWNTO 0) := "0000";
 SIGNAL reset_h : std_logic := '0';
-SIGNAL compteur_v : std_logic_vector(3 DOWNTO 0) := "0000";
-SIGNAL reset_v : std_logic := '0';
 
 type StateType is (R_H, Y_H, V_H, R_V, Y_V, V_V);
-signal present_state_v, next_state_v, present_state_h, next_state_h : StateType;
+signal present_state_h, next_state_h : StateType;
 BEGIN
     clk_h : process (h,reset_h) BEGIN
             IF rising_edge(reset_h) THEN
             ELSIF rising_edge(h) THEN
                     compteur_h <= compteur_h + '1';
                     present_state_h <= next_state_h;
-            END if;
-    END process;
-
-    clk_v : process (h,reset_v) BEGIN
-            IF rising_edge(reset_v) THEN
-                compteur_v <= "0000";
-            ELSIF rising_edge(h) THEN
-                    compteur_v <= compteur_v + '1';
-                    present_state_v <= next_state_v;
             END if;
     END process;
 
