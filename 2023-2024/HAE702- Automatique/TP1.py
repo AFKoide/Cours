@@ -1,9 +1,8 @@
-plt.close('all')
-
 #%% Introduction
 import numpy as np
 import matplotlib.pyplot as plt
 from control.matlab import *
+plt.close('all')
 
 #fonction de transfert H(s)=$1/(s^2+2s+3)$
 num = [1.0]
@@ -96,9 +95,9 @@ def equtf():
 def equvec():
     A = [[0,1],[-0.7,0.1]]
     B = [[0],[1]]
-    C = [[-0.7,0.1]]
-    D = [[1]]
-    R1 = ss(A,B,C,D)
+    C = [[0,1]]
+    D = [[0]]
+    R1 = ss(A,B,C,D,1)
 #    print("Equation d'état:",R1)
     y,T = step(R1)
     plt.figure()
@@ -107,7 +106,7 @@ def equvec():
 
 
 # Appel des fonctions
-equ2(100)
+equ2(40)
 H = equtf()
 R1 = equvec()
 
@@ -121,11 +120,10 @@ print("Fonction de Transfert issue de la Représentation d'état R1:",TF)
 R2 = tf2ss(H)
 print("Représentation d'état R2 issue de la Fonction de Transfert :\n",R2)
 
-y1, T1 = step(R1,140)
-y2, T2 = step(R2,140)
+y1, T1 = step(R1,40)
+y2, T2 = step(R2,40)
 
 plt.figure()
 plt.plot(T1,y1);plt.plot(T2,y2)
 plt.grid('on');plt.title("Comparaison de R1 et R2");plt.legend(["R1","R2"]);plt.show()
-
 # %%
