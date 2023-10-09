@@ -4,7 +4,7 @@ USE IEEE.STD_LOGIC_1164.ALL;
 -- Compteur 8 bits
 ENTITY feu IS
 	PORT (
-        ReqV, ReqH             : IN STD_LOGIC;
+        ReqV, ReqH: IN STD_LOGIC;
         h, r                   : IN STD_LOGIC;
         RH, YH, VH, RV, YV, VV : OUT STD_LOGIC
 	);
