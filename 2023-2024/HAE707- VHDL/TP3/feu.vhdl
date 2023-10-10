@@ -10,10 +10,11 @@ ENTITY feu IS
         h                      : IN STD_LOGIC;
         RH, YH, VH, RV, YV, VV : OUT STD_LOGIC
 	);
-END feu;
+END ENTITY;
 
 -- Programme
 ARCHITECTURE Behaviour OF feu IS
+<<<<<<< Updated upstream
 SIGNAL compteur_h : std_logic_vector(3 DOWNTO 0) := "0000";
 SIGNAL reset_h : std_logic := '0';
 SIGNAL compteur_v : std_logic_vector(3 DOWNTO 0) := "0000";
@@ -50,6 +51,36 @@ BEGIN
                     ELSIF compteur_h = 14 THEN next_state_h <= Y_H;
                     ELSE next_state_h <= R_H;
                     END IF;
+=======
+SIGNAL compteur    : std_logic_vector(3 DOWNTO 0) := "0000";
+SIGNAL compteur_sv : std_logic_vector(3 DOWNTO 0);
+type StateType is (R_H, Y_H, V_H, R_V, Y_V, V_V);
+signal present_state_v, next_state_v, present_state_h, next_state_h : StateType;
+BEGIN
+        clk : process (h,r) BEGIN
+                IF r = '1' THEN
+                        compteur <= "0000";
+                        present_state_v <= R_V;
+                        present_state_h <= R_H;
+                ELSIF rising_edge(h) THEN
+                        compteur <= compteur + '1';
+                        present_state_v <= next_state_v;
+                        present_state_h <= next_state_h;
+                END if;
+        END process;
+
+
+
+        state_comb_h : process(ReqH,ReqV,compteur) BEGIN
+                case present_state_h is 
+                        WHEN V_H => VH <= '1';
+                        IF ReqH = '1' THEN 
+                        compteur_sv <= compteur;
+
+                        ELSIF compteur = 14 THEN next_state_h <= Y_H;
+                        ELSE next_state_h <= R_H;
+                        END IF;
+>>>>>>> Stashed changes
 
                     WHEN Y_H => YH <= '1';
                     if compteur_h = 3 THEN next_state_h <= R_H;
