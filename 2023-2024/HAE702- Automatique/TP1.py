@@ -3,11 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from control.matlab import *
 plt.close('all')
-<<<<<<< Updated upstream
 
-=======
- 
->>>>>>> Stashed changes
 #fonction de transfert H(s)=$1/(s^2+2s+3)$
 num = [1.0]
 den = [1.0,2.0,3.0]
