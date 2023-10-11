@@ -82,18 +82,12 @@ def Resolution(intervalle):
     comparer = np.zeros(intervalle*20)
     m=0
     f = lambda x: 0.8-(np.exp((-(x-3)**2-5)/100)-np.sin(pi*((x/30)+1)))
-    x = np.arange(-intervalle*10,intervalle*10)*0.1 
-    for i in x:
-        comparer[m] = np
+    n = np.arange(-intervalle*10,intervalle*10)*0.1 
 
-plt.plot(x,f(x))
 
+    plt.plot(n,f(n))
+    return f
+
+f = Resolution(20)
 
 print("Mafonction = 0 pour x = ",resol.fmin(f,20))
-# %%
-import scipy.optimize as resol
-x = np.arange(-200,200)*0.1
-
-f = lambda x: 0.8-(np.exp((-(x-3)**2-5)/100)-np.sin(pi*((x/30)+1)))
-for i in x:
-    print(resol.fmin(f, i))
