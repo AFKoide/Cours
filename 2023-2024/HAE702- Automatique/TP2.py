@@ -1,5 +1,5 @@
 "GOOGLE COLAB : mettre au début du code : !pip install control"
-"Ca permet d'installer le code."
+"Ca permet d'installer le control."
 
 #%% Introduction
 import numpy as np
@@ -18,17 +18,17 @@ def MCC(R,L,Ke,Km,Fv,J):
     y,T = step(sys_ss)
     plt.figure()
     plt.plot(T,y);plt.grid('on');plt.title("Angle du Moteur")
-    "QUESTION 1: La matrice C est égale à [[0,0,1]] D = 0"
+    "QUESTION 1: La matrice C est égale à [0,0,1] et D = 0"
     
     H = ss2tf(sys_ss)
     print("La fonction de transfert du moteur est",H)
     poles = pole(H)
     print("Les pôles de H sont:",poles)
-    "QUESTION 4: un des pôle de H est nul, donc pas négatif."
+    "QUESTION 4: un des pôle de H est nul, donc le système instable car pas strictement négatif."
     
     
     commandabilite = ctrb(A,B)
-    print("La commandabilité est:",np.linalg.det(commandabilite))
+    print("La commandabilité est:",np.linalg.det(commandabilite),"le système est donc commandable car != 0")
     
     
     K = place(A,B,[-10,-20,-100])
@@ -113,4 +113,5 @@ dessinePosVelAcc(A-B@K,B,C-D@K,D)
 # K1 = 1 * B.T @ S
 K = place(A,B,E)
 dessinePosVelAcc(A-B@K,B,C-D@K,D)
-"QUESTION 14: En utilisant le "
+"QUESTION 14: En utilisant la fonction place, on obtient les mêmes courbes :"
+    "La fonction lqr renvoie les valeurs propres du système, que l'on utilise pour déterminer K."
