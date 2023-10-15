@@ -43,7 +43,7 @@ begin
     Entree : process
     begin
         reset <= '1';
-        wait for 1ns;
+        wait for 1 ns;
         reset <= '0';
         config <= '0';
         wait for 20 * TbPeriod;

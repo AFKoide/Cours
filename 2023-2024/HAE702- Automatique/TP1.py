@@ -126,4 +126,5 @@ y2, T2 = step(R2,40)
 plt.figure()
 plt.plot(T1,y1);plt.plot(T2,y2)
 plt.grid('on');plt.title("Comparaison de R1 et R2");plt.legend(["R1","R2"]);plt.show()
-# %%
+
+"On peut observer un décalage entre le signal R1 et R2 d'environ 1 : cela s'explique par l'initialisation du signal R1 qui est nul à t=0 tandis que l'équation d'état est déjà initialisé."

@@ -1,9 +1,5 @@
--- Testbench automatically generated online
--- at https://vhdl.lapinoo.net
--- Generation date : 5.10.2023 16:41:57 UTC
-
-library ieee;
-use ieee.std_logic_1164.all;
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
 
 entity tb_compteur is
 end tb_compteur;
@@ -43,7 +39,7 @@ begin
     Entree : process
     begin
         reset <= '1';
-        wait for 1ns;
+        wait for 1 ns;
         reset <= '0';
         config <= '0';
         wait for 20 * TbPeriod;

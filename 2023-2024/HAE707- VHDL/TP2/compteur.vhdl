@@ -2,6 +2,7 @@ LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;    
 USE IEEE.std_logic_arith.all;   
 USE IEEE.std_logic_unsigned.all;
+USE IEEE.NUMERIC_STD.ALL; 
 
 -- Compteur 8 bits
 ENTITY compteur IS
