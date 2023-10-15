@@ -16,7 +16,7 @@ def MCC(R,L,Ke,Km,Fv,J):
     print(sys_ss)
     
     y,T = step(sys_ss)
-    plt.figure();plt.xlabel("Le système est instable.")
+    plt.figure()
     plt.plot(T,y);plt.grid('on');plt.title("Angle du Moteur")
     "QUESTION 1: La matrice C est égale à [0,0,1] et D = 0"
     
@@ -41,9 +41,9 @@ def MCC(R,L,Ke,Km,Fv,J):
     sysc_ss = ss(A-B@K,B,C-D@K,D)
     print(sysc_ss)
     y,T = step(sysc_ss)
-    plt.figure();plt.xlabel("Avec le correcteur, le système est stable mais a une importante erreur de position.")
+    plt.figure()
     plt.plot(T,y);plt.grid('on');plt.title("Angle du Moteur")
-
+    
     k1 = 1
     Achapeau = np.block([[A,np.zeros((3, 1))],[-C,np.zeros((1, 1))]])
     Bchapeau = np.block([[B],[0]])
@@ -53,9 +53,9 @@ def MCC(R,L,Ke,Km,Fv,J):
     syscchapeau_ss = ss(Achapeau-Bchapeau@Kchapeau,np.array([[0],[0],[0],[1]]),Cchapeau,D)
     print(syscchapeau_ss)
     y,T = step(syscchapeau_ss)
-    plt.figure();plt.xlabel("Le système est plus lent qu'avec seulement le correcteur P, mais l'erreur de position est nulle")
+    plt.figure()
     plt.plot(T,y);plt.grid('on');plt.title("Angle du Moteur")
-    
+
 
 if __name__ == '__main__':
     plt.close('all')
@@ -109,14 +109,9 @@ Q = np.eye(2); R = np.eye(1)
 K, S, E = lqr(A, B, Q, R)
 
 dessinePosVelAcc(A-B@K,B,C-D@K,D)
-"Observation de la courbe: le système doit se mettre en mouvement donc l'acceleration est importante au début."
-"Quand le système accélère, la vélocité augmente et la position également, et l'accélération diminue."
-"Quand on approche de la valeur finale prévue, l'accélération devient négative : on freine."
-"Freiner fait diminuer la vitesse, et donc la variation de la position. A la valeur de finale de la position demandée, la vitesse et l'accélération sont nulles."
-
 
 # K1 = 1 * B.T @ S
 K = place(A,B,E)
 dessinePosVelAcc(A-B@K,B,C-D@K,D)
 "QUESTION 14: En utilisant la fonction place, on obtient les mêmes courbes :"
-"La fonction lqr renvoie les valeurs propres du système, que l'on utilise pour déterminer K."
+    "La fonction lqr renvoie les valeurs propres du système, que l'on utilise pour déterminer K."
