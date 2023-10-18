@@ -1,5 +1,4 @@
 #%% Histogramme
-import math as m
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -11,10 +10,10 @@ def Histogramme(*args):# data, intervalle, p
         p = args[2]
     elif len(args) == 2:
         intervalle = args[1]
-        p = 50
+        p = 10
     else:
         intervalle = [min(data),max(data)]
-        p = 50
+        p = 10
     
     
     
@@ -55,4 +54,5 @@ Fichier_de_donnee.close()
 
 Mode, Histo = Histogramme(X)
 
-plt.bar(Mode, Histo,0.1)
+plt.bar(Mode, Histo)
+plt.hist(X);plt.title("PLT")
