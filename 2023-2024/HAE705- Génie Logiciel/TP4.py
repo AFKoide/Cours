@@ -1,4 +1,5 @@
 #%% Histogramme
+import math as m
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -44,8 +45,11 @@ intervaller = [1,5]
 
 Mode, Histo = Histogramme(N)
 
-plt.bar(Mode, Histo,0.1)
+plt.bar(Mode, Histo)
+plt.figure()
+plt.hist(10,Histo);plt.title("PLT")
 
+#%%
 
 Fichier_de_donnee = open('Echantillons.txt','r')
 data_du_fichier = Fichier_de_donnee.readlines()
@@ -55,4 +59,5 @@ Fichier_de_donnee.close()
 Mode, Histo = Histogramme(X)
 
 plt.bar(Mode, Histo)
+plt.figure()
 plt.hist(X);plt.title("PLT")
