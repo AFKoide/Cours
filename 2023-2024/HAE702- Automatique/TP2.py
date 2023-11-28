@@ -66,7 +66,6 @@ if __name__ == '__main__':
 import numpy as np
 import matplotlib.pyplot as plt
 from control.matlab import *
-plt.close('all')
 
 A = np.array([[0,1],[0,0]])
 B = np.array([[0],[1]])
@@ -114,4 +113,6 @@ dessinePosVelAcc(A-B@K,B,C-D@K,D)
 K = place(A,B,E)
 dessinePosVelAcc(A-B@K,B,C-D@K,D)
 "QUESTION 14: En utilisant la fonction place, on obtient les mêmes courbes :"
-    "La fonction lqr renvoie les valeurs propres du système, que l'on utilise pour déterminer K."
+"La fonction lqr renvoie les valeurs propres du système, que l'on utilise pour déterminer K."
+
+# %%
