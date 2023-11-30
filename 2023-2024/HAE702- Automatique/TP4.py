@@ -26,9 +26,9 @@ def calculateAndDrawRobotPose(v, w, xPrev, yPrev, thetaPrev, col) :
     # xCur = xPrev
     # yCur = yPrev
     # thetaCur = thetaPrev
-    thetaCur = thetaPrev + w
-    xCur = xPrev + v*(cos(thetaPrev)) # (cos(thetaCur) - cos(thetaPrev)) # (cos(thetaPrev) - cos(thetaPrev))
-    yCur = yPrev + v*(sin(thetaPrev)) # (sin(thetaCur) - sin(thetaPrev)) # (sin(thetaPrev) - sin(thetaPrev))
+    thetaCur = thetaPrev + w*dT
+    xCur = xPrev + v*np.cos(thetaPrev)*dT # (cos(thetaCur) - cos(thetaPrev)) # (cos(thetaPrev) - cos(thetaPrev))
+    yCur = yPrev + v*np.sin(thetaPrev)*dT # (sin(thetaCur) - sin(thetaPrev)) # (sin(thetaPrev) - sin(thetaPrev))
 
     #laisser les lignes ci-dessous
     if i % 50 == 0 :
@@ -44,6 +44,47 @@ def calculateAndDrawRobotPose(v, w, xPrev, yPrev, thetaPrev, col) :
 
 
 if __name__ =='__main__':
+    # plt.figure(0)
+    # N = 1000 #iterations
+    # x = np.zeros(N+1)
+    # y = np.zeros(N+1)
+    # theta = np.zeros(N+1)
+    # vel = np.zeros(N+1)
+    # omega = np.zeros(N+1)
+    
+    # #control to desired position
+    # #initial pose
+    # x[0] = 0
+    # y[0] = 0 
+    # theta[0] = -3.1415
+    # drawRobot(x[0], y[0], theta[0], 'blue')    
+    # #desired position
+    # x_des = 4
+    # y_des = 4
+    # #loop
+    # for i in range (1,N+1):
+    #     #TODO feedback control : commander vel et theta
+    #     vel[i] = np.sqrt((x_des-x[i-1])**2 + (y_des-y[i-1])**2)
+    #     omega[i] = normalizeAngle(atan2(y_des - y[i-1], x_des - x[i-1]) - theta[i-1])
+        
+        
+    #     x[i], y[i], theta[i] = calculateAndDrawRobotPose(vel[i], omega[i], x[i-1], y[i-1], theta[i-1], 'lightsteelblue')
+    #     if (vel[i] <= 0.001):
+    #         break
+        
+    # #draw final robot pose
+    # drawRobot(x[i], y[i], theta[i], 'midnightblue')
+    # plt.plot(x_des, y_des, 'ko')
+    
+    # plt.title("Le robot doit aller là")
+    # plt.legend(["Position Init Robot","Trajectoire du robot","Position Finale Robot"])
+    # plt.show()
+    
+    
+    
+    
+    
+    plt.figure(1)
     N = 1000 #iterations
     x = np.zeros(N+1)
     y = np.zeros(N+1)
@@ -51,49 +92,47 @@ if __name__ =='__main__':
     vel = np.zeros(N+1)
     omega = np.zeros(N+1)
     
-    #control to desired position
+    #follow a path
     #initial pose
-    x[0] = 4 
-    y[0] = -2 
-    theta[0] = -3.1415
-    drawRobot(x[0], y[0], theta[0], 'blue')    
-    #desired position
-    x_des = -4
-    y_des = 4
-    #loop
-    for i in range (1,N+1):
-        #TODO feedback control : commander vel et omega
-        vel[i] = 2
-        omega[i] = 2
-
-
-        x[i], y[i], theta[i] = calculateAndDrawRobotPose(vel[i], omega[i], x[i-1], y[i-1], theta[i-1], 'lightsteelblue')
-    #draw final robot pose
-    drawRobot(x[i], y[i], theta[i], 'midnightblue')
-
-
-    #follow a patheta
-    #initial pose
-    x[0] = -1
-    y[0] = -2 
+    x[0] = 2
+    y[0] = 0 
     theta[0] = 0
     drawRobot(x[0], y[0], theta[0], 'green')
-    #desired patheta ax+by+c=0
-    xLine = np.linspace(-5,5,100)
+
+    xLine = np.linspace(-5,5,100) ; 
     yLine = 0*xLine
+    
+    Kd = -1 ; Ka = -1
+    
+    #desired path ax+by+c=0
+    a=1 ; b=1 ; c=1 ; beta = -atan2(a,b)
+    #trace la trajectoire voulue
+    x_courbe = np.linspace(-5,5,100); y_courbe = np.linspace(-5,5,100)
+    droite = a*x_courbe + b*y_courbe + c
+    plt.plot(x_courbe,droite);
+    
     #loop
     for i in range (1,N+1):
         #TODO feedback control
-        vel[i] = 0
-        omega[i] = 0
+        vel[i] = 1
+        
+        # Suivit de la ligne noire
+        # d = y[i-1]
+        # alpha = normalizeAngle(theta[i-1])
+        # omega[i] = Kd*d + Ka*alpha
+        
+        # Suivit d'une trajectoire donnée
+        d = (a*x[i-1]+b*y[i-1]+c)/(sqrt(a**2+b**2))
+        alpha = normalizeAngle(beta-theta[i-1])
+        omega[i] = Kd*d + Ka*alpha
+    
+        
         x[i], y[i], theta[i] = calculateAndDrawRobotPose(vel[i], omega[i], x[i-1], y[i-1], theta[i-1], 'springgreen')
     #draw final robot pose
     drawRobot(x[i], y[i], theta[i], 'darkgreen')
-    #draw desired position and patheta
-    plt.plot(x_des, y_des, 'ko')
+    #draw desired path
     plt.plot(xLine, yLine, '-k')
-    #show plot
-    plt.xlim(-5, 5)
-    plt.ylim(-5, 5)    
-    plt.show()
-    plt .figure()    
+    #show plot 
+    plt.title("Le robot doit suivre ça")
+    plt.legend(["Robot","Trajectoire voulue","Trajectoire du robot"])
+    plt.show()  
