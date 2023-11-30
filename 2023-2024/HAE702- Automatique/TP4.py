@@ -123,7 +123,7 @@ if __name__ =='__main__':
         
         # Suivit d'une trajectoire donnée
         d = (a*x[i-1]+b*y[i-1]+c)/(sqrt(a**2+b**2))
-        alpha = normalizeAngle(beta-theta[i-1])
+        alpha = normalizeAngle(theta[i-1]-beta) # alpha = normalizeAngle(beta-theta[i-1])
         omega[i] = Kd*d + Ka*alpha
     
         
