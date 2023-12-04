@@ -18,14 +18,14 @@ def normalizeAngle(angle):
     return angle 
 
 def drawRobot (x, y, t, color) :
-     l=0.5 #robot size
-     point1 = [x + l*sin(t), y - l*cos(t)]
-     point2 = [x + 4*l*cos(t), y + 4*l*sin(t)]
-     point3 = [x - l*sin(t), y + l*cos(t)]
-     x_values = [point1[0], point2[0], point3[0], point1[0]]
-     y_values = [point1[1], point2[1], point3[1], point1[1]]
-     plt.plot(x_values, y_values, color)
-     
+    l=0.5 #robot size
+    point1 = [x + l*sin(t), y - l*cos(t)]
+    point2 = [x + 4*l*cos(t), y + 4*l*sin(t)]
+    point3 = [x - l*sin(t), y + l*cos(t)]
+    x_values = [point1[0], point2[0], point3[0], point1[0]]
+    y_values = [point1[1], point2[1], point3[1], point1[1]]
+    plt.plot(x_values, y_values, color)
+    
 def calculateAndDrawRobotPose(v, w, xPrev, yPrev, thPrev, col) :       
     dT = 0.05 #seconds
     #TODO changer ici

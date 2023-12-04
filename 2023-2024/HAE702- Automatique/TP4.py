@@ -44,41 +44,40 @@ def calculateAndDrawRobotPose(v, w, xPrev, yPrev, thetaPrev, col) :
 
 
 if __name__ =='__main__':
-    # plt.figure(0)
-    # N = 1000 #iterations
-    # x = np.zeros(N+1)
-    # y = np.zeros(N+1)
-    # theta = np.zeros(N+1)
-    # vel = np.zeros(N+1)
-    # omega = np.zeros(N+1)
+    plt.figure(0)
+    N = 1000 #iterations
+    x = np.zeros(N+1)
+    y = np.zeros(N+1)
+    theta = np.zeros(N+1)
+    vel = np.zeros(N+1)
+    omega = np.zeros(N+1)
     
-    # #control to desired position
-    # #initial pose
-    # x[0] = 0
-    # y[0] = 0 
-    # theta[0] = -3.1415
-    # drawRobot(x[0], y[0], theta[0], 'blue')    
-    # #desired position
-    # x_des = 4
-    # y_des = 4
-    # #loop
-    # for i in range (1,N+1):
-    #     #TODO feedback control : commander vel et theta
-    #     vel[i] = np.sqrt((x_des-x[i-1])**2 + (y_des-y[i-1])**2)
-    #     omega[i] = normalizeAngle(atan2(y_des - y[i-1], x_des - x[i-1]) - theta[i-1])
+    #control to desired position
+    #initial pose
+    x[0] = 0
+    y[0] = 0 
+    theta[0] = -3.1415
+    drawRobot(x[0], y[0], theta[0], 'blue')    
+    #desired position
+    x_des = 100
+    y_des = -4
+    #loop
+    for i in range (1,N+1):
+        vel[i] = np.sqrt((x_des-x[i-1])**2 + (y_des-y[i-1])**2)
+        omega[i] = normalizeAngle(atan2(y_des - y[i-1], x_des - x[i-1]) - theta[i-1])
         
+        x[i], y[i], theta[i] = calculateAndDrawRobotPose(vel[i], omega[i], x[i-1], y[i-1], theta[i-1], 'lightsteelblue')
+        if (vel[i] <= 0.001):
+            print(vel[i])
+            break
         
-    #     x[i], y[i], theta[i] = calculateAndDrawRobotPose(vel[i], omega[i], x[i-1], y[i-1], theta[i-1], 'lightsteelblue')
-    #     if (vel[i] <= 0.001):
-    #         break
-        
-    # #draw final robot pose
-    # drawRobot(x[i], y[i], theta[i], 'midnightblue')
-    # plt.plot(x_des, y_des, 'ko')
+    #draw final robot pose
+    drawRobot(x[i], y[i], theta[i], 'midnightblue')
+    plt.plot(x_des, y_des, 'ko')
     
-    # plt.title("Le robot doit aller là")
-    # plt.legend(["Position Init Robot","Trajectoire du robot","Position Finale Robot"])
-    # plt.show()
+    plt.title("Le robot doit aller là")
+    plt.legend(["Position Init Robot","Trajectoire du robot","Position Finale Robot"])
+    plt.show()
     
     
     
@@ -94,8 +93,8 @@ if __name__ =='__main__':
     
     #follow a path
     #initial pose
-    x[0] = 2
-    y[0] = 0 
+    x[0] = 4
+    y[0] = -1
     theta[0] = 0
     drawRobot(x[0], y[0], theta[0], 'green')
 
@@ -105,11 +104,11 @@ if __name__ =='__main__':
     Kd = -1 ; Ka = -1
     
     #desired path ax+by+c=0
-    a=1 ; b=1 ; c=1 ; beta = -atan2(a,b)
+    a=7 ; b=6 ; c=5 ; beta = -atan2(a,b)
     #trace la trajectoire voulue
-    x_courbe = np.linspace(-5,5,100); y_courbe = np.linspace(-5,5,100)
-    droite = a*x_courbe + b*y_courbe + c
-    plt.plot(x_courbe,droite);
+    x_courbe = np.linspace(-5,5,100);
+    y_courbe = -(a*x_courbe + c)/b
+    plt.plot(x_courbe,y_courbe);
     
     #loop
     for i in range (1,N+1):
