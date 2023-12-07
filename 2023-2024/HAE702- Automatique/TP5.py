@@ -54,7 +54,6 @@ if __name__ == "__main__":
     J = np.zeros((2,2)); vitesse = np.array([[0.1],[0]])
 
     q = np.zeros((2,1))
-    x = 0; y = 0; x1 = 0; y1 = 0
    
     q[0] = 0.2; q[1] = 0.6
     for i in range(1,100):
@@ -65,7 +64,7 @@ if __name__ == "__main__":
         J1 = np.linalg.inv(J)
 
         tmp1 = q
-        q = (q + (J1 @ vitesse)*dT).reshape((2,1))
+        q = (q + np.dot(J1,vitesse)*dT).reshape((2,1))
         
         
         MGD(theta1,theta2)
