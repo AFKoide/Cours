@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 ## CALCUL DE L1 L2 L0-L3 
 q11= np.radians(90) ;q21= np.radians(51) ;q31= np.radians(42) ;q41= np.radians(90)
-q12= np.radians(0)  ;q22= np.radians(65) ;q32= np.radians(21) ;q42= np.radians(45)
+q12= np.radians(0)  ;q22= np.radians(65) ;q32= np.radians   (21) ;q42= np.radians(45)
 x1 = 0.229          ;x2 = 0.226          ;x3 = 0.325          ;x4 = 0.181
 y1 = 0.178          ;y2 = 0              ;y3 = 0.073          ;y4 = 0.063
 
