@@ -34,6 +34,7 @@ n3 = -7.64      # Capteur de vitesse [V/m/s]
 n4 = -52.27     # Capteur de vitesse angulaire [V/rd/s]
 Ks= Kf*1.;        # Coefficient de friction in N
 gs= -44.29
+rd = 0.2
 
 
 # définition des matrices d'état du système linéarisé
@@ -106,10 +107,10 @@ def pendule_MNL(u, i):
     dxx2=np.linalg.inv(A1)@np.array([[f1], [f2]])
     dx=np.block([[dxx1], [dxx2]])
     
-    dxx[0, i+1]=dx[0]
-    dxx[1, i+1]=dx[1]
-    dxx[2, i+1]=dx[2]
-    dxx[3, i+1]=dx[3]
+    dxx[0, i+1]=dx[0,0]
+    dxx[1, i+1]=dx[1,0]
+    dxx[2, i+1]=dx[2,0]
+    dxx[3, i+1]=dx[3,0]
     
     x[0, 0] = np.trapz([dxx[0, i], dxx[0, i+1]], dx=Te) + x[0, 0]
     x[1, 0] = np.trapz([dxx[1, i], dxx[1, i+1]], dx=Te) + x[1, 0]
@@ -125,19 +126,28 @@ def pendule_MNL(u, i):
 ##############################################################################
 # Question 7 : 
 
-# def observateur(u, y, x_hat):
-     
+def Observateur_Augmente(u, y, Avd,Bvd,Cvd,Dvd, Ld, x_cha):
+    a = Cvd @ x_cha
+    b = Dvd*u
     
+    y_cha = a.reshape((3,1)) + b
+    x_cha = Avd @ x_cha + Bvd*u + Ld.T @ (y - y_cha)
+    
+    return x_cha, y_cha
+     
+
+
+
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':  
     
-    
     # Question 1 : Analyse de stabilité
     sys_ss = ss(A,B,C,D)
     print(sys_ss)
     y,T = step(sys_ss)
+    # On peut aussi calculer les poles (ss2tf puis pole)
     plt.figure();plt.xlabel("Le système est instable.")
     plt.plot(T,y);plt.grid('on');plt.title("Evolution du pendule")
     plt.show()
@@ -150,56 +160,97 @@ if __name__ == '__main__':
     
     # Question 2 : Analyse d'observabilité
     observabilite = obsv(A,C)
-    print("Le rang de la matrice observabilité est:",np.linalg.matrix_rank(observabilite),". Le système est donc observable.")
+    print("Le rang de la matrice observabilité est:",np.linalg.matrix_rank(observabilite)   ,". Le système est donc observable.")
+    
     
     # Question 3 
     # définition de la représentation d'état du système augmenté
+    # définition de la matrice A
+    Av1 = np.array([[0., 0., 1., 0., 0.], [0., 0., 0., 1., 0.]])
+    tmp1 = np.array([[M+m, m*l], [m*l, J+m*l**2]])
+    tmp2 = np.array([[0., 0., -fr, 0., -1], [0., m*g*l, 0., -fphi, 0.]])
+    Av2 = np.linalg.inv(tmp1)@tmp2
+    Av = np.block([[Av1], [Av2], [np.zeros([1,5])]])
+    print("Av vaut\n", Av)
+
+    # définition de la matrice B
+    Bv= np.block([[B], [0]])
+    print("Bv vaut\n", Bv)
+
+    # Définition de la matrice C
+    Cv = np.block([[C, np.zeros([3, 1])]])
+    print("Cv vaut\n", Cv)
+    
+    # Définition de la matrice D
+    Dv = np.zeros([3, 1])
+    print("Dv vaut\n", Dv)
     
     
-      
+    sys_augmente_lineaire = ss(Av,Bv,Cv,Dv)
+    print("ss augmenté:",sys_augmente_lineaire)
     
     #Question 4
     # utiliser plutôt la fonction cont2discrete de scipy
-    
-    
+    Te = 1e-3
+    Avd, Bvd, Cvd, Dvd, Te= sc.signal.cont2discrete((Av,Bv,Cv,Dv), Te, "zoh");
+
+
     # Question 5 : Calcul des poles de l'observateur de Kalamn discret
+    p = [-20,-19,-18,-17,-21]
+    pd = [0,0,0,0,0]
+    for i in range(0,len(p)):
+        pd[i] = exp(Te*p[i])
+    print(pd)
     
     
     # Question 6 Calcul du gain de Kalman Ld
+    Ld = place(Avd.T,Cvd.T,pd)
     
-    
-      
     
     # Question 8 : # placement des poles du retour d'état et calcul de K
+    PSc = [-3, -4, -5, -6]
+    PSd = [0,0,0,0]
+    for i in range(len(PSc)):
+        PSd[i] = exp(Te*PSc[i])
+    
+    Ad, Bd, Cd, Dd, Te = sc.signal.cont2discrete((A,B,C,D), Te, "zoh");
+    K = place(Ad,Bd,PSd) # A & C si on est en discret, A et B si continue
     
     
     
-
     
-    for i in range(0, N) :
-        
+    for i in range(1, N+1) :
+        print(i)
         # Appel du système non linéaire
-        y = pendule_MNL(u, i)
+        y = pendule_MNL(u, i-1)
 
         # Question 7 : Appel de l'observateur
-       
-        
-        
-        # Question 9 :  Calcul de la commande
-        
+        x_hat, y_hat = Observateur_Augmente(u, y, Avd, Bvd, Cvd, Dvd, Ld, xx_hat[:,i-1])
 
+
+
+        # Question 9 :  Calcul de la commande
+        ur = -(K @ x_hat[0:4]) + gs*rd
+        us = x_hat[4] / Kf
+        
+        u = ur + us
+        
+        if len(u) != 1:
+            u = u[0,0]
+        
+        x_hat = np.array(x_hat)
         
         ###################################################
         # Sauvegarde des données
-        xx_hat[0, i]=x_hat[0]
-        xx_hat[1, i]=x_hat[1]
-        xx_hat[2, i]=x_hat[2]
-        xx_hat[3, i]=x_hat[3]
-        xx_hat[4, i]=x_hat[4]
-        
-        yy[0, i] = y[0]
-        yy[1, i] = y[1]
-        yy[2, i] = y[2]
+        xx_hat[0, i]=x_hat[0,0]
+        xx_hat[1, i]=x_hat[1,0]
+        xx_hat[2, i]=x_hat[2,0]
+        xx_hat[3, i]=x_hat[3,0]
+        xx_hat[4, i]=x_hat[4,0]
+            
+        yy[0, i] = y[0,0]
+        yy[1, i] = y[1,0]
+        yy[2, i] = y[2,0]
         
         t[i]=Te*i
         
@@ -229,9 +280,3 @@ if __name__ == '__main__':
     plt.legend(['y3(t)'])
     plt.title('vitesse de déplacement du chariot')
     plt.grid()
-    
-    
-    
-    
-
-

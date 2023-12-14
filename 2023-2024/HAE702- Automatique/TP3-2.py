@@ -48,7 +48,7 @@ def system(t, u):
     # calcul de la solution particulière (slide 26)
     xp = -np.linalg.inv(A)@B + exp_At @ np.linalg.inv(A) @ B
 
-    # solution complète de l'équation détat
+    # solution complète de l'équation d état
     x = xh + xp
 
     # calcul de la sortie du système
