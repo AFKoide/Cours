@@ -52,6 +52,8 @@ def Mahalanobis(x,y):
 
 
 """1- Vérifiez que ce signal est bien aléatoire,"""
+# Signal aléatoire : pour un même échantillon, générer le même signal donnera des courbes différentes.
+
 i = False
 while i != True:
     signal = monscript.signal_aleatoire()
@@ -59,82 +61,118 @@ while i != True:
         print("Le signal contient des NaN. Regénération...")
         continue
     else:
-        i = True
+        i += 1
 
-# Générer un signal avec une distribution normale
-moyenne = 0
-ecart_type = 1
-taille_de_l_echantillon = 1000
 
-signal_normale = np.random.normal(moyenne, ecart_type, taille_de_l_echantillon)
-plt.plot(signal);plt.plot(signal_normale)
-plt.legend(["Strauss","Numpy"])
-plt.show()
-
-Kolmogorov_Smirnov(signal,signal_normale)
-
-# statistic, p_value = kstest(signal,'norm',N=1000)
-# 
-# print(f"Statistique du test : {statistic}")
-# print(f"P-value : {p_value}")
-# 
-# alpha = 0.05
-# if p_value > alpha:
-#     print("Le signal semble être aléatoire.")
-# else:
-#     print("Le signal ne semble pas être aléatoire.")
 
 
 
 
 """2- Montrez que ce signal est stationnaire d’ordre 1."""
-# Signal Stationnaire : moyenne et variance constante dans le temps 
+npoints = 1000
 
-moyenne_signal = np.mean(signal)
-variance_signal = np.var(signal)
+echantillon = 100
+moyennes = np.zeros(npoints)
+i = 0
+signals = np.zeros((echantillon,npoints))
+while i < echantillon:
+    msignal = monscript.signal_aleatoire(npoints)
+    if np.isnan(msignal).any():
+        print("Le signal contient des NaN. Regénération...")
+        continue
+    signals[i] = msignal
+    i += 1
 
-# Vérifier la constance de la moyenne et de la variance
-stationnaire_ordre_1 = np.allclose(moyenne_signal, np.mean(signal)) and np.allclose(variance_signal, np.var(signal))
+moyennes = np.mean(signals,axis=0)
 
-if stationnaire_ordre_1:
-    print("Le signal est stationnaire d'ordre 1.")
-else:
-    print("Le signal n'est pas stationnaire d'ordre 1.")
+plt.subplot(3,1,1)
+plt.plot(moyennes)
+
+echantillon = 1000
+moyennes = np.zeros(npoints)
+i = 0
+signals = np.zeros((echantillon,npoints))
+while i < echantillon:
+    msignal = monscript.signal_aleatoire(npoints)
+    if np.isnan(msignal).any():
+        print("Le signal contient des NaN. Regénération...")
+        continue
+    signals[i] = msignal
+    i += 1
+
+moyennes = np.mean(signals,axis=0)
+
+plt.subplot(3,1,2)
+plt.plot(moyennes)
+
+echantillon = 10000
+moyennes = np.zeros(npoints)
+i = 0
+signals = np.zeros((echantillon,npoints))
+while i < echantillon:
+    msignal = monscript.signal_aleatoire(npoints)
+    if np.isnan(msignal).any():
+        print("Le signal contient des NaN. Regénération...")
+        continue
+    signals[i] = msignal
+    i += 1
+
+moyennes = np.mean(signals,axis=0)
+
+plt.subplot(3,1,3)
+plt.plot(moyennes)
+plt.show()
+
+# Plus on a de signaux utilisé, plus l'écart type diminue donc on peut dire que l'on tend vers une valeur moyenne temporelle. 
+
 
 
 
 
 """3- Montrez que ce signal est ergodique d’ordre 1"""
 # Signal Ergodique : moyenne temporelle d'une seule réalisation du signal = moyenne statistique de n réalisation du signal
-# Moyenne temporelle 
-moyenne_temporelle = moyenne_signal
 
 # Moyenne statistique
-echantillon = 4
-tolerance = 1e-6
-
-moyennes = np.zeros(echantillon)
+echantillon = 10000
+npoints = 10000
+moyennes = np.zeros(npoints)
+signals = np.zeros((echantillon,npoints))
 
 i = 0
 while i < echantillon:
-    msignal = monscript.signal_aleatoire()
+    msignal = monscript.signal_aleatoire(npoints)
     if np.isnan(msignal).any():
         print("Le signal contient des NaN. Regénération...")
         continue
-    moyennes[i] = np.mean(msignal)
+    signals[i] = msignal
     i += 1
 
-moyenne_statistique = np.mean(moyennes)
-ergodicite_ordre_1 = np.isclose(moyenne_temporelle, moyenne_statistique, rtol=tolerance)
+moyennes_statistique = np.mean(signals,axis=0)
+moyennes_temporel = np.mean(signals,axis=1)
+plt.hist(moyennes_temporel,bins=1000)
+plt.hist(moyennes_statistique,bins=1000)
+plt.xlim([110,125]);plt.legend(["Moyennes Temporelle","Moyenne Statistique"])
+plt.show()
+# Ergodique car les deux histogrammes sont superposés.
 
-print(f"La moyenne temporelle du signal est égal à {moyenne_temporelle} tandis que la moyenne statistique est de {moyenne_statistique}")
-if ergodicite_ordre_1:
-    print("Le signal est ergodique d'ordre 1.")
-else:
-    print("Le signal n'est pas ergodique d'ordre 1.")
+# Loi des grands nombres : plus on a d'échantillon, plus on tend vers la bonne valeur.
 
 
-"""4- Montrez que ce signal est stationnaire d’ordre 2,"""
+
+
+"""4- Montrez que ce signal est stationnaire d’ordre 2"""
+# Stationnaire d'ordre 2 : signal autocovariance 
+n,m = np.shape(signals)
+Mxx = np.zeros((n,m))
+
+for i in range(m):          # t1
+    for j in range(m):      # t1
+        for k in range(n):  # n
+            Mxx[i][j] += signals[k][i]*signals[k][j]
+        Mxx[i]j /= n
+
+
 """5- Montrez que ce signal est ergodique d’ordre 2,"""
+# Signal ergodique : signal autocorrélation 
 """6- Donnez la représentation AR de ce bruit en se limitant à un ordre 5."""
 
