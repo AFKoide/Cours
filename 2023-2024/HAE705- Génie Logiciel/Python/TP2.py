@@ -30,6 +30,7 @@ def Filtre_Passebas(*argument):
 
 plt.plot(temps, Filtre_Passebas(signal,0.1))
 plt.plot(temps, Filtre_Passebas(signal))
+plt.show()
 # Faire un filtre passe bas avec une procédure necessite de mettre le print dans la fonction : Une procédure est une fonction qui ne renvoie rien.
 
 #%% Filtrage du signal

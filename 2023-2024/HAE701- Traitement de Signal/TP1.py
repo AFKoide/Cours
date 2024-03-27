@@ -161,18 +161,28 @@ plt.show()
 
 
 """4- Montrez que ce signal est stationnaire d’ordre 2"""
-# Stationnaire d'ordre 2 : signal autocovariance 
-n,m = np.shape(signals)
-Mxx = np.zeros((n,m))
+# Stationnaire d'ordre 2 : signal autocovariant
+# 
 
-for i in range(m):          # t1
-    for j in range(m):      # t1
-        for k in range(n):  # n
-            Mxx[i][j] += signals[k][i]*signals[k][j]
-        Mxx[i]j /= n
+Xi = signal
+N = np.size(Xi)
+k = 5
+Xs = np.average(Xi)
+
+def autocovariance(Xi, N, k, Xs):
+    autoCov = 0
+    for i in np.arange(0, N-k):
+        autoCov += ((Xi[i+k])-Xs)*(Xi[i]-Xs)
+    return (1/(N-1))*autoCov
+
+print("Autocovariance:", autocovariance(Xi, N, k, Xs))
+
 
 
 """5- Montrez que ce signal est ergodique d’ordre 2,"""
 # Signal ergodique : signal autocorrélation 
+# Si 
+
+
 """6- Donnez la représentation AR de ce bruit en se limitant à un ordre 5."""
 
