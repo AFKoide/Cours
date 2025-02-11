@@ -11,29 +11,30 @@ np.set_printoptions(precision=2, suppress=True)  # 2 décimales
 theta10 = 20            # Angle entre l'axe x du repère global et l'axe x du bras 1.
 theta20 = 20            # Angle entre l'axe x du repère global et l'axe y du bras 2.
 
-beta1 = 90              # Angle d'ouverture du bras 1 (angle entre A1A2 et A1A4)
-beta2 = 90              # Angle d'ouverture du bras 2 (angle entre B1B2 et B1B4)
+beta1 = 125             # Angle d'ouverture du bras 1 (angle entre A1A2 et A1A4)
+beta2 = 125             # Angle d'ouverture du bras 2 (angle entre B1B2 et B1B4)
 beta = [np.radians(beta1), np.radians(beta2)]
 
 
 ## Distances
-O_T     = 25.0           # Longueur entre le centre du repère et l'organe terminal
+O_T     = 122.5         # Longueur entre le centre du repère et l'organe terminal
 
 ### Bras 1
-O_A1    = 0.0           # Longueur entre le centre du repère et le point A1 (origine du bras 1)
-A1_A2   = 72.648        # Longueur entre le point A1 ('origine' du bras) et A2 (première pliure du bras).
-A1_A4   = 72.648        # Longueur entre le point A1 et A4 (deuxième pliure du bras).
+O_A1    = 122.5         # Longueur entre le centre du repère et le point A1 (origine du bras 1)
+A1_A2   = 73.542        # Longueur entre le point A1 ('origine' du bras) et A2 (première pliure du bras).
+A1_A4   = 73.542        # Longueur entre le point A1 et A4 (deuxième pliure du bras).
 # A1_A3 a déterminer    # Longueur entre le point A1 et A3 (pliure centrale du bras).
 # A1_T  a déterminer    # Longueur entre le point A1 et T (organe terminal).
 
 ### Bras 2
-O_B1    = 0.0           # Longueur entre le centre du repère et le point B1 (origine du bras 2)
-B1_B2   = 72.648        # Longueur entre le point B1 ('origine' du bras) et B2 (première pliure du bras).
-B1_B4   = 72.648        # Longueur entre le point B1 et B4 (deuxième pliure du bras).
+O_B1    = 142.5         # Longueur entre le centre du repère et le point B1 (origine du bras 2)
+B1_B2   = 85.549        # Longueur entre le point B1 ('origine' du bras) et B2 (première pliure du bras).
+B1_B4   = 85.549        # Longueur entre le point B1 et B4 (deuxième pliure du bras).
 # B1_B3 a déterminer    # Longueur entre le point B1 et B3 (pliure centrale du bras).
 # B1_T  a déterminer    # Longueur entre le point B1 et T (organe terminal).
 
 
+# Autres paramètres
 arrow_length = 10       # Taille des axes du repère
 
 # ------------------------------------------------------------
@@ -94,17 +95,24 @@ def geometric_model(beta):
     beta1, beta2 = beta
     T_norm = O_T  # La norme de T est la distance entre le centre du repère et le point T (la distance est fixe)
 
+    R1 = O_A1
+    R2 = O_B1
+
+
     # ------------------------------------------------------------
     # Calcul de la position de T dans le repère global
     A1_T = 4 * A1_A2 * cos(beta1 / 2)
-    A2_T = 4 * B1_B2 * cos(beta2 / 2)
+    B1_T = 4 * B1_B2 * cos(beta2 / 2)
 
     theta1 = 2 * arcsin(A1_T / (2 * T_norm))
-    theta2 = 2 * arcsin(A2_T / (2 * T_norm))
+    theta2 = 2 * arcsin(B1_T / (2 * T_norm))
 
-    Tx = A1_T * sin(theta1 + np.radians(theta10))
-    Tz = A1_T * cos(theta1 + np.radians(theta10))
-    Ty = sqrt(A1_T**2 - Tx**2 - Tz**2)  # Hypothèse de projection perpendiculaire
+    r1 = T_norm - sin(theta1 + np.radians(theta10))
+    r2 = T_norm - sin(theta2 + np.radians(theta20))
+
+    Tx = T_norm * cos(theta1 + np.radians(theta10))
+    Ty = T_norm * cos(theta2 + np.radians(theta20))
+    Tz = sqrt(- T_norm**2 + r1**2 + r2**2)
 
     T = np.array([[Tx],
                   [Ty],
@@ -132,6 +140,8 @@ T, O = geometric_model(beta)
 print(f"Position de T dans le repère global :\n{T}")
 print(f"Orientation de T dans le repère global :\n{O}")
 
+
+# ------------------------------------------------------------
 
 # ------------------------------------------------------------
 # 2. On détermine les coordonées des points de l'articulation
