@@ -1,0 +1,14 @@
+1/ Faire un projet et sélectionner sa carte
+2/ Ecrire son code et le vérifier.
+3/ Cliquer sur "Run Synthesis" dans l'onglet "Synthesis".
+4/ Attendre le code soit synthétisé puis lancer l'implémentation.
+5/ Il faut maintenant configurer la carte : on va créer un fichier de contrainte.
+6/ Chercher basys-3 xdc sur google et copier tout le fichier .xdc dans le fichier de contrainte créé.
+7/ On associe les signaux aux composants de la carte. ATTENTION, le fichier est sensible à la casse :
+- Clock Signal : l'horloge de la carte
+- Switches : les petits boutons de la carte.
+- LED : les leds sur la carte.
+Sauvegarder le fichier.
+8/ Relancer l'implémentation.
+9/ "Open Hardware Manager"
+10/ "Open Target" -> "Auto Connect"

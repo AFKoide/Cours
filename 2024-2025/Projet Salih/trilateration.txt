@@ -1,0 +1,4 @@
+Pour trouver les cercles optimaux pour faire la trilatération, trouver les médiatrices. Par exemple :
+On a trois point A, B et C dans un espace 3D. On considère que le rayon des trois sphère est égal ou supérieur au norme qui les relis.
+On trouve la médiatrice de [AB] (la droite qui coupe AB en son centre, et qui passe par C). Le cercle optimal de C est alors sur le plan de la médiane (et de rayon donné).
+On fait la meme chose pour A et B, et il suffit alors de faire l'équation des intersections de cercles dans un espace 3D.

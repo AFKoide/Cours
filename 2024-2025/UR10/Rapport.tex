@@ -1,0 +1,160 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{enumitem}
+
+\title{Rapport sur le Contrôle et la Simulation du Robot UR10}
+\author{Curtis Martelet}
+\date{29/11/2024}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Introduction}
+Ce rapport sert de conclusion au travail réalisé sur la simulation et le contrôle du robot UR10.  
+Nous y développons le calcul et l'implémentation d'un système de commande déterminé avec la méthode de Denavit-Hartenberg modifiée.  
+Nous décrivons également les étapes de simulation sous \textit{CoppeliaSim} ainsi que les résultats obtenus.  
+
+\section{Modélisation du Robot UR10}
+\subsection{Présentation de la méthode DH}
+La méthode Denavit-Hartenberg (DH) permet de décrire la géométrie d'un robot manipulateur.  
+Chaque articulation est modélisée par une matrice de transformation homogène qui exprime la position et l'orientation d'un repère local par rapport au repère précédent.  
+
+\subsection{Schéma du robot}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{repere.png}
+    \caption{Schéma du robot avec repères}
+\end{figure}
+
+\subsection{Paramètres DH}
+\subsubsection{Simulation}
+Dans le cas de la simulation dans \textit{CoppeliaSim}, les paramètres DH sont modifiés pour aligner les axes des repères du simulateur.  
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    Joint & $\sigma_j$ & $\alpha_{j-1}$ (rad) & $a_{j-1}$ (m) & $\theta_j$ (rad) & $d_j$ (m) \\ \hline
+    1 & 0 & 0 & 0 & $\theta_1$ & $r_1$ \\ \hline
+    2 & 0 & $\pi/2$ & 0 & $\theta_2 - \pi/2$ & $r_2$ \\ \hline
+    3 & 0 & 0 & $-a_2$ & $\theta_3$ & 0 \\ \hline
+    4 & 0 & 0 & $-a_3$ & $\theta_4$ & 0 \\ \hline
+    5 & 0 & $\pi/2$ & 0 & $\theta_5 - \pi/2$ & $r_5$ \\ \hline
+    6 & 0 & $-\pi/2$ & 0 & $\theta_6$ & 0 \\ \hline
+    \end{tabular}
+    \caption{Tableau DH pour la simulation.}
+\end{table}
+
+\subsubsection{Robot Réel}
+Pour le robot réel, les repères respectent directement la configuration physique du robot, ce qui entraîne une différence au niveau des angles des joints.  
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    Joint & $\sigma_j$ & $\alpha_{j-1}$ (rad) & $a_{j-1}$ (m) & $\theta_j$ (rad) & $d_j$ (m) \\ \hline
+    1 & 0 & 0 & 0 & $\theta_1$ & $r_1$ \\ \hline
+    2 & 0 & $\pi/2$ & 0 & $\theta_2$ & $r_2$ \\ \hline
+    3 & 0 & 0 & $-a_2$ & $\theta_3$ & 0 \\ \hline
+    4 & 0 & 0 & $-a_3$ & $\theta_4$ & 0 \\ \hline
+    5 & 0 & $\pi/2$ & 0 & $\theta_5$ & $r_5$ \\ \hline
+    6 & 0 & $-\pi/2$ & 0 & $\theta_6$ & 0 \\ \hline
+    \end{tabular}
+    \caption{Tableau DH pour le robot réel.}
+\end{table}
+
+Nous avons retiré les décalages de $\pi/2$ sur les articulations 2 et 5.
+
+\section{Formules et Modélisation Mathématique}
+Dans cette partie, nous détaillons les étapes et calculs utilisés dans la commande du robot.  
+Le système de commande comprend les blocs suivants :
+\begin{itemize}
+    \item Un générateur de trajectoire.
+    \item Un modèle géométrique.
+    \item Un calcul de l'erreur.
+    \item Un contrôleur pour calculer les vitesses articulaires désirées.
+\end{itemize}
+
+\subsection{Générateur de Trajectoire}
+\subsubsection{Calcul des positions et vitesses désirées}
+Les positions et vitesses désirées sont calculées à l'aide d'un polynôme de cinquième degré :
+
+\[
+r(t) = 10 \left( \frac{t}{t_f} \right)^3 - 15 \left( \frac{t}{t_f} \right)^4 + 6 \left( \frac{t}{t_f} \right)^5
+\]
+
+\[
+r_{\text{point}}(t) = 30 \frac{t^2}{t_f^3} - 60 \frac{t^3}{t_f^4} + 30 \frac{t^4}{t_f^5}
+\]
+
+La position et la vitesse désirée sont ensuite interpolées :
+
+\[
+x_{\text{désirée}} = x_{\text{init}} + r(t) (x_{\text{final}} - x_{\text{init}})
+\]
+\[
+x_{\text{point désirée}} = r_{\text{point}}(t) (x_{\text{final}} - x_{\text{init}})
+\]
+
+\subsubsection{Calcul de l'orientation désirée}
+L'orientation désirée est obtenue par interpolation.  
+
+\paragraph{Matrice de rotation relative}
+\[
+R = R_{\text{init}}^T \cdot R_{\text{final}}
+\]
+
+\paragraph{Angle de rotation}
+\[
+\cos(\theta) = \frac{\text{Tr}(R) - 1}{2}
+\]
+\[
+\sin(\theta) = \frac{\sqrt{(R_{32} - R_{23})^2 + (R_{13} - R_{31})^2 + (R_{21} - R_{12})^2}}{2}
+\]
+\[
+\theta = \tan^{-1}\left(\frac{\sin(\theta)}{\cos(\theta)}\right)
+\]
+
+\paragraph{Axe de rotation}
+\[
+\mathbf{u} = \frac{1}{2\sin(\theta)} 
+\begin{bmatrix}
+R_{32} - R_{23} \\ R_{13} - R_{31} \\ R_{21} - R_{12}
+\end{bmatrix}
+\]
+
+\paragraph{Rotation désirée}
+\[
+R_{\text{désirée}} = R_{\text{init}} \cdot \text{rot}(\mathbf{u}, r \cdot \theta)
+\]
+
+\subsection{Modèle Géométrique}
+\subsubsection{Les Matrices de Transformation}
+La matrice de transformation homogène est donnée par :
+
+\[
+T_j = \begin{bmatrix}
+\cos\theta_j & -\sin\theta_j \cos\alpha_{j-1} & \sin\theta_j \sin\alpha_{j-1} & a_{j-1} \\
+\sin\theta_j & \cos\theta_j \cos\alpha_{j-1} & -\cos\theta_j \sin\alpha_{j-1} & -r_j \sin\alpha_{j-1} \\
+0 & \sin\alpha_{j-1} & \cos\alpha_{j-1} & r_j \cos\alpha_{j-1} \\
+0 & 0 & 0 & 1
+\end{bmatrix}
+\]
+
+La transformation totale est :
+\[
+T_{06} = T_1 \cdot T_2 \cdot T_3 \cdot T_4 \cdot T_5 \cdot T_6
+\]
+
+\section{Conclusion}
+En conclusion, la simulation du robot UR10 sur \textit{CoppeliaSim} fonctionne, même si une singularité a été rencontrée. Les calculs effectués valident le modèle utilisé. Toutefois, ce programme n'a pas encore été testé sur le robot réel.  
+\end{document}

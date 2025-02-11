@@ -1,0 +1,22 @@
+La détection (et l'extraction) des points d'Harris est une technique faisant partie de la famille des méthodes de détection de points d'interets. Ces méthodes sont utilisées pour détecter les coins ou les points d'intérêt d'image. 
+Les points d’intérêts correspondent à des endroits dans une image où il y a des changements brusques ou des variations significatives dans l'intensité lumineuse (doubles discontinuités de la fonction d’intensités), c'est à dire des points où les valeurs des pixels changent rapidement et de manière importante lorsqu'on se déplace autour d'eux dans l'image.
+En général, un point d'intérêt peut être un coin, un bord ou une région où l'intensité lumineuse change rapidement par rapport à son voisinage.
+
+Ces points d'interets sont utilisés car ils servent de caractéristiques distinctives pour comparer et reconnaître des objets ou des motifs dans différentes images. Un cas d'application de ces points est la fonction de prise de photo panoramique : l'appareil va prendre des photos, et va superposé les points de harris des images.
+
+
+La méthode d'extraction des points d'Harris est une version du détecteur de Moravec dont certaines limitations ont été corrigée:
+- le détecteur de Moravec repond de manière trop forte aux contours.
+- La réponse du détecteur de Moravec est bruitée en raison du voisinage considéré.
+- La réponse du détecteur est anisotropique en raison du caractère discret des directions de changement que l’on peut effectuer.
+
+
+L'algorithme de détection des points d'interets par la méthode d'Harris sur une image en niveau de gris necessite l'utilisation d'un filtre gaussien et d'un dérivateur en X et en Y:
+- Après avoir converti l'image en niveau de gris, on va la convoluer avec le noyau gaussien.
+- On va dérivée cette image floue avec un noyau de dérivation par x, et un noyau de dérivation par y.
+[METTRE LES NOYAUX DE DERIVATIONS]
+- On calcul les coefficients A, B et C, puis on passe ces coefficients dans le filtre gaussien.
+INSERER A B C
+- On calcul G, le CRF (corner response function) avec alpha compris entre 0.04 et 0.25.
+
+- Finalement, on binarise l'image finale selon un seuil que l'on devra déterminer soi-même.

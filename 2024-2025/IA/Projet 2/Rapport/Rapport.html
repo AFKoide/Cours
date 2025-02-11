@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Rapport &colon; Projet Digit Recognizer &lpar;Partie 2&rpar;</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="rapport--projet-digit-recognizer-partie-2">Rapport : Projet Digit Recognizer (Partie 2)</h1>
+<ul>
+<li><a href="#rapport--projet-digit-recognizer-partie-2">Rapport : Projet Digit Recognizer (Partie 2)</a>
+<ul>
+<li><a href="#i-introduction"><strong>I. Introduction</strong></a>
+<ul>
+<li><a href="#objectifs-du-projet">Objectifs du Projet</a></li>
+<li><a href="#pr%C3%A9sentation-des-donn%C3%A9es">Présentation des données</a></li>
+</ul>
+</li>
+<li><a href="#ii-r%C3%A9seau-de-neurone"><strong>II. Réseau de Neurone</strong></a>
+<ul>
+<li><a href="#les-hyperparameters-choisi">Les Hyperparameters choisi</a>
+<ul>
+<li><a href="#adam"><em>AdAM</em></a></li>
+<li><a href="#relu"><em>ReLU</em></a></li>
+<li><a href="#les-architectures-choisies-et-justifications">Les Architectures Choisies et Justifications</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#iii-r%C3%A9sultats"><strong>III. Résultats</strong></a>
+<ul>
+<li><a href="#1-evolution-de-la-pr%C3%A9cision-selon-larchitecture">1. Evolution de la Précision selon l'Architecture.</a></li>
+<li><a href="#2-comparaison-avec-une-svm">2. Comparaison avec une SVM</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });</script>
+<hr>
+<div style="page-break-after: always;"></div>
+<h2 id="i-introduction"><strong>I. Introduction</strong></h2>
+<p>Il s'agit de la seconde partie du projet sur la reconnaissance de chiffres manuscrits à l'aide de modèles prédictifs.<br>
+Pour rappel, ce projet, proposé par <em>Kaggle</em> (<a href="https://www.kaggle.com/competitions/digit-recognizer">lien vers la compétition</a>), vise à prédire correctement des chiffres manuscrits représentés dans des images.<br>
+A partir de données fournies, nous devons entrainer un modèle prédictif et l'utiliser pour prédire les valeurs de données sans labels également fournies.</p>
+<p>Le premier rapport se concentrait sur l'utilisation d'un <strong>SVM</strong> (Support Vector Machine) et d'un <strong>PCA</strong> (Principal Component Analysis) pour réduire les dimensions des données et améliorer les performances du modèle.</p>
+<p>Dans cette seconde partie, nous abordons un autre outil fondamental en apprentissage automatique : <strong>les réseaux de neurones</strong>. En particulier, nous utiliserons un <strong>MLPClassifier</strong> (Multilayer Perceptron Classifier) de la bibliothèque <code>sklearn</code> pour entraîner et évaluer un modèle capable de reconnaître ces chiffres manuscrits.</p>
+<h3 id="objectifs-du-projet">Objectifs du Projet</h3>
+<p>Le projet repose sur les mêmes objectifs que le précédent, à savoir :</p>
+<ul>
+<li><strong>Analyser les données</strong> fournies pour comprendre leur structure et leur organisation.</li>
+<li><strong>Concevoir et entraîner un modèle</strong> prédictif, cette fois-ci basé sur un réseau de neurones multicouches (MLP).</li>
+<li><strong>Évaluer les performances</strong> du modèle à l'aide de métriques comme la précision et la matrice de confusion.</li>
+<li><strong>Optimiser le modèle</strong> en testant différentes architectures (nombre de couches et de neurones par couche).</li>
+</ul>
+<p>Enfin, nous utiliserons le modèle entraîné pour prédire la valeur d'échantillons sans label dans les données de test.</p>
+<h3 id="présentation-des-données">Présentation des données</h3>
+<p>Pour rappel, les données fournies sont issues de la base MNIST, un ensemble de référence pour la reconnaissance de chiffres manuscrits. Chaque exemple est une image en niveaux de gris de dimensions 28x28 pixels, représentant un chiffre entre 0 et 9. Les valeurs des pixels vont de 0 (blanc) à 255 (noir).</p>
+<p>Le fichier <code>train.csv</code> contient 42 000 exemples, avec une colonne label indiquant le chiffre représenté et 784 colonnes correspondant aux valeurs des pixels.<br>
+Le fichier <code>test.csv</code>, quant à lui, comprend 28 000 exemples non étiquetés, organisés de manière similaire, mais sans la colonne label.</p>
+<p>L'objectif de ce projet est donc de donner un label pour chaque image du fichier <code>test.csv</code></p>
+<hr>
+<div style="page-break-after: always;"></div>
+<h2 id="ii-réseau-de-neurone"><strong>II. Réseau de Neurone</strong></h2>
+<p>Pour rappel, un réseau de neurones est un modèle d'apprentissage inspiré de la structure et du fonctionnement des neurones biologiques.<br>
+Il est composé de couches successives de neurones, où chaque neurone prend des entrées, applique une transformation (appelé fonction d'activation), puis transmet un résultat pondéré aux couches suivantes.</p>
+<p>Pour ce projet, nous présenterons en entrée du réseau les luminances de chaque pixel de l'image, et voudrons en sortie la valeur du chiffre représenté sur l'image (de 0 à 9).</p>
+<h3 id="les-hyperparameters-choisi">Les Hyperparameters choisi</h3>
+<p>Le modèle a été configuré avec les paramètres suivants :</p>
+<pre><code class="language-python">mlp = MLPClassifier(
+    hidden_layer_sizes=hidden_layer_sizes,
+    activation=<span class="hljs-string">&#x27;relu&#x27;</span>,
+    solver=<span class="hljs-string">&#x27;adam&#x27;</span>,
+    max_iter=max_iter,
+    random_state=random_state,
+    verbose=<span class="hljs-literal">True</span>
+)
+</code></pre>
+<ul>
+<li><em>hidden_layer_sizes</em> : Définit le nombre de couches cachées et le nombre de neurones par couche.</li>
+<li><em>activation='relu'</em> : Utilise la fonction d'activation ReLU, un choix courant pour des réseaux profonds car elle évite le problème du gradient qui disparaît.</li>
+<li><em>solver='adam'</em> : Spécifie l'algorithme de mise à jour des poids, ici Adam.</li>
+<li><em>max_iter</em> : Limite le nombre d'itérations pour éviter les calculs excessifs ou la divergence.</li>
+<li><em>random_state</em> : Assure la reproductibilité des résultats en initialisant les poids aléatoirement de manière fixe.</li>
+</ul>
+<p>Nous n'avons pas utilisé de mini-batchs (par défaut dans MLPClassifier, le batch complet est utilisé) car nous n'avons pas noté de différence notable entre l'utilisation ou non de cette technique.</p>
+<h5 id="adam"><em>AdAM</em></h5>
+<p>L'optimiseur <strong>AdAM</strong> (pour Adaptive Moment Estimation) est utilisé pour mettre à jour les poids du réseau.<br>
+Il combine les avantages de deux techniques :</p>
+<ul>
+<li><em>RMSProp</em>, qui adapte le taux d'apprentissage pour chaque paramètre en fonction de sa variance.</li>
+<li><em>Moment</em>, qui accélère la descente de gradient en tenant compte des mises à jour précédentes.</li>
+</ul>
+<p><strong>AdAM</strong> est particulièrement efficace pour des problèmes complexes et des réseaux profonds, car il nécessite peu de réglages manuels et converge rapidement.</p>
+<p>Pour ce projet, nous avons choisi d'utiliser cette technique car elle ne nécessite pas de régler finement les hyperparameters.</p>
+<h5 id="relu"><em>ReLU</em></h5>
+<p>La fonction d'activation <strong>ReLU</strong> (Rectified Linear Unit) applique une transformation simple :<br>
+[<br>
+f(x) = \max(0, x)<br>
+]<br>
+Elle présente deux avantages principaux :</p>
+<ol>
+<li><em>Simplicité computationnelle</em> : ReLU est rapide à calculer par rapport à d'autres fonctions comme la sigmoïde ou tanh.</li>
+<li><em>Évite le problème du gradient qui disparaît</em> : Contrairement à la sigmoïde, elle maintient un gradient non nul pour des valeurs positives, favorisant un apprentissage efficace dans les couches profondes.</li>
+</ol>
+<br>
+<h4 id="les-architectures-choisies-et-justifications">Les Architectures Choisies et Justifications</h4>
+<p>Nous avons testé plusieurs architectures pour déterminer la meilleure configuration.</p>
+<ul>
+<li>
+<p>Nous avons choisi plusieurs réseaux que l'on a considérés comme étant insuffisamment complexes : <em>(10)</em>, <em>(16, 10)</em> et <em>(32, 16, 10)</em>.<br>
+Ces réseaux sont très simples et ne possèdent pas la capacité d'apprendre des relations complexes. Nous les avons choisis pour observer les performances de modèles minimalistes et comprendre comment la profondeur et la taille des couches influencent les résultats.<br>
+<br></p>
+</li>
+<li>
+<p>Ensuite, nous avons programmé des réseaux avec des architectures modérément complexes : <em>(64, 32, 16, 10)</em>, <em>(128, 64, 32, 16, 10)</em> et <em>(256, 128, 64, 32, 16, 10)</em>.<br>
+Ces réseaux, plus profonds, permettent une meilleure extraction des caractéristiques, notamment pour les relations significatives entre les pixels dans des images de chiffres manuscrits. Ces architectures sont adaptées pour capturer des relations plus complexes sans nécessiter des ressources excessives.<br>
+Nous les avons choisis pour explorer le compromis entre capacité d'apprentissage et efficacité.<br>
+<br></p>
+</li>
+<li>
+<p>Enfin, nous avons testé des architectures complexes et très profondes : <em>(512, 256, 128, 64, 32, 16, 10)</em>, <em>(1024, 512, 256, 128, 64, 32, 16, 10)</em>, et <em>(2048, 1024, 512, 256, 128, 64, 32, 16, 10)</em>.<br>
+Ces réseaux de grande envergure sont conçus pour des tâches exigeantes, exploitant pleinement les données complexes. Leur profondeur et leur largeur permettent d'apprendre des relations abstraites et de combiner des informations à plusieurs niveaux.<br>
+Cependant, ils présentent un risque de surajustement si les données ou les mécanismes de régularisation sont insuffisants.<br>
+Nous avons inclus ces architectures pour tester leurs limites et observer si elles apportent des gains significatifs par rapport à des architectures plus modestes.</p>
+</li>
+</ul>
+<hr>
+<div style="page-break-after: always;"></div>
+<h2 id="iii-résultats"><strong>III. Résultats</strong></h2>
+<h3 id="1-evolution-de-la-précision-selon-larchitecture">1. Evolution de la Précision selon l'Architecture.</h3>
+<p><img src="file:///f:\Github\Cours\2024-2025\IA\Projet 2\Rapport\precision_archi.png" alt="plot architecture"></p>
+<p>Sur ce graphique, nous observons l'évolution de la précision en fonction de l'architecture choisie pour le réseau de neurones.</p>
+<p>Globalement, plus le réseau est complexe, plus la précision augmente. Cependant, le gain de précision diminue progressivement à mesure que la complexité du réseau s'accroît. Par exemple, un réseau avec une seule couche cachée atteint une précision inférieure à 92 %, tandis qu'un réseau comportant 4 couches cachées dépasse les 96,5 %.<br>
+Par la suite, le gain stagne : un réseau avec 6 couches atteint environ 97,2 %, tandis qu'un réseau avec 9 couches n'améliore la précision que légèrement, atteignant un peu plus de 97,5 %.</p>
+<p>Cependant, cette amélioration marginale de la précision se fait au prix d'un temps de calcul beaucoup plus important. Les temps de construction des modèles augmentent de manière exponentielle avec la complexité du réseau.</p>
+<h3 id="2-comparaison-avec-une-svm">2. Comparaison avec une SVM</h3>
+<p>Dans cette partie du rapport, nous comparons les performances du réseau de neurones en comparaison avec celles obtenues dans le premier rapport, où nous avions utilisé une <strong>SVM</strong> (Support Vector Machine) combinée à un <strong>PCA</strong> (Principal Component Analysis).</p>
+<p>Dans le premier rapport, l'objectif était de prédire les chiffres manuscrits à partir des mêmes données, en utilisant une SVM comme algorithme de classification. Étant donné la grande dimensionnalité des images (784 dimensions correspondant aux pixels), un PCA a été utilisé en amont pour réduire la dimensionnalité.<br>
+Les performances de cette approche ont culminé à une précision maximale de <strong>92 %</strong>, après un ajustement des hyperparamètres de la SVM et une optimisation de la réduction dimensionnelle.</p>
+<p>En utilisant un réseau de neurones, nous avons dépassé ces résultats. La meilleure architecture testée a atteint une précision de <strong>97,6 %</strong>, soit une augmentation de 5,6 % par rapport à la méthode basée sur SVM.</p>
+<table>
+<thead>
+<tr>
+<th>PCA &amp; SVM</th>
+<th>Réseau de Neurones</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Précision : 92.6%</td>
+<td>Précision : 97.2%</td>
+</tr>
+<tr>
+<td><img src="file:///f:\Github\Cours\2024-2025\IA\Projet 2\Rapport\confusion_score_1e-2.png" alt="confusion_score_1e-2"></td>
+<td><img src="file:///f:\Github\Cours\2024-2025\IA\Projet 2\Rapport\confusion_result.png" alt="Matrice Confusion modèle à 6 layers"></td>
+</tr>
+</tbody>
+</table>
+<p>En comparant les deux matrices de confusion, nous pouvons voir que les deux modèles ont des difficultés pour différencier les même chiffres : 4&lt;-&gt;9, 7-&gt;9 et 5&lt;-&gt;3.<br>
+Cependant, les performances du réseau est meilleure, notamment pour la reconnaissance du 8 et du 3.</p>
+<hr>
+<div style="page-break-after: always;"></div>
+<h1 id="conclusion">Conclusion</h1>
+<p><img src="file:///f:\Github\Cours\2024-2025\IA\Projet 2\Rapport\result.png" alt="result"></p>
+<p>Le réseau de neurones s'est révélé plus performant pour ce problème, grâce à sa capacité à capturer des relations complexes entre les pixels des images sans nécessiter de transformation préalable des données. De plus, le réseau peut être ajusté à travers une large gamme d'architectures pour s'adapter aux besoins spécifiques, que ce soit en termes de précision ou de temps d'entraînement.</p>
+<p>Parmi les différentes architectures de réseau de neurones testées, nous avons choisi de retenir l'architecture <strong>(256, 128, 64, 32, 16, 10)</strong>, qui a atteint une précision de <strong>97,2 %</strong>.<br>
+Lorsque nous comparons ces résultats à ceux obtenus dans notre premier rapport, où une approche basée sur une SVM (Support Vector Machine) combinée à un PCA (Principal Component Analysis) avait été utilisée, nous pouvons observer une amélioration significative des performances.<br>
+En effet, la SVM avait atteint une précision de <strong>92,5 %</strong>, soit une augmentation de <strong>4,7 %</strong> avec le réseau de neurones.</p>
+<br>
+<p>Ce projet ouvre la voie à de nombreuses optimisations et extensions possibles. Par exemple :</p>
+<ul>
+<li>Explorer d'autres fonctions d'activation ou optimisateurs pour améliorer la vitesse d'entraînement.</li>
+<li>Étendre le modèle à des données plus complexes, comme des images de dimensions supérieures ou en couleurs.</li>
+<li>Comparer les performances du réseau de neurones avec d'autres modèles avancés comme les <strong>CNN (Convolutional Neural Networks)</strong>, spécifiquement conçus pour les tâches de vision par ordinateur.</li>
+</ul>
+<p>Ainsi, ce projet met en lumière l'efficacité des réseaux de neurones pour la reconnaissance d'images tout en soulignant l'importance du choix de l'architecture et des hyperparamètres pour obtenir un modèle performant.</p>
+
+            <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+            
+        </body>
+        </html>

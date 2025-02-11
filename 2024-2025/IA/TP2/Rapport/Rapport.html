@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>&ast;&ast;Rapport &colon; Projet Neural Network Digit Recognizer&ast;&ast;</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="rapport--projet-neural-network-digit-recognizer"><strong>Rapport : Projet Neural Network Digit Recognizer</strong></h1>
+<ul>
+<li><a href="#rapport--projet-neural-network-digit-recognizer"><strong>Rapport : Projet Neural Network Digit Recognizer</strong></a>
+<ul>
+<li><a href="#i-introduction"><strong>I. Introduction</strong></a>
+<ul>
+<li><a href="#pr%C3%A9sentation-du-projet">Présentation du projet</a>
+<ul>
+<li><a href="#objectifs-du-projet"><em>Objectifs du projet</em></a></li>
+</ul>
+</li>
+<li><a href="#pr%C3%A9sentation-des-donn%C3%A9es">Présentation des données</a></li>
+</ul>
+</li>
+<li><a href="#ii-r%C3%A9seaux-de-neurones"><strong>II. Réseaux de Neurones</strong></a>
+<ul>
+<li><a href="#quest-ce-quun-r%C3%A9seau-de-neurones-">Qu'est-ce qu'un réseau de neurones ?</a></li>
+<li><a href="#entra%C3%AEnement-dun-r%C3%A9seau">Entraînement d'un réseau</a></li>
+</ul>
+</li>
+<li><a href="#iii-impl%C3%A9mentation"><strong>III. Implémentation</strong></a>
+<ul>
+<li><a href="#31-programmation-du-r%C3%A9seau">3.1 Programmation du réseau</a>
+<ul>
+<li><a href="#forward-pass"><em>Forward Pass</em></a></li>
+<li><a href="#backpropagation"><em>Backpropagation</em></a></li>
+<li><a href="#validation-initiale"><em>Validation initiale</em></a></li>
+</ul>
+</li>
+<li><a href="#32-entra%C3%AEnement-et-test">3.2 Entraînement et test</a>
+<ul>
+<li><a href="#dataset-de-trois-%C3%A9chantillons"><em>Dataset de trois échantillons</em></a></li>
+<li><a href="#dataset-plus-grand"><em>Dataset plus grand</em></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#iv-r%C3%A9sultats"><strong>IV. Résultats</strong></a>
+<ul>
+<li><a href="#programmation-du-r%C3%A9seau-de-neurones">Programmation du réseau de neurones</a></li>
+<li><a href="#evolution-des-pertes-sur-les-donn%C3%A9es-dexemple">Evolution des pertes sur les données d'exemple</a></li>
+<li><a href="#entrainement-du-mod%C3%A8le">Entrainement du modèle</a></li>
+<li><a href="#diff%C3%A9rence-de-lerreur-entre-le-mod%C3%A8le-entrain%C3%A9-et-non-entrain%C3%A9">Différence de l'erreur entre le modèle entrainé et non entrainé</a></li>
+</ul>
+</li>
+<li><a href="#conclusion"><strong>Conclusion</strong></a>
+<ul>
+<li><a href="#synth%C3%A8se-des-r%C3%A9sultats">Synthèse des résultats</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<div style="page-break-after: always;"></div>
+<h2 id="i-introduction"><strong>I. Introduction</strong></h2>
+<h3 id="présentation-du-projet">Présentation du projet</h3>
+<p>Ce projet vise à programmer un réseaux de neurones artificiels en Python.<br>
+Il met l’accent sur les concepts fondamentaux des réseaux de neurones, notamment le <strong>forward pass</strong>, le <strong>backpropagation</strong>, l’entraînement, et les tests.</p>
+<p>Ce projet se découpe en deux parties : la programmation du réseau de neurone, et l'entrainement d'un modèle avec une phase d'ajustement du modèle.</p>
+<h4 id="objectifs-du-projet"><em>Objectifs du projet</em></h4>
+<p>L’objectif principal est de construire et entraîner un réseau de neurones ayant :</p>
+<ul>
+<li><strong>2 entrées</strong>.</li>
+<li><strong>2 sorties</strong>.</li>
+<li><strong>une couche cachée</strong>.</li>
+</ul>
+<p>Les tâches principales sont :</p>
+<ol>
+<li>Programmer le <strong>forward pass</strong> et le <strong>backpropagation</strong> pour un réseau avec des poids initiaux donnés.</li>
+<li>Tester le réseau sur un petit dataset de <strong>deux échantillons étiquetés</strong>.</li>
+<li>Étendre le processus d’entraînement à plusieurs itérations.</li>
+<li>Utiliser le réseau sur un dataset plus grand pour l’entraîner, puis tester sa capacité à généraliser sur de nouveaux échantillons.</li>
+</ol>
+<h3 id="présentation-des-données">Présentation des données</h3>
+<p>Le projet repose sur deux datasets :</p>
+<ul>
+<li><strong>NNTraining.data</strong> : un ensemble de données d'entraînement, structuré pour entraîner le réseau.</li>
+<li><strong>NNTest.data</strong> : un ensemble de données de test, utilisé pour évaluer les performances du réseau après entraînement.</li>
+</ul>
+<p>Chaque ligne des fichiers représente un exemple avec deux caractéristiques en entrée ((x_1) et (x_2)) et deux cibles ((t_1) et (t_2)).</p>
+<hr>
+<div style="page-break-after: always;"></div>
+<h2 id="ii-réseaux-de-neurones"><strong>II. Réseaux de Neurones</strong></h2>
+<h3 id="quest-ce-quun-réseau-de-neurones-">Qu'est-ce qu'un réseau de neurones ?</h3>
+<p>Un <strong>réseau de neurones artificiels</strong> est un modèle d'apprentissage inspiré du fonctionnement du cerveau humain. Il est composé de neurones organisés en couches :</p>
+<ul>
+<li>Une <strong>couche d'entrée</strong> pour recevoir les données,</li>
+<li>Une ou plusieurs <strong>couches cachées</strong> pour extraire des caractéristiques,</li>
+<li>Une <strong>couche de sortie</strong> pour produire une prédiction.</li>
+</ul>
+<p>Chaque connexion entre les neurones est associée à un <strong>poids</strong>, ajusté lors de l’entraînement pour minimiser l'erreur entre les prédictions et les vraies valeurs. Ce processus, appelé <strong>backpropagation</strong>, repose sur la propagation du gradient de l'erreur en utilisant l'algorithme de descente de gradient.</p>
+<h3 id="entraînement-dun-réseau">Entraînement d'un réseau</h3>
+<p>L'entraînement d'un réseau de neurones consiste à ajuster les poids des connexions entre les neurones pour minimiser une <strong>fonction de perte</strong> (comme l'erreur quadratique ou l'entropie croisée). Ce processus se déroule en plusieurs étapes :</p>
+<ol>
+<li><strong>Propagation avant (forward pass)</strong> : Les données traversent les couches du réseau, et les sorties sont calculées.</li>
+<li><strong>Calcul de la perte</strong> : La différence entre la sortie du modèle et la vérité terrain est mesurée.</li>
+<li><strong>Rétropropagation (backpropagation)</strong> : L'erreur est propagée en arrière à travers le réseau pour calculer les gradients des poids.</li>
+<li><strong>Mise à jour des poids</strong> : Les poids sont ajustés en utilisant une méthode comme la <strong>descente de gradient</strong>, en fonction des gradients calculés.</li>
+</ol>
+<p>Ce processus est répété pour chaque itération, ou <strong>epoch</strong>, jusqu'à ce que le modèle atteigne un niveau de précision satisfaisant.</p>
+<hr>
+<div style="page-break-after: always;"></div>
+<h2 id="iii-implémentation"><strong>III. Implémentation</strong></h2>
+<h3 id="31-programmation-du-réseau">3.1 Programmation du réseau</h3>
+<h4 id="forward-pass"><em>Forward Pass</em></h4>
+<p>Le <strong>forward pass</strong> consiste à propager les entrées ((x_1, x_2)) à travers le réseau jusqu'à la sortie ((y_1, y_2)). Cela inclut le calcul des activations des neurones de la couche cachée et de sortie, en utilisant la <strong>sigmoïde</strong> comme fonction d'activation.</p>
+<p>[<br>
+\sigma(z) = \frac{1}{1 + e^{-z}}<br>
+]</p>
+<h4 id="backpropagation"><em>Backpropagation</em></h4>
+<p>La <strong>backpropagation</strong> calcule les gradients de la fonction de perte (ici, l'erreur quadratique moyenne) par rapport aux poids.<br>
+Ces gradients sont ensuite utilisés pour mettre à jour les poids du réseau via une méthode de <strong>descente de gradient</strong>.</p>
+<h4 id="validation-initiale"><em>Validation initiale</em></h4>
+<p>Le réseau est testé sur un petit dataset de <strong>deux échantillons</strong> pour valider la mise en œuvre du forward pass et du backpropagation.</p>
+<h3 id="32-entraînement-et-test">3.2 Entraînement et test</h3>
+<h4 id="dataset-de-trois-échantillons"><em>Dataset de trois échantillons</em></h4>
+<p>Un réseau est entraîné sur un petit dataset de <strong>trois échantillons</strong> pour observer la diminution de la fonction de perte au fil des itérations. Cette étape permet de visualiser la convergence et de valider la capacité d'apprentissage du réseau.</p>
+<h4 id="dataset-plus-grand"><em>Dataset plus grand</em></h4>
+<p>Le réseau est ensuite appliqué à un dataset plus grand (<strong>NNTraining.data</strong>). L’ensemble est divisé en <strong>mini-batches</strong> pour accélérer l’apprentissage. Après chaque <strong>epoch</strong> (parcours complet du dataset), la perte moyenne est calculée et enregistrée pour traquer l’évolution de l’entraînement.</p>
+<p>Le modèle final est évalué sur le dataset de test (<strong>NNTest.data</strong>) pour mesurer sa capacité à généraliser.</p>
+<hr>
+<div style="page-break-after: always;"></div>
+<h2 id="iv-résultats"><strong>IV. Résultats</strong></h2>
+<h3 id="programmation-du-réseau-de-neurones">Programmation du réseau de neurones</h3>
+<p>Le réseau de neurones que j'ai programmé me donne :</p>
+<ul>
+<li>
+<p>Pour x1 et t1:</p>
+<ul>
+<li>Sorties du réseau : <code>y1 = 0.682</code>, <code>y2 = 0.379</code></li>
+<li><strong>Perte quadratique (Loss) : <code>L = 0.245</code></strong></li>
+<li>Nouveau gradient de <code>L = [-0.1245799920310608, 0.06774106237304037, -0.0622899960155304, 0.033870531186520184, -0.10106080200900529, 0.13055095827032773, -0.016478491947864934, 0.021287016052494324]</code><br>
+<br></li>
+</ul>
+</li>
+<li>
+<p>Pour x2 et t2:</p>
+<ul>
+<li>Sorties du réseau : <code>y1 = 0.562</code>, <code>y2 = 0.881</code></li>
+<li><strong>Perte quadratique (Loss) : <code>L = 0.330</code></strong></li>
+<li>Nouveau gradient de <code>L = [-5.039984614038973e-06, -5.84951168236954e-09, 1.511995384211692e-05, 1.7548535047108622e-08, 4.622002203780851e-06, -4.180665865731328e-07, 0.2767429523030238, -0.02503178846017317]</code></li>
+</ul>
+</li>
+</ul>
+<p>Nous obtenons les erreurs et les gradients prévus.</p>
+<h3 id="evolution-des-pertes-sur-les-données-dexemple">Evolution des pertes sur les données d'exemple</h3>
+<p><img src="file:///f:\Github\Cours\2024-2025\IA\TP2\Rapport\loss_training_example.png" alt="loss training example"></p>
+<p>Sur ce graphique, nous pouvons observer l'évolution de la perte (ou erreur) au fil des itérations d'entraînement du modèle.<br>
+La courbe suit une tendance classique, similaire à celle présentée dans le support de TP : l'erreur diminue progressivement pour tendre vers zéro.</p>
+<p>Ces résultats ont été obtenu avec ces hyperparameters :</p>
+<ul>
+<li><strong>Taux d'apprentissage</strong> : ( \rho = 1.2 )</li>
+<li><strong>Nombre d'itérations</strong> : ( N = 100 )</li>
+</ul>
+<p>La perte finale atteinte après l'entraînement est de <strong>0.8%</strong>.<br>
+Lorsqu'on utilise ce modèle pour faire des prédictions, la perte calculée pour (x3) et (t3) est de <strong>1.754797</strong>.</p>
+<h3 id="entrainement-du-modèle">Entrainement du modèle</h3>
+<p><img src="file:///f:\Github\Cours\2024-2025\IA\TP2\Rapport\loss_training.png" alt="loss training"></p>
+<p>Ces résultats ont été obtenu avec ces hyperparameters :</p>
+<ul>
+<li>Taux d'apprentissage = 10</li>
+<li>Taille des mini-lots = 50</li>
+<li>Nombre d'époques = 10</li>
+</ul>
+<p>Avec Nous obtenons une perte moyenne de 0.040155.</p>
+<h3 id="différence-de-lerreur-entre-le-modèle-entrainé-et-non-entrainé">Différence de l'erreur entre le modèle entrainé et non entrainé</h3>
+<p><img src="file:///f:\Github\Cours\2024-2025\IA\TP2\Rapport\loss.png" alt="loss training"></p>
+<p>Sur les deux graphiques, nous pouvons observer la distribution des erreurs commises par le modèle avant et après l'entraînement.</p>
+<ul>
+<li>
+<p><strong>Avant l'entraînement</strong> :<br>
+L'erreur du modèle est relativement élevée, se situant principalement dans une plage comprise entre <strong>0.2 et 0.05</strong>. Il semblerait que le réseau effectue des prédictions presque aléatoires, ce qui explique la large dispersion des erreurs.</p>
+</li>
+<li>
+<p><strong>Après l'entraînement</strong> :<br>
+Après avoir ajusté les poids via le processus d'entraînement, l'erreur est significativement réduite. La majorité des erreurs se situent désormais dans une plage comprise entre <strong>0 et 0.001</strong>, avec quelques rares pics atteignant <strong>0.004</strong>.</p>
+</li>
+</ul>
+<p>En comparant les deux distributions, il est clair que l'entraînement permet d'améliorer drastiquement les performances du modèle. Un modèle non entraîné produit des erreurs importantes, tandis qu'un modèle correctement entraîné réduit ces erreurs à des niveaux négligeables pour la plupart des échantillons.</p>
+<hr>
+<div style="page-break-after: always;"></div>
+<h2 id="conclusion"><strong>Conclusion</strong></h2>
+<h3 id="synthèse-des-résultats">Synthèse des résultats</h3>
+<p>Ce projet a permis d’explorer de manière pratique la mise en œuvre d’un réseau de neurones simple en Python, en suivant les étapes essentielles pour comprendre son fonctionnement et son apprentissage. À travers ce rapport, nous avons abordé les différentes phases de conception, d’entraînement et de test d’un réseau de neurones caractérisé par deux entrées, une couche cachée et deux sorties.</p>
+<br>
+<p>Nous avons commencé par implémenter une fonction pour effectuer un passage avant, où les données sont propagées à travers le réseau pour obtenir une prédiction basée sur les poids initiaux.<br>
+Nous avons ensuite intégré la rétropropagation dans cette fonction, une étape essentielle permettant de calculer les gradients des poids en fonction des erreurs observées. Cela a permis d’ajuster les poids du réseau afin de réduire progressivement l’erreur.</p>
+<p>En utilisant un jeu de données réduit contenant deux échantillons étiquetés, nous avons entraîné le réseau sur plusieurs itérations. Cela a permis de visualiser comment la perte diminue progressivement grâce à l’optimisation des poids.</p>
+<p>Une fois le fonctionnement validé sur un petit jeu de données, nous avons appliqué les mêmes concepts à un jeu de données plus conséquent (<code>NNTraining.data</code>) pour entraîner le réseau.<br>
+Le modèle a ensuite été testé sur un jeu de données séparé (<code>NNTest.data</code>), permettant d’évaluer sa capacité à généraliser sur des données inconnues.</p>
+
+            
+            
+        </body>
+        </html>

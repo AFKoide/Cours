@@ -1,0 +1,356 @@
+<!DOCTYPE html><html><head>
+      <title>Rapport</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="file:///c:\Users\tg\.vscode\extensions\shd101wyy.markdown-preview-enhanced-0.8.15\crossnote\dependencies\katex\katex.min.css">
+      
+      
+      
+      
+      
+      <style>
+      code[class*=language-],pre[class*=language-]{color:#333;background:0 0;font-family:Consolas,"Liberation Mono",Menlo,Courier,monospace;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.4;-moz-tab-size:8;-o-tab-size:8;tab-size:8;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:.8em;overflow:auto;border-radius:3px;background:#f5f5f5}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal;background:#f5f5f5}.token.blockquote,.token.comment{color:#969896}.token.cdata{color:#183691}.token.doctype,.token.macro.property,.token.punctuation,.token.variable{color:#333}.token.builtin,.token.important,.token.keyword,.token.operator,.token.rule{color:#a71d5d}.token.attr-value,.token.regex,.token.string,.token.url{color:#183691}.token.atrule,.token.boolean,.token.code,.token.command,.token.constant,.token.entity,.token.number,.token.property,.token.symbol{color:#0086b3}.token.prolog,.token.selector,.token.tag{color:#63a35c}.token.attr-name,.token.class,.token.class-name,.token.function,.token.id,.token.namespace,.token.pseudo-class,.token.pseudo-element,.token.url-reference .token.variable{color:#795da3}.token.entity{cursor:help}.token.title,.token.title .token.punctuation{font-weight:700;color:#1d3e81}.token.list{color:#ed6a43}.token.inserted{background-color:#eaffea;color:#55a532}.token.deleted{background-color:#ffecec;color:#bd2c00}.token.bold{font-weight:700}.token.italic{font-style:italic}.language-json .token.property{color:#183691}.language-markup .token.tag .token.punctuation{color:#333}.language-css .token.function,code.language-css{color:#0086b3}.language-yaml .token.atrule{color:#63a35c}code.language-yaml{color:#183691}.language-ruby .token.function{color:#333}.language-markdown .token.url{color:#795da3}.language-makefile .token.symbol{color:#795da3}.language-makefile .token.variable{color:#183691}.language-makefile .token.builtin{color:#0086b3}.language-bash .token.keyword{color:#0086b3}pre[data-line]{position:relative;padding:1em 0 1em 3em}pre[data-line] .line-highlight-wrapper{position:absolute;top:0;left:0;background-color:transparent;display:block;width:100%}pre[data-line] .line-highlight{position:absolute;left:0;right:0;padding:inherit 0;margin-top:1em;background:hsla(24,20%,50%,.08);background:linear-gradient(to right,hsla(24,20%,50%,.1) 70%,hsla(24,20%,50%,0));pointer-events:none;line-height:inherit;white-space:pre}pre[data-line] .line-highlight:before,pre[data-line] .line-highlight[data-end]:after{content:attr(data-start);position:absolute;top:.4em;left:.6em;min-width:1em;padding:0 .5em;background-color:hsla(24,20%,50%,.4);color:#f4f1ef;font:bold 65%/1.5 sans-serif;text-align:center;vertical-align:.3em;border-radius:999px;text-shadow:none;box-shadow:0 1px #fff}pre[data-line] .line-highlight[data-end]:after{content:attr(data-end);top:auto;bottom:.4em}html body{font-family:'Helvetica Neue',Helvetica,'Segoe UI',Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ol,html body>ul{margin-bottom:16px}html body ol,html body ul{padding-left:2em}html body ol.no-list,html body ul.no-list{padding:0;list-style-type:none}html body ol ol,html body ol ul,html body ul ol,html body ul ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:700;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::after,html body code::before{letter-spacing:-.2em;content:'\00a0'}html body pre>code{padding:0;margin:0;word-break:normal;white-space:pre;background:0 0;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:after,html body pre code:before,html body pre tt:after,html body pre tt:before{content:normal}html body blockquote,html body dl,html body ol,html body p,html body pre,html body ul{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body code,html body pre{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview ul{list-style:disc}.markdown-preview ul ul{list-style:circle}.markdown-preview ul ul ul{list-style:square}.markdown-preview ol{list-style:decimal}.markdown-preview ol ol,.markdown-preview ul ol{list-style-type:lower-roman}.markdown-preview ol ol ol,.markdown-preview ol ul ol,.markdown-preview ul ol ol,.markdown-preview ul ul ol{list-style-type:lower-alpha}.markdown-preview .newpage,.markdown-preview .pagebreak{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center!important}.markdown-preview:not([data-for=preview]) .code-chunk .code-chunk-btn-group{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .status{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .output-div{margin-bottom:16px}.markdown-preview .md-toc{padding:0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link div,.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}.markdown-preview .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0;min-height:100vh}@media screen and (min-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{font-size:14px!important;padding:1em}}@media print{html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc{padding:0 16px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link div,html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% - 300px);padding:2em calc(50% - 457px - 300px / 2);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+      <!-- The content below will be included at the end of the <head> element. --><script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    // your code here
+  });
+</script></head><body for="html-export">
+    
+    
+      <div class="crossnote markdown-preview  ">
+      
+<h1 id="rapport--projet-digit-recognizer">Rapport : Projet Digit Recognizer </h1>
+<ul>
+<li><a href="#rapport--projet-digit-recognizer">Rapport : Projet Digit Recognizer</a>
+<ul>
+<li><a href="#i-introduction"><strong>I. Introduction</strong></a>
+<ul>
+<li><a href="#pr%C3%A9sentation-du-projet">Présentation du projet</a>
+<ul>
+<li><a href="#contexte-du-projet"><em>Contexte du projet</em></a></li>
+<li><a href="#objectifs-du-projet"><em>Objectifs du Projet</em></a></li>
+</ul>
+</li>
+<li><a href="#pr%C3%A9sentation-des-donn%C3%A9es">Présentation des données</a>
+<ul>
+<li><a href="#pr%C3%A9sentation-des-donn%C3%A9es-fournies">Présentation des données fournies</a></li>
+<li><a href="#description-des-images-et-des-pixels">Description des images et des pixels</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#ii-reconnaissance-des-chiffres-digit-recognizer"><strong>II. Reconnaissance des chiffres (Digit Recognizer)</strong></a>
+<ul>
+<li><a href="#quest-ce-quun-ocr-optical-character-recognition-">Qu'est-ce qu'un OCR (Optical Character Recognition) ?</a></li>
+</ul>
+</li>
+<li><a href="#iii-impl%C3%A9mentation"><strong>III. Implémentation</strong></a>
+<ul>
+<li><a href="#pr%C3%A9paration-des-donn%C3%A9es">Préparation des données</a></li>
+<li><a href="#construction--entra%C3%AEnement-du-mod%C3%A8le">Construction &amp; Entraînement du modèle</a></li>
+<li><a href="#pr%C3%A9diction-des-%C3%A9chantillons-inconnus">Prédiction des échantillons inconnus</a></li>
+</ul>
+</li>
+<li><a href="#iv-r%C3%A9sultats"><strong>IV. Résultats</strong></a>
+<ul>
+<li><a href="#analyse-de-la-matrice-de-confusion-sans-pca">Analyse de la matrice de confusion sans PCA</a>
+<ul>
+<li><a href="#pour-c1e-2"><em>Pour <code>C=1e-2</code></em></a></li>
+<li><a href="#pour-c1"><em>Pour <code>C=1</code></em></a></li>
+<li><a href="#pour-c1e2"><em>Pour <code>C=1e2</code></em></a></li>
+</ul>
+</li>
+<li><a href="#bilan">Bilan</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#conclusion"><strong>Conclusion</strong></a>
+<ul>
+<li><a href="#synth%C3%A8se-des-r%C3%A9sultats">Synthèse des résultats</a></li>
+<li><a href="#am%C3%A9lioration">Amélioration</a></li>
+</ul>
+</li>
+</ul>
+<hr>
+<div style="page-break-after: always;"></div>
+<h2 id="i-introduction"><strong>I. Introduction</strong> </h2>
+<h3 id="présentation-du-projet">Présentation du projet </h3>
+<h4 id="contexte-du-projet"><em>Contexte du projet</em> </h4>
+<p>Le projet <strong>Digit Recognition</strong> est une introduction au domaine de la vision par ordinateur.<br>
+Proposé par <em>Kaggle</em> (<a href="https://www.kaggle.com/competitions/digit-recognizer">lien vers la compétition</a>), il demande de prédire correctement des chiffres manuscrits représentés dans des images.</p>
+<p>Ce projet se base sur le jeu de données MNIST (<em>Modified National Institute of Standards and Technology</em>). Cette base de données contient 70 000 images en niveaux de gris représentant des chiffres manuscrits (de 0 à 9). Chaque image mesure 28x28 pixels, avec des valeurs de pixels allant de 0 (blanc) à 255 (noir).<br>
+MNIST est largement utilisé comme référence dans la vision par ordinateur pour évaluer et comparer des algorithmes de classification, notamment des modèles de machine learning comme les SVM ou des réseaux de neurones.</p>
+<h4 id="objectifs-du-projet"><em>Objectifs du Projet</em> </h4>
+<p>Comme mentionné dans l'introduction, l'objectif de ce projet projet est de réaliser un modèle capable de prédire des chiffres inscrit manuscritemement dans des images.<br>
+Ces chiffres, allant de 0 à 9, sont extraits de données standardisées en niveaux de gris.<br>
+En tant qu'exercice, ce projet constitue un point d'entrée vers des sujets plus complexes en reconnaissance optique de caractères (<strong>OCR</strong>) et en apprentissage automatique.</p>
+<p>Nous serons amené à :</p>
+<ul>
+<li>Utiliser un PCA pour réduire les dimensions des données.</li>
+<li>Entrainer un SVM avec une partie des données d'entrainements.</li>
+<li>Tester le modèle avec l'autre partie des données d'entrainements.</li>
+<li>Ajuster les paramètres de la SVM pour réduire le plus possible les erreurs de classification.</li>
+<li>Utiliser le modèle pour prédire la valeur d'échantillons sans label.</li>
+</ul>
+<p>Nous cherchons à obtenir un modèle avec une précision optimale.<br>
+Pour y parvenir, nous testerons différentes valeurs pour le compromis entre marges et erreurs. En bonus, nous examinerons les performances du modèle avec et sans l’utilisation du PCA.</p>
+<h3 id="présentation-des-données">Présentation des données </h3>
+<h4 id="présentation-des-données-fournies">Présentation des données fournies </h4>
+<p>Les données sont fournies sous la forme de deux fichiers : <strong>train.csv</strong> et <strong>test.csv</strong>.</p>
+<ul>
+<li>
+<p><strong>train.csv</strong> :</p>
+<ul>
+<li>Contient 42 000 exemples d'entraînement.</li>
+<li>Chaque ligne correspond à une image de 28 x 28 pixels, soit un total de 784 pixels par image.</li>
+<li>La première colonne, appelée <strong>label</strong>, contient le chiffre manuscrit représenté (0 à 9).</li>
+<li>Les colonnes suivantes, nommées <code>pixel0</code> à <code>pixel783</code>, contiennent les valeurs de luminance des pixels.</li>
+</ul>
+</li>
+<li>
+<p><strong>test.csv</strong> :</p>
+<ul>
+<li>Contient 28 000 exemples sans étiquette.</li>
+<li>Les données sont structurées de la même manière que <code>train.csv</code>, à l’exception de la colonne <code>label</code>.</li>
+</ul>
+</li>
+</ul>
+<h4 id="description-des-images-et-des-pixels">Description des images et des pixels </h4>
+<p>Chaque image est une matrice de 28 x 28 pixels, où chaque pixel est représenté par une valeur entière comprise entre <strong>0</strong> et <strong>255</strong>, correspondant à la luminosité :</p>
+<ul>
+<li><strong>0</strong> représente un pixel totalement blanc.</li>
+<li><strong>255</strong> représente un pixel totalement noir.</li>
+</ul>
+<p>Les pixels sont ordonnés de gauche à droite et de haut en bas. Par exemple, un pixel dans la colonne <code>pixel131</code> correspondra à un pixel situé dans la 20ᵉ ligne et la 4ᵉ colonne de l'image.</p>
+<table>
+<thead>
+<tr>
+<th>Image d'Entrainement</th>
+<th>Image de Test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="Train_Data.png" alt="Train_Data"></td>
+<td><img src="Test_Data.png" alt="Test_Data"></td>
+</tr>
+</tbody>
+</table>
+<br>
+<hr>
+<div style="page-break-after: always;"></div>
+<h2 id="ii-reconnaissance-des-chiffres-digit-recognizer"><strong>II. Reconnaissance des chiffres (Digit Recognizer)</strong> </h2>
+<p>Ce projet fait office de porte d'entrée aux disciplines de vision par ordinateur assisté par intelligence artificiel.<br>
+Dans cette partie du rapport, nous allons développé l'un cas concret de cette discipline : la reconnaissance optique de caractère, aussi appelé OCR.</p>
+<h3 id="quest-ce-quun-ocr-optical-character-recognition-">Qu'est-ce qu'un OCR (Optical Character Recognition) ? </h3>
+<p>L'Optical Character Recognition (OCR) est une technologie permettant de convertir des images de texte manuscrit, dactylographié ou imprimé en données textuelles exploitables par des machines.<br>
+Cette méthode est couramment utilisée dans divers domaines tels que la numérisation de documents, la reconnaissance de plaques d'immatriculation, ou encore l'analyse de formulaires et de tickets de caisse.</p>
+<p>Un OCR fonctionne en plusieurs étapes :</p>
+<ol>
+<li><strong>Acquisition de l'image</strong> :<br>
+Une image contenant du texte est capturée (par exemple, une photo ou un scan).</li>
+<li><strong>Prétraitement de l'image</strong> :<br>
+Les données brutes de l'image sont nettoyées pour réduire le bruit, ajuster la luminosité (à l'aide de processus tel que l'uniformisation) ou améliorer les contrastes.</li>
+<li><strong>Segmentation</strong> :<br>
+L'image est divisée en blocs plus petits, généralement des lignes, des mots, puis des caractères individuels.</li>
+<li><strong>Extraction des caractéristiques</strong> :<br>
+Les caractéristiques clés des formes et contours des caractères sont extraites pour les rendre exploitables par un algorithme de classification.</li>
+<li><strong>Classification</strong> :<br>
+Un modèle de machine learning ou d'intelligence artificielle est utilisé pour prédire à quel caractère correspond chaque segment. C'est ici qu'interviennent des algorithmes comme les SVM (Support Vector Machines) ou les réseaux de neurones dans des systèmes modernes.</li>
+<li><strong>Post-traitement</strong> :<br>
+Les prédictions brutes sont assemblées pour reformer le texte, en appliquant éventuellement des corrections orthographiques ou grammaticales basé sur des modèles linguistiques. Ainsi, si des lettres ou des mots n'ont pas été reconnu, alors il est possible de prédire ce qui était écris à partir du sens général de la phrase.</li>
+</ol>
+<hr>
+<div style="page-break-after: always;"></div>
+<h2 id="iii-implémentation"><strong>III. Implémentation</strong> </h2>
+<h3 id="préparation-des-données">Préparation des données </h3>
+<p>Première étape de notre projet, nous avons du préparé les données pour qu'elles puissent être utilisées par le SVM.</p>
+<p>Nous avons travaillé avec le dataset <strong>train.csv</strong>, qui contient les données d'entrainement du modèle.<br>
+Pour rappel, la première colonne contient le label du chiffre (de 0 à 9), tandis que les 784 colonnes suivantes correspondent aux valeurs de luminance des pixels de l'image (28 x 28 pixels).<br>
+Vu le nombre trop important de variables, nous avons utilisé un PCA pour réduire les dimensions sans quoi le programme pourrait prendre des heures pour construire le modèle. Nous avons choisi un nombre de dimensions tel que au moins <strong>95%</strong> de la variance totale soit conservée. Cette méthode garantie que la majeure partie de l'information dans les données est retenue.</p>
+<p>Nous avons utilisé les étapes suivantes :</p>
+<ul>
+<li><strong>Charger les données dans deux matrices :</strong><br>
+Une première matrice contiend les labels des données et une seconde qui contiend.</li>
+<li><strong>Utiliser une PCA pour réduire les dimensions :</strong><br>
+Les données transitent par une PCA pour réduire leurs dimensions.</li>
+<li><strong>Diviser les données en deux sous-ensembles :</strong><br>
+Pour nous assurer de la précision du modèle, nous avons diviser les données d'entrainements en deux sous-échantillons. Un premier qui sera utilisé pour entrainer le modèle, et un second pour évaluer les performances du modèle sur des données d'entrainement non utilisées.</li>
+<li><strong>Standarisation les données :</strong><br>
+Les données bruts d'entrainements ont été standarisé. Cette étape permet de centrer les données autour de 0 et de les normaliser, ce qui améliore la convergence et la performance de la SVM.</li>
+</ul>
+<h3 id="construction--entraînement-du-modèle">Construction &amp; Entraînement du modèle </h3>
+<p>Maintenant que les données d'entrainement prêtes, nous avons entraîné une SVM linéaire avec le noyau <code>'linear'</code> en utilisant la bibliothèque <code>scikit-learn</code>. Nous avons fait les étapes suivies :</p>
+<ol>
+<li><strong>Définition du modèle</strong> :<br>
+Une instance de <code>SVC</code> a été créée avec les paramètres <code>kernel='linear'</code> et plusieurs <code>C</code> différentes.<br>
+Le paramètre <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span> est l’un des paramètres clés d’une <strong>SVM (Support Vector Machine)</strong>. Il contrôle le compromis entre ces deux éléments :
+<ol>
+<li>
+<p><strong>Maximiser la marge entre les classes</strong> :</p>
+<ul>
+<li>Un <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span> faible favorise la maximisation de la marge. Le modèle est alors plus tolérant aux erreurs de classification dans l’ensemble d’entraînement.</li>
+<li>Une marge large est synonyme d’un modèle plus généralisé, moins sensible aux fluctuations mineures des données d’entraînement.</li>
+</ul>
+</li>
+<li>
+<p><strong>Minimiser les erreurs de classification</strong> :</p>
+<ul>
+<li>Un <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span> élevé pénalise fortement les erreurs de classification. Le modèle essaiera alors de classer correctement tous les points de l’ensemble d’entraînement, quitte à avoir une marge plus petite.</li>
+<li>Cela peut entraîner un surapprentissage (overfitting), où le modèle est trop adapté aux données d’entraînement et perd en capacité de généralisation.</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<p>Nous avons utilisé la manière empirique pour déterminer notre <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span> :</p>
+<ul>
+<li>
+<p><strong><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span> élevé (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><msup><mi>e</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">1e^{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span>) :</strong></p>
+<ul>
+<li>Privilégie une erreur minimale dans l’ensemble d’entraînement.</li>
+<li>Risque accru de surapprentissage, surtout si les données d’entraînement contiennent du bruit ou des erreurs. Nous ne devrions pas avoir de problème puisque les images ont déjà été traitées pour retirer bruits et erreurs.</li>
+</ul>
+</li>
+<li>
+<p><strong><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span> faible (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><msup><mi>e</mi><mrow><mo>−</mo><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">1e^{-2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span>) :</strong></p>
+<ul>
+<li>Privilégie une marge maximale et tolère davantage d’erreurs.</li>
+<li>Modèle plus généralisé, mais potentiellement sous-adapté aux données complexes.</li>
+</ul>
+</li>
+<li>
+<p><strong><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span> équilibré (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><msup><mi>e</mi><mn>0</mn></msup></mrow><annotation encoding="application/x-tex">1e^{0}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">0</span></span></span></span></span></span></span></span></span></span></span></span>) :</strong></p>
+<ul>
+<li>Cherche un compromis entre les deux.</li>
+</ul>
+</li>
+</ul>
+<p>Pour ce projet, un compromis équilibré serait le plus pertinent : nous voulons le moins d'erreur de classification tout en conservant des classes distinctes pour chaque chiffre.</p>
+<p>Nous avons limité le compris à des valeurs inférieur à <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><msup><mi>e</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">1e^{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span> et supérieur à <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><msup><mi>e</mi><mrow><mo>−</mo><mn>2</mn></mrow></msup></mrow><annotation encoding="application/x-tex">1e^{-2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span> sans quoi la compilation était trop longue (plus de 3 heures).</p>
+<br>
+<ol>
+<li>
+<p><strong>Entraînement</strong> :<br>
+Le modèle a été entraîné sur l'ensemble d'entraînement.</p>
+</li>
+<li>
+<p><strong>Prédictions sur l'ensemble de validation</strong> :<br>
+Une fois entraîné, le modèle a été utilisé pour prédire les labels des données de validation.</p>
+</li>
+<li>
+<p><strong>Évaluation</strong> :<br>
+La précision globale a été calculée en comparant les prédictions aux labels réels de l'ensemble de validation.<br>
+Un score de précision et une matrice de confusion nous permettent d'analyser les performances du modèle en détail.</p>
+</li>
+</ol>
+<h3 id="prédiction-des-échantillons-inconnus">Prédiction des échantillons inconnus </h3>
+<p>Une fois le modèle entrainé et avec ses performances mesurée, nous l'avons utilisé pour prédire les labels des données du fichier <strong>test.csv</strong>.<br>
+Le but est le suivant : prédire quel valeur est chaque échantillon.</p>
+<p>Ces valeurs sont ensuite écrite dans le fichier <strong>prediction_svm.data</strong>.</p>
+<hr>
+<div style="page-break-after: always;"></div>
+<h2 id="iv-résultats"><strong>IV. Résultats</strong> </h2>
+<h3 id="analyse-de-la-matrice-de-confusion-sans-pca">Analyse de la matrice de confusion sans PCA </h3>
+<h4 id="pour-c1e-2"><em>Pour <code>C=1e-2</code></em> </h4>
+<table>
+<thead>
+<tr>
+<th>Avec PCA</th>
+<th>Sans PCA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Précision : 0.9252</td>
+<td>Précision : 0.9377</td>
+</tr>
+<tr>
+<td><img src="confusion_score_pca_1e-2.png" alt="confusion_score_pca_1e-2"></td>
+<td><img src="confusion_score_1e-2.png" alt="confusion_score_1e-2"></td>
+</tr>
+</tbody>
+</table>
+<p>Le modèle n'utilisant pas de PCA a un précision supérieure.</p>
+<h4 id="pour-c1"><em>Pour <code>C=1</code></em> </h4>
+<p>Pour un <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span> égal à 1, nous obtenons ces matrices de confusion :</p>
+<table>
+<thead>
+<tr>
+<th>Avec PCA</th>
+<th>Sans PCA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Précision : 0.9255</td>
+<td>Précision : 0.9171</td>
+</tr>
+<tr>
+<td><img src="confusion_score_pca_1.png" alt="confusion_score_pca_1"></td>
+<td><img src="confusion_score_1.png" alt="confusion_score_1"></td>
+</tr>
+</tbody>
+</table>
+<p>On peut voir sur cette matrice que le modèle se trompe souvent. Le modèle avec PDA a une précision légèrement supérieure.</p>
+<h4 id="pour-c1e2"><em>Pour <code>C=1e2</code></em> </h4>
+<p>Ci-dessous la matrice de confusion pour un <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span> égal à 1e2.</p>
+<table>
+<thead>
+<tr>
+<th>Avec PCA</th>
+<th>Sans PCA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Précision : 0.9245</td>
+<td>Précision : 0.9094</td>
+</tr>
+<tr>
+<td><img src="confusion_score_pca_1e2.png" alt="confusion_score_pca_1e2"></td>
+<td><img src="confusion_score_1e2.png" alt="confusion_score_1e2"></td>
+</tr>
+</tbody>
+</table>
+<p>Le score de précision du modèle avec PDA ne bouge quasiment pas. Celui sans PDA cependant diminue comparé au précédentes valeur de C.<br>
+Le temps de compilation devient très long.</p>
+<h3 id="bilan">Bilan </h3>
+<p>En lisant les matrices de confusion, on peut observer que le modèle a du mal a discerner la différence entre le 7 et les 9, les 4 et les 9, et 5 et les 3.</p>
+<p>Quand on utilise un PCA, le taux de précision du modèle change très peu qu'importe la valeur de <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span>. Cette dernière ne dépasse pas <strong>92.5%</strong>.<br>
+Quand on n'utilise pas de PCA, le taux de précision change bien plus : on passe de <strong>90%</strong> pour un <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span> égal à 100 à <strong>93.5%</strong> quand <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span> égal à 0.01.</p>
+<p>En conclusion, une valeur équilibrée pour <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span> est la marche à suivre quand on utilise un PCA. Il y a très peu de différence entre les trois valeur de <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span>, mais le temps de compilation est cependant complètement différent (plus le C s'éloigne de 1, plus il faut du temps).<br>
+Si l'on ne souhaite pas utiliser de PCA, alors il vaut mieux utiliser un <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span> petit. La précision est bien plus élevée.</p>
+<hr>
+<div style="page-break-after: always;"></div>
+<h1 id="conclusion"><strong>Conclusion</strong> </h1>
+<h3 id="synthèse-des-résultats">Synthèse des résultats </h3>
+<p>En conclusion, notre SVM est capable de prédire la valeur d'un chiffre écrit manuscritement. Le modèle est assez précis : au mieux, nous obtenons une précision de <strong>93%</strong>.</p>
+<p>Il n'y a peu (voir pas) de différence de précision entre l'utilisation ou non du PCA. On observe par contre une différence dans le temps de compilation : l'utilisation du PCA rend la compilation significative plus rapide.</p>
+<h3 id="amélioration">Amélioration </h3>
+<p>Si nous avons utilisé une SVM pour ce projet, cette technique n'est plus beaucoup utilisé dans le domaine de la reconnaissance d'image. Des techniques modernes, bien plus complexes et spécialisées, sont maintenant utilisés, notamment :</p>
+<ul>
+<li><strong>Réseaux de neurones convolutifs (CNN)</strong> : Particulièrement efficaces pour les images, ils apprennent automatiquement les caractéristiques pertinentes sans étape d'extraction manuelle.</li>
+<li><strong>Apprentissage par transfert</strong> : Utilisation de modèles pré-entraînés comme ResNet ou VGG pour des tâches spécifiques.</li>
+<li><strong>Vision Transformers (ViT)</strong> : Inspirés des techniques utilisées dans le traitement du langage, ces modèles divisent l'image en blocs et analysent les relations entre eux. Ils offrent une compréhension globale de l'image et montrent un fort potentiel pour des applications complexes.</li>
+</ul>
+<p>Pour ce premier projet, nous avons voulu voir si une SVM était suffisante puisque les données étaient simples (images de chiffres bien isolés) et le prétraitement des données avait déjà été fait.<br>
+Cependant, le nombre d'erreur très important et le temps de compilation du modèle font qu'il serait préférable d'utiliser des méthodes plus complexes, comme par exemple un réseau de neurones.</p>
+
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+  
+    </body></html>

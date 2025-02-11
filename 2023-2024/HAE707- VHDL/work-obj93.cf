@@ -1,6 +1,0 @@
-v 3
-file . ".\TP2\flip_flop_tb.vhd" "20230926134846.000" "20231002132815.042":
-  entity tb_flip_flop at 5( 124) + 0 on 11;
-  architecture tb of tb_flip_flop at 11( 216) + 0 on 12;
-  configuration cfg_tb_flip_flop at 71( 1775) + 0 on 13;
-w

@@ -1,0 +1,501 @@
+= Rapport sur le Contrôle et la Simulation du Robot UR10
+Auteur: Curtis Martelet
+Date: 29/11/2024
+:toc:
+:toc-title: Table des matières
+:sectnums:
+:sectnumlevels:	2
+:source-highlighter: pygments
+:hardbreaks:
+:stem: latexmath
+
+<<<
+
+== Introduction
+
+Ce rapport sert de conclusion au travail réalisé sur la simulation et le contrôle du robot UR10.  
+Nous y développons le calcul et l'implémentation d'un système de commande déterminé avec la méthode de Denavit-Hartenberg modifiée.  
+Nous décrivons également les étapes de simulation sous *CoppeliaSim* ainsi que les résultats obtenus.  
+
+== Modélisation du Robot UR10
+
+=== Présentation de la méthode DH
+
+La méthode Denavit-Hartenberg (DH) permet de décrire la géométrie d'un robot manipulateur.
+Chaque articulation est modélisée par une matrice de transformation homogène qui exprime la position et l'orientation d'un repère local par rapport au repère précédent.  
+
+
+=== Schéma du robot
+
+image::repere.png[Schéma du robot avec repères, width=50%]
+
+
+=== Paramètres DH
+
+==== Simulation
+
+Dans le cas de la simulation dans *CoppeliaSim*, les paramètres DH sont modifiés pour aligner les axes des repères du simulateur.  
+
+[cols="1,1,1,1,1,1", options="header"]
+|===
+| Joint |σ~j~  | α~j-1~ (rad) | a~j-1~ (m) | θ~j~ (rad)  | d~j~ (m)
+| 1     |0     | 0            | 0          | θ₁          | r₁
+| 2     |0     | π/2          | 0          | θ₂ - π/2    | r₂
+| 3     |0     | 0            | -a₂        | θ₃          | 0
+| 4     |0     | 0            | -a₃        | θ₄          | 0
+| 5     |0     | π/2          | 0          | θ₅ - π/2    | r₅
+| 6     |0     | -π/2         | 0          | θ₆          | 0
+|===
+
+==== Robot Réel
+
+Pour le robot réel, les repères respectent directement la configuration physique du robot, ce qui entraîne une différence au niveau des angles des joints :
+
+[cols="1,1,1,1,1,1", options="header"]
+|===
+| Joint |σ~j~  |α~j-1~ (rad) | a~j-1~ (m) | θ~j~ (rad) | d~j~ (m)
+| 1     |0     |0            | 0           | θ₁         | r₁
+| 2     |0     |π/2          | 0           | θ₂         | r₂
+| 3     |0     |0            | -a₂         | θ₃         | 0
+| 4     |0     |0            | -a₃         | θ₄         | 0
+| 5     |0     |π/2          | 0           | θ₅         | r₅
+| 6     |0     |-π/2         | 0           | θ₆         | 0
+|===
+
+Nous avons retiré les décallages de stem:[π/2] sur les articulations 2 et 5.
+
+<<<
+
+== Formules et modélisation mathématique
+
+Dans cette seconde partie du rapport, nous allons détailler les étapes et calculs utilisés dans la commande du robot.
+La commande du robot est basé sur le modèle géométrique. On y trouve :
+- Un bloc *Générateur de Trajectoire*, qui nous donne la vitesse et position désirée au cours du temps.
+- Un bloc *Modèle Géométrique*, qui nous donne la pose de l'organe terminal en fonction des angles des articulations.
+- Un bloc *Erreur*, qui calcul l'erreur, c'est à dire la différence entre la position et l'orientation désirée contre celle réelle.
+- Un bloc *Contrôleur*, qui calcul la vitesse angulaire désirée de chaque articulation.
+
+Selon que l'on commande le robot ou la simulation de celui-ci, il nous faudra également intégré la vitesse angulaire désirée pour obtenir les angles de chaque articulation : la simulation se commande en position tandis que le robot se commande en vitesse.
+
+
+=== Générateur de Trajectoire
+
+La trajectoire est calculée pour définir la position et l'orientation désirées de l'effecteur au cours du temps.
+Nous avons utilisé un polynome de degré cinq pour garantir des trajectoires continues en position, vitesse et accélération.
+
+==== Calcul des positions et vitesses désirées
+
+Les positions et vitesses désirées sont calculées à partir des paramètres de la trajectoire et de la durée de simulation.
+On utilise l'interpolation de cinquième degré pour calculer le facteur d'interpolation \( r \) et sa dérivée \( r_{\text{point}} \). Ces valeurs sont ensuite utilisées pour interpoler la position et la vitesse.
+
+[stem]
+++++
+r(t) = 10 \left( \frac{t}{t_f} \right)^3 - 15 \left( \frac{t}{t_f} \right)^4 + 6 \left( \frac{t}{t_f} \right)^5
+++++
+[latexmath]
+++++
+r_{\text{point}}(t) = 30 \frac{t^2}{t_f^3} - 60 \frac{t^3}{t_f^4} + 30 \frac{t^4}{t_f^5}
+++++
+
+Une fois les interpolations déterminées, on peut calculer la position et la vitesse désirée au cours du temps :
+[latexmath]
+++++
+x_{\text{désirée}} = x_{\text{init}} + r(t) (x_{\text{final}} - x_{\text{init}})
+++++
+[latexmath]
+++++
+x_{\text{point désirée}} = r_{\text{point}}(t) (x_{\text{final}} - x_{\text{init}})
+++++
+
+
+==== Calcul de l'orientation désirée
+
+La génération de l'orientation désirée pour l'effecteur se base sur l'interpolation entre la rotation actuelle et la rotation finale. Le calcul suit les étapes suivantes :
+
+===== *Calcul de la matrice de rotation relative*
+
+La matrice de rotation relative \( R \) est calculée avec cette formule :
+
+[latexmath]
+++++
+R = R_{\text{init}}^T \cdot R_{\text{final}}
+++++
+
+Elle représente la transformation nécessaire pour passer de l'orientation initiale à l'orientation finale.
+
+===== *Calcul de l'angle de rotation \( \theta \)*
+
+L'angle de rotation \( \theta \) est extrait de la matrice de rotation relative \( R \).
+Il s'obtient en calculant le cosinus et le sinus, puis en utilisant tangeante :
+
+[latexmath]
+++++
+\cos(\theta) = \frac{\text{Tr}(R) - 1}{2}
+++++
+[latexmath]
+++++
+\sin(\theta) = \frac{\sqrt{(R_{32} - R_{23})^2 + (R_{13} - R_{31})^2 + (R_{21} - R_{12})^2}}{2}
+++++
+[latexmath]
+++++
+\theta = \tan^{-1}\left(\frac{\sin(\theta)}{\cos(\theta)}\right)
+++++
+
+- \( \text{Tr(}R \text{)} \) représente la trace de la matrice \( R \) (somme des éléments de la diagonale de la matrice).
+- Les éléments \( R_{ij} \) sont les composantes individuelles de la matrice de rotation \( R \).
+
+===== *Calcul de l'axe de rotation \( \mathbf{u} \)*
+
+Une fois \( \theta \) calculé, on peut déterminer l'axe de rotation \( \mathbf{u} \).
+Il est donné par :
+
+[latexmath]
+++++
+\mathbf{u} = \frac{1}{2\sin(\theta)} 
+\begin{bmatrix}
+R_{32} - R_{23} \\
+R_{13} - R_{31} \\
+R_{21} - R_{12}
+\end{bmatrix}
+++++
+
+===== Interpolation de la rotation désirée
+
+La rotation désirée \( \mathbf{R}_{\text{désirée}} \) est obtenue en appliquant une interpolation en fonction du facteur \( r \), calculé à partir de la trajectoire temporelle :
+
+[latexmath]
+++++
+\mathbf{R}_{\text{désirée}} = \mathbf{R}_{\text{init}} \cdot \mathbf{rot}(\mathbf{u}, r \cdot \theta)
+++++
+
+La matrice \( \mathbf{rot}(\mathbf{u}, r \cdot \theta) \) est une matrice de rotation autour de l'axe \( \mathbf{u} \) d'un angle \( r \cdot \theta \), donnée par :
+
+[latexmath]
+++++
+\mathbf{rot}(\mathbf{u}, r \cdot \theta) =
+\begin{bmatrix}
+u_x^2 (1 - \cos(r \cdot \theta)) + \cos(r \cdot \theta) & u_x u_y (1 - \cos(r \cdot \theta)) - u_z \sin(r \cdot \theta) & u_x u_z (1 - \cos(r \cdot \theta)) + u_y \sin(r \cdot \theta) \\
+u_x u_y (1 - \cos(r \cdot \theta)) + u_z \sin(r \cdot \theta) & u_y^2 (1 - \cos(r \cdot \theta)) + \cos(r \cdot \theta) & u_y u_z (1 - \cos(r \cdot \theta)) - u_x \sin(r \cdot \theta) \\
+u_x u_z (1 - \cos(r \cdot \theta)) - u_y \sin(r \cdot \theta) & u_y u_z (1 - \cos(r \cdot \theta)) + u_x \sin(r \cdot \theta) & u_z^2 (1 - \cos(r \cdot \theta)) + \cos(r \cdot \theta)
+\end{bmatrix}
+++++
+
+Dans cette formule :
+- \( u_x, u_y, u_z \) sont les composantes de l'axe de rotation \( \mathbf{u} \). 
+- \( r \cdot \theta \) est l'angle interpolé pour le temps actuel. 
+
+La rotation désirée est ensuite combinée avec l'orientation actuelle pour obtenir \( \mathbf{R}_{\text{désirée}} \). Celle-ci est utilisée pour guider l'effecteur vers sa rotation finale tout en respectant une trajectoire lisse.
+
+
+=== Modèle Géométrique
+
+Le modèle géométrique permet de déterminer des positions cartésienne à partir des angles de chaque articulation.
+Les coordonnées cartésiennes réelle du robot seront utilisées pour calculer l'erreur de position et orientation entre la pose désirée et celle actuelle.
+
+Pour réaliser le modèle géomatrique du robot, nous aurons besoin des matrices de transformations.
+
+==== Les Matrices de Transformation
+
+La formule générale d'une matrice de transformation homogène selon DH modifié est la suivante :  
+
+[latexmath]
+++++
+T_j = \begin{bmatrix}
+\cos\theta_j & -\sin\theta_j \cos\alpha_{j-1} & \sin\theta_j \sin\alpha_{j-1} & a_{j-1} \\
+\sin\theta_j & \cos\theta_j \cos\alpha_{j-1} & -\cos\theta_j \sin\alpha_{j-1} & -r_j \sin\alpha_{j-1} \\
+0 & \sin\alpha_{j-1} & \cos\alpha_{j-1} & r_j \cos\alpha_{j-1} \\
+0 & 0 & 0 & 1
+\end{bmatrix}
+++++
+
+Une fois les matrices de transformations de chaque articulation déterminées, nous devons calculer la matrice de transformation entre l'origine et la dernière articulation du robot.
+
+[latexmath]
+++++
+T_{06} = T_1 \cdot T_2 \cdot T_3 \cdot T_4 \cdot T_5 \cdot T_6
+++++
+
+La position de l'effecteur final peut être déterminée en multipliant cette matrice par le vecteur homogène représentant l'effecteur :  
+
+[latexmath]
+++++
+\mathbf{O_{07}} = T_{06} \cdot \mathbf{O_{67}}
+++++
+
+où :  
+- \( T_{06} \) est la matrice de transformation de la base au repère final.  
+- \( \mathbf{O_{67}} \) est le vecteur décrivant la position de l'effecteur par rapport à l'articulation 6.  
+
+Avec cette matrice \( \mathbf{O_{07}} \), nous avons la position de l'effecteur. Cette donnée est utilisé pour trouver l'erreur de position et d'orientation entre la position désirée et la position actuelle de l'effecteur.
+
+==== Calcul de la Jacobienne
+
+===== Calcul de la Jacobienne n.
+
+La Jacobienne fait une taille \( 6 \times n \) avec n le nombre d'articulations. Chaque colonne de notre jacobienne correspond à une articulation du robot.
+La méthode pour calculer ces colonnes dépend de la nature des articulations (rotatives ou prismatiques).
+
+[cols="1,1", options="header"]
+|===
+| Articulation Rotoïde | Articulation Prismatique
+| \( J_p = Z_i \times (P_n - P_i) \) | \( J_p = Z_i \)
+| \( J_o = Z_i \) | \( J_o = 0_{3 \times 3} \)
+|===
+avec :
+- \( Z_i \) : Vecteur de l'axe de rotation z pour l'articulation \( i \). Il s'agit de la dernière colonne de la matrice de rotation de notre articulation
+- \( P_n \) : Vecteur position de la dernière articulation.
+- \( P_i \) : Vecteur position de l'articulation \( i \).
+
+Dans le cas du robot UR10, nous n'avons pas d'articulation prismatique.
+
+===== Calcul de la matrice D
+
+Dans le cas du robot UR10, il existe un décalage \( r_7 \) entre la dernière articulation et le centre de l'effecteur. Ce décalage est pris en compte à l'aide d'une matrice antisymétrique \( D \), qui est calculée à partir des éléments de la matrice de rotation \( R_{06} \) de l'effecteur final.
+
+[latexmath]
+++++
+\mathbf{D} = \begin{pmatrix}
+0 & a_n x_z + r_{n+1} z_z & -a_n x_y - r_{n+1} z_y \\
+-a_n x_z - r_{n+1} z_z & 0 & a_n x_x + r_{n+1} z_x \\
+a_n x_y + r_{n+1} z_y & -a_n x_x - r_{n+1} z_x & 0
+\end{pmatrix}
+++++
+avec :
+- \( a_n \) et \( r_n \) trouvable dans \( O_{67} \).
+- \( x_x, x_y, x_z, z_x, z_y, z_z \) trouvable en suivant la convention suivante :
+[latexmath]
+++++
+^0 R_n = \begin{pmatrix}
+x_x & y_x & z_x \\
+x_y & y_y & z_y \\
+x_z & y_z & z_z
+\end{pmatrix}
+++++
+
+
+===== Calcul de le Jacobienne Finale
+
+Une fois \( J_p \), \( J_o \), et \( D \) calculés, on peut finalement calculer la Jacobienne finale \( J \).
+
+[latexmath]
+++++
+J = 
+\begin{bmatrix}
+    I_3 & D \\
+    0_{3 \times 3} & C
+\end{bmatrix}
+\cdot J_{06}
+++++
+avec :
+- \( I_3 \) une matrice identité de taille \( {3 \times 3} \).
+- \(0_{3 \times 3}\) une matrice de zéros de taille \( {3 \times 3} \).
+- \( C \) une matrice que nous avons choisi identité.
+- \( D \) la matrice que l'on a obtenu plus tôt.
+
+
+=== L'Erreur
+
+Le calcul de l'Erreur permet de calculer la différence entre la position et l'orientation actuelle du robot et celle désirée à un moment t.
+Les deux types d'erreurs sont ainsi calculées : 
+
+1. **Erreur de position** :
+Cette erreur représente la différence entre la position actuelle de l'effecteur (\(x_{\text{actuel}}\)) et la position désirée (\(x_{\text{désiré}}\)) :
+
+[latexmath]
+++++
+e_p = x_{\text{désiré}} - x_{\text{actuel}}
+++++
+
+
+2. **Erreur d'orientation** :
+Cette erreur exprime la différence entre l'orientation actuelle de l'effecteur (\(R_{\text{actuel}}\)) et l'orientation désirée (\(R_{\text{désiré}}\)). L'erreur est calculée comme une combinaison des vecteurs de base des deux orientations :
+
+[latexmath]
+++++
+e_o = \frac{1}{2} \left( R_{\text{actuel}}[:, 0] \times R_{\text{désiré}}[:, 0] + 
+                            R_{\text{actuel}}[:, 1] \times R_{\text{désiré}}[:, 1] + 
+                            R_{\text{actuel}}[:, 2] \times R_{\text{désiré}}[:, 2] \right)
+++++
+
+
+3. **Matrice \(L\)** :
+Une matrice auxiliaire \(L\) est utilisée pour faciliter le calcul de l'erreur d'orientation. Elle relie les rotations souhaitées et actuelles en modifiant leur structure :
+
+[latexmath]
+++++
+L = -\frac{1}{2} \left( S(R_{\text{désiré}}[:, 0]) S(R_{\text{actuel}}[:, 0]) + 
+                        S(R_{\text{désiré}}[:, 1]) S(R_{\text{actuel}}[:, 1]) + 
+                        S(R_{\text{désiré}}[:, 2]) S(R_{\text{actuel}}[:, 2]) \right)
+++++
+
+Ici, \(S(v)\) est une matrice antisymétrique associée à un vecteur \(v\). Cela aide à représenter les relations entre les différentes orientations.
+
+Pour un vecteur donné \(v = \begin{bmatrix} v_x \\ v_y \\ v_z \end{bmatrix}\), la matrice antisymétrique \(S(v)\) est définie comme suit :
+
+[latexmath]
+++++
+S(v) = \begin{bmatrix}
+0 & -v_z & v_y \\
+v_z & 0 & -v_x \\
+-v_y & v_x & 0
+\end{bmatrix}
+++++
+
+
+Ces deux erreurs \(e_p\) et \(e_o\) sont ensuite utilisées pour ajuster les commandes des moteurs afin de corriger les écarts de trajectoire et d'orientation.
+
+
+=== Le Contrôleur
+
+Le contrôleur de notre chaine de commande sert à calculer les vitesses articulaires (\(\dot{q}\)) nécessaires pour que le robot suive la trajectoire désirée.
+
+==== Calcul de la vitesse angulaire désirée
+
+Dans un premier temps, nous calculons la vitesse angulaire désirée pour l'organe terminal en utilisant la rotation initiale et les paramètres de la trajectoire.
+La vitesse angulaire est définie par le produit de la vitesse normalisée (\(r_{\text{point}}\)), l'angle de rotation (\(\theta\)), et l'axe de rotation (\(u\)). Cette vitesse est exprimée dans le repère initial grâce à la matrice de rotation initiale \(R_{\text{init}}\).
+
+[latexmath]
+++++
+\mathbf{w}_d = R_{\text{init}} \cdot (r_{\text{point}} \cdot \theta \cdot \mathbf{u})
+++++
+
+==== Utilisation de la Jacobienne pseudo-inverse
+
+La commande est ensuite obtenue en effectuant la pseudo-inverse de la Jacobienne.
+Nous utilisons la formule ci-dessous pour éviter les singularités : 
+
+
+[latexmath]
+++++
+\mathbf{J}^* = \mathbf{J}^T \cdot (\mathbf{J} \cdot \mathbf{J}^T + k^2 \cdot \mathbf{I})^{-1}
+++++
+avec :
+- \(k\) est une constante de régularisation pour éviter les singularités. Nous l'avons défini à 0.01.
+- \(\mathbf{I}\) est la matrice identité.
+- \(J\) la jacobienne déterminée dans le modèle géométrique.
+
+==== Composition de la commande
+
+La commande finale combine deux parties :
+1. **Commande de position** : Inclut la vitesse cartésienne désirée et la correction proportionnelle à l'erreur de position (\(K_p \cdot e_{\text{position}}\)).
+2. **Commande d'orientation** : Inclut la correction proportionnelle à l'erreur d'orientation (\(K_o \cdot e_{\text{orientation}}\)) et les termes liés à la vitesse angulaire désirée (\(L^T \cdot \mathbf{w}_d\)).
+
+[latexmath]
+++++
+\mathbf{q}_p^{\text{desire}} = \mathbf{J}^* \cdot 
+\begin{bmatrix}
+\mathbf{x}_p^{\text{desire}} + K_p \cdot \mathbf{e}_{\text{position}} \\
+L^{-1} \cdot \left(L^T \cdot \mathbf{w}_d + K_o \cdot \mathbf{e}_{\text{orientation}}\right)
+\end{bmatrix}
+++++
+avec :
+- \(L\) la matrice auxiliaire calculée en même temps que l'erreur de position et d'orientation.
+- \({x}_p^{\text{desire}}\) la vitesse désirée.
+- \(e_{\text{orientation}}\) et \(e_{\text{position}}\) les erreurs en position et d'orientation.
+- \(K_o\) et \(K_p\) des coefficients, tous deux égals à 1.5.
+
+=== Commande des Moteurs
+
+A la différence du robot réel, les articulations de simulation de l'UR10 sur *CoppeliaSim* sont commandées en position et non en vitesse.
+Une fois les vitesses articulaires désirées (\(\mathbf{q}_p^{\text{desire}}\)) calculées par le contrôleur, il faut donc les convertir en position articulaire.
+
+==== Mise à jour des positions articulaires
+
+Les nouvelles positions des articulations sont calculées en intégrant les vitesses articulaires désirées sur un pas de temps donné. Cela revient à utiliser une méthode d'intégration simple pour mettre à jour les positions en fonction de la vitesse et du temps écoulé (\(\Delta t\)) depuis la dernière mise à jour :
+
+[latexmath]
+++++
+\mathbf{q}_{\text{new}} = \mathbf{q}_p^{\text{desire}} \cdot \Delta t + \mathbf{q}_{\text{current}}
+++++
+
+Où :
+- \(\mathbf{q}_{\text{new}}\) est le vecteur des nouvelles positions articulaires.
+- \(\mathbf{q}_p^{\text{desire}}\) est le vecteur des vitesses articulaires désirées.
+- \(\Delta t\) est l'intervalle de temps écoulé depuis la dernière mise à jour.
+- \(\mathbf{q}_{\text{current}}\) est le vecteur des positions actuelles des articulations.
+
+Ce calcul est basé sur une approche discrète et linéaire, adaptée aux cycles de commande à haute fréquence.
+
+<<<
+
+== Implémentation
+
+=== Langages et bibliothèques utilisés
+
+Pour programmer la simulation et le contrôle du robot UR10, nous avons utilisé les outils suivants :
+- **Python** pour les calculs et la commande.
+- **Numpy** pour les manipulations matricielles.
+- **Matplotlib** pour la afficher les courbes.
+- **CoppeliaSim** pour la simulation du robot.  
+
+=== Étapes de la simulation
+
+==== Connexion à CoppeliaSim
+
+Une connexion avec *CoppeliaSim* est établie pour contrôler le robot. Les *handles* des articulations sont récupérés afin de pouvoir les piloter. Nous avons utilisé le mode `simx_opmode_blocking` pour récupérer l'angle des moteurs.
+
+==== Génération de la trajectoire
+
+La trajectoire est générée en interpolant entre la position initiale et la position finale en utilisant des polynômes de degré 5. Cela garantit des transitions douces.  
+
+==== Calcul des commandes des articulations
+
+Pour chaque instant \( t \), les étapes suivantes sont effectuées :
+- Calcul de la géométrique directe pour déterminer la position actuelle de l'effecteur.
+- Comparaison avec la position désirée pour obtenir l'erreur.
+- Utilisation d'une loi de commande pour déterminer les vitesses articulaires désirées.
+- Intégration pour obtenir les nouvelles positions des joints.
+
+==== Envoi des commandes à CoppeliaSim
+
+Les positions calculées sont envoyées aux articulations du robot dans *CoppeliaSim* via les commandes API. Nous avons utilisé le mode `simx_opmode_blocking` pour commander les moteurs.
+
+<<<
+
+== Courbes et résultats
+
+==== Position désirées et actuelles des joints au cours du temps
+
+image::position.png[Position des joints]
+
+==== Erreur normalisée
+
+image::erreur.png[Erreur normalisée]
+
+==== Vitesse désirées et actuelles des joints au cours du temps
+
+image::vitesse.png[Position des joints]
+
+==== Angle désirées et actuelles des joints au cours du temps
+
+image::angle.png[Angle des joints]
+
+<<<
+
+== Conclusion
+
+En conclusion, la simulation du robot UR10 sur *CoppeliaSim* fonctionne, même si l'on passe par une singularité.
+Dans ce projet, nous avons été amené a :
+1. Utilisé la méthode Denavit-Hartenberg modifié pour 
+2. Calculer 
+
+
+Je n'ai cependant pas eu le temps de tester ce programme sur le robot réel, bien que j'ai écrit le code pour.
+
+
+
+
+
+
+
+
+
+[latexmath]
+++++
+R = R_{\text{init}}^T \cdot R_{\text{final}}
+++++
+
+
+
+
+
