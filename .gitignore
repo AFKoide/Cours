@@ -1,8 +1,29 @@
-.gitignore
-*.jpg
-*.png
-*.docx
-2022-2023/601/UACS/*
-2024-2025/Projet/*
-/2024-2025/IA/myenv
-/2023-2024/S1/HAE701- Traitement de Signal/Script/strauss/__pycache__
+# Ignore file types
+*.zip
+*.tar.gz
+*.exe
+
+# Ignore Specific Folders
+2022-2023/601/UACS
+2024-2025/Projet
+2023-2024/S2/Base Robotique/poppy_ros2
+
+# Ignore generated folders
+__pycache__/
+build
+.vscode
+myenv
+env
+install
+log
+
+# ROS
+lib
+build
+share
+include
+
+# myenv folders
+
+# Drivers folders
+Drivers

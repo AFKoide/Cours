@@ -1,0 +1,33 @@
+% Chemin vers le CSV (à lire séparément dans le code)
+% ./database/linear.csv
+./database/housing.csv
+% 1: Colonne cible (0 = première ; -1 = dernière)
+-1
+% 2: Pourcentage cible entre ±seuil
+30
+% 3: Pourcentage de la population d'apprentissage
+70
+% 4: Taille de l'échantillon d'apprentissage
+0
+% 5: Taille de l'échantillon de test
+0
+% 6: Méthode (0 = LINEAR, 1 = GAME, 2 = MACSUM, 3 = MACSUM MODIFIE)
+2
+% 7: Manière (0 = L2, 1 = L1)
+0
+% 8: k-additif (-1 = Toute la dimension du tableau)
+-1
+% 9: [MACSUM MODIFIE]       Ordre (FAIBLE = 0, FORT = 1)
+1
+% 10: Beta (learning rate)
+1e-5
+% 11: Delta (diff pour l'algorithme)
+1e-3
+% 12: Gamma
+1000
+% 13: Itérations globales
+5000
+% 14: Itérations apprentissage
+1000
+% 15: Itérations test
+1000

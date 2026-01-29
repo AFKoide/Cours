@@ -1,0 +1,39 @@
+<robot name="r2d2">
+    <link name="axis">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.01" length=".5"/>
+            </geometry>
+        </visual>
+    </link>
+    <link name="l1">
+        <visual>
+            <origin xyz="0 0 -0.5"/>
+            <geometry>
+                <box size=".05 .05 1.0"/>
+            </geometry>
+        </visual>
+    </link>
+    <joint name="r1" type="continuous">
+        <origin xyz="0 0 0"/>
+        <axis xyz="1 0 0"/>
+        <parent link="axis"/>
+        <child link="l1"/>
+    </joint>
+
+    <link name="l2">
+        <visual>
+            <origin xyz="0 0 -0.5"/>
+            <geometry>
+                <box size=".05 .05 1"/>
+            </geometry>
+        </visual>
+    </link>
+    <joint name="r2" type="continuous">
+        <origin xyz="0 0 -1"/>
+        <axis xyz="1 0 0"/>
+        <parent link="l1"/>
+        <child link="l2"/>
+    </joint>
+</robot>

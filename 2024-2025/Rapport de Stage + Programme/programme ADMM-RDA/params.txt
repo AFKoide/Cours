@@ -1,0 +1,29 @@
+% 0: Chemin vers le CSV (à lire séparément dans le code)
+%./database/linear.csv
+./database/housing.csv
+% 1: Itérations globales
+5000
+% 2: Itérations apprentissage
+1000
+% 3: Itérations test
+1000
+% 4: Colonne cible (0 = première ; -1 = dernière)
+-1
+% 5: Pourcentage cible entre ±seuil
+30
+% 6: Pourcentage de la population d'apprentissage
+70
+% 7: Taille de l'échantillon d'apprentissage
+0
+% 8: Taille de l'échantillon de test
+0
+% 9: k-additif (-1 = Toute la dimension du tableau)
+-1
+% 10: Learning Rate (beta, lambda)
+1e-5
+% 11: Delta (diff pour l'algorithme)
+1e-10
+% 12: Gamma
+1000
+% 13: Rho
+0.3

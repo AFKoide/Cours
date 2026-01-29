@@ -1,0 +1,16 @@
+#let colred(x) = text(fill: red, $#x$) 
+
+
+#set heading(numbering: (..nums) => {
+  if nums.pos().len() == 1 { return none }
+  nums.pos().slice(1).map(str).join(".") + "."
+  }
+)
+
+
+#import "@preview/algorithmic:1.0.3"
+
+
+
+#outline(title: [Sommaire],
+         depth: 3)

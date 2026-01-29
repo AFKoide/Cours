@@ -1,0 +1,22 @@
+agrégation
+intégrale de choquet la plus generale
+
+coalition (choquet)
+
+game
+
+masse
+
+
+
+
+
+
+mesure additive prob si tout = 1
+mesure non additive condition : rien = 0 ; add a et b != a + b
+monotone si poids ensembe a inclut b, poids a < b
+capacite si monotone et ensemble = 1
+capacite cas particulié possibilité x1 u x2 
+
+
+macsum est un game 
